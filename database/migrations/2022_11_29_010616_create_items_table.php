@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
             $table->string('code');
-            $table->string('name');
             $table->string('brand');
             $table->string('serial_no');
             $table->string('description');
