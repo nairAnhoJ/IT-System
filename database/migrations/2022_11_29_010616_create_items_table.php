@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('status');
             $table->string('computer_id');
             $table->string('site');
+            $table->string('added_by');
+            $table->string('edited_by');
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+    // Items
     Route::get('/inventory/items', [ItemController::class, 'index'])->name('item.index');
+    Route::get('/inventory/items/add', [ItemController::class, 'add'])->name('item.add');
+    Route::post('/inventory/items/add', [ItemController::class, 'store'])->name('item.store');
+
+
+    // Computer
+    Route::get('/inventory/computers', [ComputerController::class, 'index'])->name('computer.index');
 });
 
 require __DIR__.'/auth.php';
