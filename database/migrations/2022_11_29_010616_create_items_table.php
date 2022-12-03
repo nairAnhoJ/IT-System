@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->bigInteger('type_id');
             $table->string('code');
             $table->string('brand');
             $table->string('serial_no');
             $table->string('description');
             $table->string('date_purchased');
             $table->string('status');
-            $table->string('computer_id');
-            $table->string('site');
+            $table->bigInteger('computer_id');
+            $table->bigInteger('site_id');
             $table->string('added_by');
             $table->string('edited_by');
             $table->timestamps();

@@ -122,42 +122,47 @@
                     </tr>
                 </thead>
                 <tbody id="itemTableBody" style="max-height: calc(100% - 126px);">
-                    <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700">
-                        <th scope="row" class="py-3 px-6 font-medium text-white text-center">
-                            1
-                        </th>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            PROCESSOR
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            HII-000148
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            INTEL
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            CORE I5 11400F
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            BFEBFBFF000A0671
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            7/1/2022
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            IN USE
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            HII_PC-999
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            BATAAN
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            <a href="#" class="font-medium text-blue-500 hover:underline">Edit</a> | 
-                            <a href="#" class="font-medium text-red-500 hover:underline">Delete</a>
-                        </td>
-                    </tr>
+                    @php
+                        $x = 1;
+                    @endphp
+                    @foreach ($items as $item)
+                        <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700">
+                            <th scope="row" class="py-3 px-6 font-medium text-white text-center">
+                                {{ $x++ }}
+                            </th>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->type }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->code }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->brand }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->description }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->serial_no }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->date_purchased }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->status }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->comp }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->site }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                <a href="#" class="font-medium text-blue-500 hover:underline">Edit</a> | 
+                                <a href="#" class="font-medium text-red-500 hover:underline">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

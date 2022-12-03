@@ -21,7 +21,7 @@
 
 
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('ticketing.index')">
+                    <x-nav-link :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">
                         {{ __('Ticketing') }}
                     </x-nav-link>
 

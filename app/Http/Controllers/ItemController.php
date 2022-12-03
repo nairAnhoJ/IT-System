@@ -11,8 +11,9 @@ class ItemController extends Controller
     public function index(){
 
         $types = DB::table('item_types')->orderBy('name', 'asc')->get();
+        $items = DB::select('SELECT	item_types.name AS type, items.code, items.brand, items.description, items.serial_no, items.date_purchased, items.status, computers.name AS comp, sites.name AS site FROM (((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) ORDER BY items.id DESC');
 
-        return view('inventory.items', compact('types'));
+        return view('inventory.items', compact('types', 'items'));
     }
 
     public function add(){
@@ -29,11 +30,16 @@ class ItemController extends Controller
         $serial_no = $request->serial_no;
         $description = $request->description;
         $date_purchased = $request->date_purchased;
+        $itemCode = '';
 
-        $lastItemCode = DB::table('items')->orderBy('id','desc')->take(1)->first();
+        $lastItemCode = DB::table('items')->orderBy('id','desc')->take(1)->get();
         if($lastItemCode->count() > 0){
-            $lastIC = substr($lastItemCode->code, -6);
-            // $itemCode = 'HII-'
+            $lastIC = substr($lastItemCode[0]->code, -6);
+            $lastIC++;
+            while(mb_strlen($lastIC, "UTF-8") < 6){
+                $lastIC = "0{$lastIC}";
+            }
+            $itemCode = "HII-{$lastIC}";
         }else{
             $itemCode = 'HII-000001';
         }
@@ -47,33 +53,19 @@ class ItemController extends Controller
         ]);
 
         $item = new Item();
-        $item->type = $type;
+        $item->type_id = $type;
+        $item->code = $itemCode;
         $item->brand = strtoupper($brand);
         $item->serial_no = strtoupper($serial_no);
         $item->description = strtoupper($description);
         $item->date_purchased = $date_purchased;
         $item->status = 'SPARE';
-        $item->computer_id = 'N/A';
-        $item->site = 'N/A';
+        $item->computer_id = '1';
+        $item->site_id = '1';
         $item->added_by = strtoupper($user_name);
         $item->edited_by = strtoupper($user_name);
+        $item->save();
 
-        // $mrf = new mrf();
-        // $mrf->area = $area;
-        // $mrf->customer_name = $cus_name;
-        // $mrf->customer_address = $cus_add;
-        // $mrf->fleet_no = $fleet_no;
-        // $mrf->brand_id = $brand;
-        // $mrf->model_id = $model;
-        // $mrf->serial_no = $serial_no;
-        // $mrf->fsrr_no = $fsrr_no;
-        // $mrf->delivery_type = $delivery_type;
-        // $mrf->remarks = $remarks;
-        // $mrf->supervisor = 'Pending';
-        // $mrf->requester = auth()->user()->name;
-        // $mrf->request_for = $request_for;
-        // $mrf->order_type = $order_type;
-        // $mrf->date_needed = $date_needed;
-        // $mrf->save();
+        return redirect()->route('item.index');
     }
 }

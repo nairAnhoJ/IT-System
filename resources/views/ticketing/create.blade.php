@@ -1,0 +1,77 @@
+<x-app-layout>
+
+    <style>
+        /* width */
+        ::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        
+        /* Track */
+        ::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 2px grey; 
+          border-radius: 10px;
+        }
+         
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #4B5563; 
+          border-radius: 10px;
+        }
+        
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgb(95, 95, 110); 
+        }
+    </style>
+
+    <div style="height: calc(100vh - 65px);" class="py-10 px-80 text-gray-200 w-screen">
+        <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">CREATE NEW TICKET</h1>
+        <form action="{{ route('item.store') }}" method="POST">
+            @csrf
+            <label for="nature" class="block text-sm font-medium text-white">Nature of Problem</label>
+            <select required id="nature" name="nature" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                <option value="Computer">Computer</option>
+                <option value="Printer">Printer</option>
+                <option value="Software">Software</option>
+                <option value="Network/Internet">Network/Internet</option>
+                <option value="Technical Assistance">Technical Assistance</option>
+                <option value="SAP">SAP</option>
+                <option value="OTHERS">OTHERS</option>
+            </select>
+
+            <div class="mt-5">
+                <label for="description" class="block text-sm font-medium text-white">Description</label>
+                <textarea required name="description" id="description" rows="5" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"></textarea>
+            </div>
+
+            <div class="mt-5">
+                <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
+                <div class="grid grid-cols-5 gap-x-5">
+                    <div class="col-span-4">
+                        <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept="image/*">
+                    </div>
+                    <div class="w-full">
+                        <button disabled id="viewAttachment" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full h-10 text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <button type="submit" class="w-24 text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Submit</button>
+                <a href="{{ route('item.index') }}" class="inline-block text-center w-24 text-white focus:outline-none focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 hover:bg-gray-700 focus:ring-gray-700 border-gray-700">Back</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#attachment').change(function(){
+                var file = $(this).val();
+                if(file != ''){
+                    $('#viewAttachment').prop("disabled", false);
+                }
+            });
+        });
+    </script>
+</x-app-layout>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Ticketing
+    Route::get('/ticketing/dashboard', [TicketController::class, 'index'])->name('ticket.index');
+    Route::get('/ticketing/create', [TicketController::class, 'create'])->name('ticket.create');
 
     // Items
     Route::get('/inventory/items', [ItemController::class, 'index'])->name('item.index');
