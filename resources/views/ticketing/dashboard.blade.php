@@ -129,8 +129,11 @@
                       <th scope="col" class="sticky top-0 py-2 text-center">
                           NATURE OF PROBLEM
                       </th>
+                      <th scope="col" class="sticky top-0 py-2 text-center">
+                          SUBJECT
+                      </th>
                       <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                          IN-CHARGE
+                          ASSIGNED TO
                       </th>
                       <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                           STATUS
@@ -138,46 +141,53 @@
                   </tr>
               </thead>
               <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
-                <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
-                    <th scope="row" class="py-3 px-6 font-medium text-white text-center">
-                        <span data-id="123456">
-                            123456
-                        </span>
-                    </th>
-                    <td class="py-3 px-6 text-center whitespace-nowrap">
-                        JOHN ARIAN MALONDRAS
-                    </td>
-                    <td class="py-3 px-6 text-center whitespace-nowrap">
-                        IT
-                    </td>
-                    <td class="py-3 px-6 text-center whitespace-nowrap">
-                        12/03/2022
-                    </td>
-                    <td class="py-3 px-6 text-center whitespace-nowrap">
-                        PRINTER
-                    </td>
-                    <td class="py-3 px-6 text-center whitespace-nowrap">
-                        JOHN ARIAN
-                    </td>
-                    <td class="py-3 px-6 text-center whitespace-nowrap">
-                        <span class="
-                            @php
-                                $status = 'ONGOING';
-                                if($status == 'PENDING'){
-                                    echo 'text-red-500';
-                                }elseif($status == 'ONGOING'){
-                                    echo 'text-amber-300';
-                                }elseif($status == 'DONE'){
-                                    echo 'text-teal-500';
-                                }
-                            @endphp
-                        ">
-                            @php
-                                echo $status;
-                            @endphp
-                        </span>
-                    </td>
-                </tr>
+                @foreach ($tickets as $ticket)
+                    <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
+                        <th scope="row" class="py-3 px-6 font-medium text-white text-center">
+                            <span data-id="{{ $ticket->id }}">
+                                {{ $ticket->ticket_no }}
+                            </span>
+                        </th>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->user_id }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->department }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->created_at }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->nature_of_problem }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->subject }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->assigned_to }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <span class="
+                                @php
+                                    $status = $ticket->status;
+                                    if($status == 'PENDING'){
+                                        echo 'text-red-500';
+                                    }elseif($status == 'ONGOING'){
+                                        echo 'text-amber-300';
+                                    }elseif($status == 'DONE'){
+                                        echo 'text-teal-500';
+                                    }
+                                @endphp
+                            ">
+                                @php
+                                    echo $status;
+                                @endphp
+                            </span>
+                        </td>
+                    </tr>
+                @endforeach
+
+                
 
 
                   {{-- @foreach ($items as $item)

@@ -27,7 +27,7 @@
 
     <div style="height: calc(100vh - 65px);" class="py-10 px-80 text-gray-200 w-screen">
         <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">CREATE NEW TICKET</h1>
-        <form action="{{ route('item.store') }}" method="POST">
+        <form action="{{ route('ticket.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <label for="nature" class="block text-sm font-medium text-white">Nature of Problem</label>
             <select required id="nature" name="nature" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
@@ -39,6 +39,11 @@
                 <option value="SAP">SAP</option>
                 <option value="OTHERS">OTHERS</option>
             </select>
+
+            <div class="mt-5">
+                <label for="subject" class="block text-sm font-medium text-white">Subject</label>
+                <input required name="subject" id="subject" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+            </div>
 
             <div class="mt-5">
                 <label for="description" class="block text-sm font-medium text-white">Description</label>
