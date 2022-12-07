@@ -15,7 +15,7 @@ class TicketController extends Controller
         $userDeptID = $userRow[0]->dept_id;
         $userDept = DB::table('departments')->where('id', $userDeptID)->get()[0]->name;
 
-        $tickets = DB::table('tickets')->orderBy('id', 'desc')->get();
+        $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, users.name AS user, departments.name AS dept, tickets.nature_of_problem, tickets.assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at FROM tickets INNER JOIN users ON tickets.user_id = users.id INNER JOIN departments ON tickets.department = departments.id ORDER BY tickets.id DESC");
 
         return view('ticketing.dashboard', compact('userDept', 'tickets'));
     }
