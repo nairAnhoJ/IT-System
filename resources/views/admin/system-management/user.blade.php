@@ -49,15 +49,15 @@
     </style>
 
   <div style="height: calc(100vh - 65px);" class="p-3 text-gray-200 w-screen">
-    <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">DEPARTMENT</h1>
+    <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">USERS</h1>
                 
         {{-- ================================= ADD / EDIT MODAL ================================= --}}
             <!-- ========================================================= Modal toggle ========================================================= -->
-            <button id="userAddEdit" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="departmentModal">
+            <button id="userAddEdit" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="userModal">
             </button>
             
             <!-- ========================================================= Main modal ========================================================= -->
-            <div id="departmentModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
+            <div id="userModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
                 <div class="relative w-full h-full max-w-2xl md:h-auto">
                     <!-- Modal content -->
                     <form id="userForm" action="" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
@@ -65,22 +65,46 @@
                         <!-- Modal header -->
                         <div class="flex items-center justify-between px-4 py-3 border-b rounded-t border-gray-600">
                             <h3 id="modalTitle" class="text-2xl font-semibold text-white leading-5"></h3>
-                            <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="departmentModal">
+                            <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="userModal">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <div class="px-6 pb-7 space-y-6">
+                        <div class="px-6 pb-7 space-y-3">
                             <input type="hidden" id="userId" name="id">
                             <div>
-                                <label for="userName" class="block mb-2 text-sm font-medium text-white">Department Name</label>
-                                <input type="text" id="userName" name="name" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                                <label for="id_no" class="block mb-2 text-sm font-medium text-white">ID Number</label>
+                                <input type="text" id="id_no" name="id_no" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="name" class="block mb-2 text-sm font-medium text-white">Name</label>
+                                <input type="text" id="name" name="name" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="department" class="block mb-2 text-sm font-medium text-white">Department</label>
+                                <select id="department" name="department" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" :value="old('department')">
+                                    @foreach ($depts as $dept)
+                                        <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="phone" class="block mb-2 text-sm font-medium text-white">Phone</label>
+                                <input type="text" id="phone" name="phone" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
+                                <input type="password" id="password" name="password" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="password_confirmation" class="block mb-2 text-sm font-medium text-white">Confirm Password</label>
+                                <input type="password" id="password_confirmation" name="password_confirmation" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-6 space-x-2 border-t rounded-b border-gray-600">
-                            <button data-modal-toggle="departmentModal" type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Submit</button>
-                            <button data-modal-toggle="departmentModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Back</button>
+                            <button type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Submit</button>
+                            <button data-modal-toggle="userModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Back</button>
                         </div>
                     </form>
                 </div>
@@ -151,15 +175,24 @@
           <table class="min-w-full text-sm text-left text-gray-400">
               <thead class="relative top-0 text-xs uppercase bg-gray-600 text-gray-400 border-x-8 border-gray-600">
                   <tr class="bg-gray-600 sticky top-0">
-                      <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
-                          #
-                      </th>
-                      <th scope="col" class="sticky top-0 py-2 text-center">
-                          DEPARTMENT NAME
-                      </th>
-                      <th scope="col" class="sticky top-0 py-2 text-center">
-                          ACTION
-                      </th>
+                        <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
+                            #
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
+                            ID NUMBER
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
+                                NAME
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
+                            DEPARTMENT
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
+                            PHONE
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
+                            ACTION
+                        </th>
                   </tr>
               </thead>
               <tbody id="departmentTableBody" style="max-height: calc(100% - 126px);">
@@ -172,7 +205,16 @@
                                 {{ $x++ }}
                         </th>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $user->id_no }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
                             {{ $user->name }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $user->dept }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $user->phone }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
                             <a data-id="{{ $user->id }}" data-name="{{ $user->name }}" class="userEdit mr-2 text-blue-500 cursor-pointer">EDIT</a>|<a data-id="{{ $user->id }}" data-name="{{ $user->name }}" class="btnUserDelete ml-2 text-red-500 cursor-pointer">DELETE</a>
@@ -196,19 +238,19 @@
 
         
         $('.userAdd').click(function(){
-            var action = "{{ route('department.add') }}";
+            var action = "{{ route('user.add') }}";
 
             $('#userForm').attr('action', action);
             $('#modalTitle').html('ADD');
-            $('#userName').val('');
-            $('#userId').val('');
+            $('#password').attr('required', true);
+            $('#password_confirmation').attr('required', true);
             $('#userAddEdit').click();
         });
 
         $('.userEdit').click(function(){
             var id = $(this).data('id');
             var name = $(this).data('name');
-            var action = "{{ route('department.edit') }}";
+            var action = "{{ route('user.edit') }}";
 
             $('#userForm').attr('action', action);
             $('#modalTitle').html('EDIT');

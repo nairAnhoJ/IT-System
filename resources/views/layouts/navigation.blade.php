@@ -86,7 +86,7 @@
                         <div id="ddSystem" class="z-10 hidden font-normal divide-y rounded shadow w-44 bg-gray-700 divide-gray-600">
                             <ul class="py-2 text-sm text-gray-400 px-2" aria-labelledby="dropdownLargeButton">
                                 <li>
-                                    <a href="{{ route('item.index') }}" class="block px-4 py-2 rounded text-gray-400 hover:bg-gray-900 hover:text-gray-200
+                                    <a href="{{ route('user.index') }}" class="block px-4 py-2 rounded text-gray-400 hover:bg-gray-900 hover:text-gray-200
                                     @php
                                         if (request()->routeIs('user.index')) {
                                             echo 'bg-gray-800 text-gray-100 hover:bg-gray-800 hover:text-gray-100';

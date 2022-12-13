@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ItemController;
@@ -62,7 +63,7 @@ Route::middleware('auth')->group(function () {
 
         // User
         Route::get('/system-management/user', [UserController::class, 'index'])->name('user.index');
-        Route::post('/system-management/user/add', [UserController::class, 'add'])->name('user.add');
+        Route::post('/system-management/user/add', [RegisteredUserController::class, 'store'])->name('user.add');
         Route::post('/system-management/user/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::post('/system-management/user/delete', [UserController::class, 'delete'])->name('user.delete');
 
