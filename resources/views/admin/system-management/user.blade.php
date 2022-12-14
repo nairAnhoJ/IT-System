@@ -49,6 +49,41 @@
     </style>
 
   <div style="height: calc(100vh - 65px);" class="p-3 text-gray-200 w-screen">
+    @if(count($errors) > 0)
+        <div class="absolute w-screen">
+            <div style="transform: translateX(-50%);" class="mx-auto absolute left-1/2 z-50">
+                <div id="toast-danger" class="flex items-center p-4 w-full max-w-sm rounded-lg shadow text-gray-400 bg-gray-800" role="alert">
+                    <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg bg-red-800 text-red-200">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <span class="sr-only">Error icon</span>
+                    </div>
+                    <div class="ml-3 text-sm font-normal">{{$errors->first()}}</div>
+                    <button type="button" class="ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 inline-flex h-8 w-8 text-gray-500 hover:text-white bg-gray-800 hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="absolute w-screen">
+            <div style="transform: translateX(-50%);" class="mx-auto absolute left-1/2 z-50">
+                <div id="toast-success" class="flex items-center p-4 mb-4 w-full max-w-sm rounded-lg shadow text-gray-400 bg-gray-800" role="alert">
+                    <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg bg-green-800 text-green-200">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                        <span class="sr-only">Check icon</span>
+                    </div>
+                    <div class="ml-3 text-sm font-normal">{{ session()->get('success') }}</div>
+                    <button type="button" class="ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 inline-flex h-8 w-8 text-gray-500 hover:text-white bg-gray-800 hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">USERS</h1>
                 
         {{-- ================================= ADD / EDIT MODAL ================================= --}}
@@ -74,15 +109,15 @@
                             <input type="hidden" id="userId" name="id">
                             <div>
                                 <label for="id_no" class="block mb-2 text-sm font-medium text-white">ID Number</label>
-                                <input type="text" id="id_no" name="id_no" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                                <input type="text" id="id_no" name="id_no" value="{{old('id_no')}}" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
                             <div>
                                 <label for="name" class="block mb-2 text-sm font-medium text-white">Name</label>
-                                <input type="text" id="name" name="name" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                                <input type="text" id="name" name="name" value="{{old('name')}}" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
                             <div>
                                 <label for="department" class="block mb-2 text-sm font-medium text-white">Department</label>
-                                <select id="department" name="department" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" :value="old('department')">
+                                <select id="department" name="department" value="{{old('department')}}" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" :value="old('department')">
                                     @foreach ($depts as $dept)
                                         <option value="{{ $dept->id }}">{{ $dept->name }}</option>
                                     @endforeach
@@ -90,7 +125,7 @@
                             </div>
                             <div>
                                 <label for="phone" class="block mb-2 text-sm font-medium text-white">Phone</label>
-                                <input type="text" id="phone" name="phone" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                                <input type="text" id="phone" name="phone" value="{{old('phone')}}" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
                             <div>
                                 <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
@@ -121,7 +156,7 @@
             <div id="userDeleteModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
                 <div class="relative w-full h-full max-w-2xl md:h-auto">
                     <!-- Modal content -->
-                    <form action="{{ route('department.delete') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
+                    <form action="{{ route('user.delete') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
                         @csrf
                         <!-- Modal header -->
                         <div class="flex items-center justify-between px-4 py-3 border-b rounded-t border-gray-600">
@@ -134,7 +169,7 @@
                         <div class="px-6 pb-7 space-y-6">
                             <input type="hidden" id="delUserId" name="id">
                             <div>
-                                <label for="delUserName" class="block mb-2 text-sm font-medium text-white">Are you sure you want to delete this department?</label>
+                                <label for="delUserName" class="block mb-2 text-sm font-medium text-white">Are you sure you want to delete this user details?</label>
                                 <h1 id="delUserName"></h1>
                             </div>
                         </div>
@@ -172,6 +207,7 @@
     
         {{-- TABLE --}}
         <div style="max-height: calc(100% - 126px);" class="overflow-x-auto relative shadow-md rounded-t-lg">
+        {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
           <table class="min-w-full text-sm text-left text-gray-400">
               <thead class="relative top-0 text-xs uppercase bg-gray-600 text-gray-400 border-x-8 border-gray-600">
                   <tr class="bg-gray-600 sticky top-0">
@@ -195,7 +231,7 @@
                         </th>
                   </tr>
               </thead>
-              <tbody id="departmentTableBody" style="max-height: calc(100% - 126px);">
+              <tbody id="userTableBody" style="max-height: calc(100% - 126px);">
                 @php
                     $x = 1;
                 @endphp
@@ -217,7 +253,7 @@
                             {{ $user->phone }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
-                            <a data-id="{{ $user->id }}" data-name="{{ $user->name }}" class="userEdit mr-2 text-blue-500 cursor-pointer">EDIT</a>|<a data-id="{{ $user->id }}" data-name="{{ $user->name }}" class="btnUserDelete ml-2 text-red-500 cursor-pointer">DELETE</a>
+                            <a data-id="{{ $user->id }}" class="userEdit mr-2 text-blue-500 cursor-pointer">EDIT</a>|<a data-id="{{ $user->id }}" data-name="{{ $user->name }}" class="btnUserDelete ml-2 text-red-500 cursor-pointer">DELETE</a>
                         </td>
                     </tr>
                 @endforeach
@@ -231,12 +267,11 @@
     $(document).ready(function(){
         $("#tableSearch").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#departmentTableBody tr").filter(function() {
+            $("#userTableBody tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
 
-        
         $('.userAdd').click(function(){
             var action = "{{ route('user.add') }}";
 
@@ -249,14 +284,30 @@
 
         $('.userEdit').click(function(){
             var id = $(this).data('id');
-            var name = $(this).data('name');
-            var action = "{{ route('user.edit') }}";
+            var action = "{{ route('user.update') }}";
+            $('#id_no').val('');
 
-            $('#userForm').attr('action', action);
-            $('#modalTitle').html('EDIT');
-            $('#userName').val(name);
-            $('#userId').val(id);
-            $('#userAddEdit').click();
+            $.ajax({
+                url: "{{ route('user.edit') }}",
+                type: 'POST',
+                data :{ 
+                    _token: '{!! csrf_token() !!}',
+                    id: id
+                },
+                dataType:'json',
+                success:function(result){
+                    $('#id_no').val(result.id_no);
+                    $('#name').val(result.name);
+                    $('#department').val(result.department);
+                    $('#phone').val(result.phone);
+
+                    $('#userForm').attr('action', action);
+                    $('#modalTitle').html('EDIT');
+                    $('#userName').val(name);
+                    $('#userId').val(id);
+                    $('#userAddEdit').click();
+                }
+            });
         });
 
         $('.btnUserDelete').click(function(){

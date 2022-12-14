@@ -24,7 +24,7 @@ Route::get('/', function () {
     if(!auth()->user()){
         return view('auth.login');
     }else{
-        return view('dashboard');
+        return redirect()->route('dashboard');
     }
 });
 
@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/system-management/user', [UserController::class, 'index'])->name('user.index');
         Route::post('/system-management/user/add', [RegisteredUserController::class, 'store'])->name('user.add');
         Route::post('/system-management/user/edit', [UserController::class, 'edit'])->name('user.edit');
+        Route::post('/system-management/user/update', [UserController::class, 'update'])->name('user.update');
         Route::post('/system-management/user/delete', [UserController::class, 'delete'])->name('user.delete');
 
 

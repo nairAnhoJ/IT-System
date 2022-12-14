@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -14,23 +16,42 @@ class UserController extends Controller
     }
 
     public function edit(Request $request){
-        if($request->password != ''){
+        $id = $request->id;
+
+        $user = DB::table('users')->where('id', $id)->get();
+
+        $result = array("id_no"=>$user[0]->id_no, "name"=>$user[0]->name, "department"=>$user[0]->dept_id, "phone"=>$user[0]->phone);
+
+        echo json_encode($result);
+    }
+
+    public function update(Request $request){
+        if($request->password != null){
             $request->validate([
-                'id_no' => ['required', 'string', 'max:255', 'unique:'.User::class],
+                'id_no' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:255'],
                 'department' => ['required'],
                 'phone' => ['required', 'string', 'max:255'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
+            DB::update('update users set id_no=?, name=?, dept_id=?, phone=?, password=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->phone, Hash::make($request->password), $request->id]);
         }else{
             $request->validate([
-                'id_no' => ['required', 'string', 'max:255', 'unique:'.User::class],
+                'id_no' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:255'],
                 'department' => ['required'],
                 'phone' => ['required', 'string', 'max:255'],
             ]);
+
+            DB::update('update users set id_no=?, name=?, dept_id=?, phone=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->phone, $request->id]);
         }
 
+        return redirect()->route('user.index')->with('success', 'User details has been updated successfully');
+    }
+
+    public function delete(Request $request){
+        DB::delete('delete from users where id = ?', [$request->id]);
+        return redirect()->route('user.index')->with('success', 'User details has been deleted successfully');
     }
 }
