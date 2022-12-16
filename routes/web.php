@@ -5,8 +5,10 @@ use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketCategoryController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
+use App\Models\TicketCategory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +69,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/system-management/user/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::post('/system-management/user/update', [UserController::class, 'update'])->name('user.update');
         Route::post('/system-management/user/delete', [UserController::class, 'delete'])->name('user.delete');
+
+        // Ticket Category
+        Route::get('/system-management/ticket-category', [TicketCategoryController::class, 'index'])->name('category.index');
+        Route::post('/system-management/ticket-category/add', [TicketCategoryController::class, 'add'])->name('category.add');
+        Route::post('/system-management/ticket-category/edit', [TicketCategoryController::class, 'edit'])->name('category.edit');
+        Route::post('/system-management/ticket-category/delete', [TicketCategoryController::class, 'delete'])->name('category.delete');
 
 
 });
