@@ -75,13 +75,15 @@
 
 
                     @if (auth()->user()->role == 'admin')
-                        <button id="ddSystemLink" data-dropdown-toggle="ddSystem" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium md:hover:bg-transparent text-sm md:hover:text-gray-200 md:p-0 md:w-auto text-gray-400 hover:text-gray-200 focus:text-white border-b-2 border-transparent hover:border-blue-300 text-center
-                        @php
-                            if (request()->routeIs('user.index')) {
-                                echo 'border-blue-500 text-gray-100';
-                            }
-                        @endphp
-                ">System Management<svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
+                        <button id="ddSystemLink" data-dropdown-toggle="ddSystem"
+                        class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium md:hover:bg-transparent text-sm md:hover:text-gray-200 md:p-0 md:w-auto text-gray-400 hover:text-gray-200 focus:text-white border-b-2 border-transparent hover:border-blue-300 text-center
+                            @php
+                                if (request()->routeIs('user.index') || request()->routeIs('department.index') || request()->routeIs('category.index')) {
+                                    echo 'border-blue-500 text-gray-100';
+                                }
+                            @endphp
+                        ">System Management<svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
+                        
                         <!-- Dropdown menu -->
                         <div id="ddSystem" class="z-10 hidden font-normal divide-y rounded shadow w-44 bg-gray-700 divide-gray-600">
                             <ul class="py-2 text-sm text-gray-400 px-2" aria-labelledby="dropdownLargeButton">
