@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptInChargeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketCategoryController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
@@ -81,6 +82,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/system-management/ticket-category/delete', [TicketCategoryController::class, 'delete'])->name('category.delete');
         Route::post('/system-management/ticket-category/update-in-charge', [DeptInChargeController::class, 'update'])->name('incharge.update');
 
+        // Settings
+        Route::get('/system-management/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::post('/system-management/settings/update', [SettingController::class, 'update'])->name('settings.update');
+        Route::post('/system-management/settings/test-connection', [SettingController::class, 'test'])->name('settings.test');
+
+    // ========================================= SYSTEM MANAGEMENT END =========================================
 
 });
 

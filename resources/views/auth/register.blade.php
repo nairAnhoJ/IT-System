@@ -33,6 +33,13 @@
                 </select>
             </div>
 
+            <!-- Email -->
+            <div class="mt-4">
+                <x-input-label for="email" :value="__('Local Phone')" />
+                <x-text-input id="email" autocomplete="off" class="block mt-1 w-full" type="text" name="email" :value="old('email')" required autofocus />
+                <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+            </div>
+
             <!-- Local Phone -->
             <div class="mt-4">
                 <x-input-label for="phone" :value="__('Local Phone')" />

@@ -7,8 +7,45 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class TicketController extends Controller
 {
+
+    function sendEmail(){
+        try {
+            $mail = new PHPMailer(true);
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.mail.yahoo.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'test.email@toyotaforklifts-philippines.com';                     //SMTP username
+            $mail->Password   = 'Te@2023!';                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        
+            //Recipients
+            $mail->setFrom('test.email@toyotaforklifts-philippines.com', 'Test Email');
+            $mail->addAddress('it03@toyotaforklifts-philippines.com');     //Add a recipient
+        
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Test Email';
+            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+        
+            $mail->send();
+
+            // return redirect()->route('ticket.index');
+
+            echo 'Message has been sent';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    }
+
     public function index(){
         $userID = auth()->user()->id;
         $userRow = DB::table('users')->where('id', $userID)->get();
@@ -78,8 +115,42 @@ class TicketController extends Controller
             $ticket->attachment = $attPath;
         }
         $ticket->save();
+        
+        // ===================================================================================================================
 
-        return redirect()->route('ticket.index');
+        try {
+            $mail = new PHPMailer(true);
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.mail.yahoo.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'test.email@toyotaforklifts-philippines.com';                     //SMTP username
+            $mail->Password   = "qdtcmovneijyrdzx";                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        
+            //Recipients
+            $mail->setFrom('test.email@toyotaforklifts-philippines.com', 'Test Email');
+            $mail->addAddress('it03@toyotaforklifts-philippines.com');     //Add a recipient
+        
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Test Email';
+            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+        
+            $mail->send();
+
+            return redirect()->route('ticket.index');
+
+            echo 'Message has been sent';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+
+        // ===================================================================================================================
+
+        // return redirect()->route('ticket.index');
     }
 
     public function update(Request $request){
@@ -95,7 +166,6 @@ class TicketController extends Controller
             DB::update('update tickets set status = "DONE", resolution = ?, end_date_time = NOW()  where id = ?', [$request->ticketResolution, $id]);
         }
 
-        return redirect()->route('ticket.index');
-    }
 
+    }
 }

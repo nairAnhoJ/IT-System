@@ -124,6 +124,10 @@
                                 </select>
                             </div>
                             <div>
+                                <label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
+                                <input type="email" id="email" name="email" value="{{old('email')}}" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
                                 <label for="phone" class="block mb-2 text-sm font-medium text-white">Phone</label>
                                 <input type="text" id="phone" name="phone" value="{{old('phone')}}" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
@@ -218,10 +222,13 @@
                             ID NUMBER
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
-                                NAME
+                            NAME
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DEPARTMENT
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
+                            EMAIL
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             PHONE
@@ -248,6 +255,9 @@
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
                             {{ $user->dept }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $user->email }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
                             {{ $user->phone }}
@@ -299,6 +309,7 @@
                     $('#id_no').val(result.id_no);
                     $('#name').val(result.name);
                     $('#department').val(result.department);
+                    $('#email').val(result.email);
                     $('#phone').val(result.phone);
 
                     $('#userForm').attr('action', action);

@@ -19,6 +19,7 @@ class AdminSeeder extends Seeder
             'id_no' => 'HII-admin',
             'name' => 'Administrator',
             'dept_id' => '1',
+            'email' => 'admin@admin.com',
             'phone' => 'n/a',
             'password' => '$2y$10$nrm1iIbhHzqwo4V6/KvCcuSCUuvIzlD3h1TtnKUU1bVPLuiFUUhCi',
             'role' => 'admin'

@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index(){
         $depts = DB::table('departments')->orderBy('name', 'asc')->get();
-        $users = DB::select('SELECT users.id, users.id_no, users.name, departments.name AS dept, users.phone FROM users INNER JOIN departments ON users.dept_id = departments.id WHERE users.id != "1" ORDER BY users.name ASC');
+        $users = DB::select('SELECT users.id, users.id_no, users.name, departments.name AS dept, users.email, users.phone FROM users INNER JOIN departments ON users.dept_id = departments.id WHERE users.id != "1" ORDER BY users.name ASC');
         return view('admin.system-management.user', compact('users', 'depts'));
     }
 
@@ -20,7 +20,7 @@ class UserController extends Controller
 
         $user = DB::table('users')->where('id', $id)->get();
 
-        $result = array("id_no"=>$user[0]->id_no, "name"=>$user[0]->name, "department"=>$user[0]->dept_id, "phone"=>$user[0]->phone);
+        $result = array("id_no"=>$user[0]->id_no, "name"=>$user[0]->name, "department"=>$user[0]->dept_id, "email"=>$user[0]->email, "phone"=>$user[0]->phone);
 
         echo json_encode($result);
     }
@@ -31,11 +31,12 @@ class UserController extends Controller
                 'id_no' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:255'],
                 'department' => ['required'],
+                'email' => ['required', 'email'],
                 'phone' => ['required', 'string', 'max:255'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
-            DB::update('update users set id_no=?, name=?, dept_id=?, phone=?, password=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->phone, Hash::make($request->password), $request->id]);
+            DB::update('update users set id_no=?, name=?, dept_id=?, email=?, phone=?, password=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->email, $request->phone, Hash::make($request->password), $request->id]);
         }else{
             $request->validate([
                 'id_no' => ['required', 'string', 'max:255'],
@@ -44,7 +45,7 @@ class UserController extends Controller
                 'phone' => ['required', 'string', 'max:255'],
             ]);
 
-            DB::update('update users set id_no=?, name=?, dept_id=?, phone=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->phone, $request->id]);
+            DB::update('update users set id_no=?, name=?, dept_id=?, email=?, phone=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->email, $request->phone, $request->id]);
         }
 
         return redirect()->route('user.index')->with('success', 'User details has been updated successfully');
