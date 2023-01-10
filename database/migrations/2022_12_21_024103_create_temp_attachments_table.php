@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ticket_categories', function (Blueprint $table) {
+        Schema::create('temp_attachments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('uploader');
+            $table->string('filename');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ticket_categories');
+        Schema::dropIfExists('temp_attachments');
     }
 };

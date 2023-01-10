@@ -16,7 +16,7 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         $dept = [
-            'name' => 'ADMINISTRATOR',
+            'name' => 'IT',
         ];
         Department::create($dept);
     }

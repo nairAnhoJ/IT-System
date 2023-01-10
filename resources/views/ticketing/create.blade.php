@@ -31,14 +31,16 @@
             @csrf
             <label for="nature" class="block text-sm font-medium text-white">Nature of Problem</label>
             <select required id="nature" name="nature" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
-                <option value="Computer">Computer</option>
-                <option value="Printer">Printer</option>
-                <option value="Software">Software</option>
-                <option value="Network/Internet">Network/Internet</option>
-                <option value="Technical Assistance">Technical Assistance</option>
-                <option value="SAP">SAP</option>
-                <option value="OTHERS">OTHERS</option>
+                @foreach ($cats as $cat)
+                    <option value="{{$cat->name}}">{{$cat->name}}</option>
+                @endforeach
             </select>
+
+            <div class="mt-5">
+                <input type="hidden" id="ticketInCharge" name="ticketInCharge">
+                <label for="subject" class="block text-sm font-medium text-white">In-Charge</label>
+                <h1 id="ticketInChargeDisplay" class="font-semibold">{{ $inchargeName }}</h1>
+            </div>
 
             <div class="mt-5">
                 <label for="subject" class="block text-sm font-medium text-white">Subject</label>
@@ -53,12 +55,12 @@
             <div class="mt-5">
                 <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
                 <div class="grid grid-cols-5 gap-x-5">
-                    <div class="col-span-4">
+                    <div class="col-span-5">
                         <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept="image/*">
                     </div>
-                    <div class="w-full">
+                    {{-- <div class="w-full">
                         <button disabled id="viewAttachment" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full h-10 text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View</button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -76,6 +78,14 @@
                 if(file != ''){
                     $('#viewAttachment').prop("disabled", false);
                 }
+
+                
+            });
+
+            $('#nature').change(function(){
+                var incharge = $(this).find('option:selected').data('incharge');
+                $('#ticketInChargeDisplay').html(incharge);
+                $('#ticketInCharge').html(incharge);
             });
         });
     </script>

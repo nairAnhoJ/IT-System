@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/ticketing/dashboard', [TicketController::class, 'index'])->name('ticket.index');
     Route::get('/ticketing/create', [TicketController::class, 'create'])->name('ticket.create');
     Route::post('/ticketing/store', [TicketController::class, 'store'])->name('ticket.store');
+    Route::post('/ticketing/temp', [TicketController::class, 'temp'])->name('ticket.temp');
+    Route::post('/ticketing/update', [TicketController::class, 'update'])->name('ticket.update');
 
     // Items
     Route::get('/inventory/items', [ItemController::class, 'index'])->name('item.index');
