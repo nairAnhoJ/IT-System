@@ -37,7 +37,7 @@
             </select>
 
             <div class="mt-5">
-                <input type="hidden" id="ticketInCharge" name="ticketInCharge">
+                {{-- <input type="hidden" id="ticketInCharge" name="ticketInCharge"> --}}
                 <label for="subject" class="block text-sm font-medium text-white">In-Charge</label>
                 <h1 id="ticketInChargeDisplay" class="font-semibold">{{ $inchargeName }}</h1>
             </div>
