@@ -13,39 +13,6 @@ use PHPMailer\PHPMailer\Exception;
 
 class TicketController extends Controller
 {
-
-    function sendEmail(){
-        try {
-            $mail = new PHPMailer(true);
-            //Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.mail.yahoo.com';                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'test.email@toyotaforklifts-philippines.com';                     //SMTP username
-            $mail->Password   = 'qdtcmovneijyrdzx';                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-        
-            //Recipients
-            $mail->setFrom('test.email@toyotaforklifts-philippines.com', 'Test Email');
-            $mail->addAddress('it03@toyotaforklifts-philippines.com');     //Add a recipient
-        
-            //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Test Email';
-            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-        
-            $mail->send();
-
-            // return redirect()->route('ticket.index');
-
-            echo 'Message has been sent';
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
-    }
-
     public function index(){
         $userID = auth()->user()->id;
         $userRow = DB::table('users')->where('id', $userID)->get();
@@ -53,7 +20,13 @@ class TicketController extends Controller
         $userDept = DB::table('departments')->where('id', $userDeptID)->get()[0]->name;
         $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
 
-        $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, users.name AS user, departments.name AS dept, tickets.nature_of_problem, tickets.assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users ON tickets.user_id = users.id INNER JOIN departments ON tickets.department = departments.id ORDER BY tickets.id DESC");
+        if($userDeptID != $deptInCharge){
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, users.name AS user, departments.name AS dept, tickets.nature_of_problem, tickets.assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users ON tickets.user_id = users.id INNER JOIN departments ON tickets.department = departments.id WHERE department = ? ORDER BY tickets.id DESC", [$userDeptID]);
+        }else{
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, users.name AS user, departments.name AS dept, tickets.nature_of_problem, tickets.assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users ON tickets.user_id = users.id INNER JOIN departments ON tickets.department = departments.id ORDER BY tickets.id DESC");
+        }
+
+        // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, users.name AS user, departments.name AS dept, tickets.nature_of_problem, tickets.assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users ON tickets.user_id = users.id INNER JOIN departments ON tickets.department = departments.id ORDER BY tickets.id DESC");
 
         return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge'));
     }

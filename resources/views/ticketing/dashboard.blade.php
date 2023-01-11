@@ -42,7 +42,33 @@
             height: 32px;
             background-color: rgb(75 85 99 / var(--tw-bg-opacity));
         }
+
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
+
+    <div id="loadingScreen"></div>
 
   <div style="height: calc(100vh - 65px);" class="p-3 text-gray-200 w-screen">
     <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">TICKETING</h1>
@@ -110,6 +136,11 @@
                         <div>
                             <button id="AttachedFileButton" data-modal-toggle="AttachedFileModal" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View Attached File</button>
                         </div>
+                        @if (auth()->user()->dept_id == $deptInCharge)
+                            <div id="ticketResolutionInput">
+                                
+                            </div>
+                        @endif
                         <div id="ticketResolutionDiv">
                             
                         </div>
@@ -276,6 +307,16 @@
             });
         });
 
+        if($('#ticketButton').length){
+            $('#ticketButton').click(function(){
+                $('#loadingScreen').html(`<div wire:loading class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-800 opacity-75 flex flex-col items-center justify-center">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                    <h2 class="text-center text-white text-xl font-semibold">Processing...</h2>
+                    <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+                </div>`);
+            });
+        }
+
         $('#ticketTableBody tr').click(function() {
             var id = $(this).find("span").data('id');
             $('#ticketID').val(id);
@@ -316,6 +357,7 @@
                     $('#ticketButton').removeClass('hidden');
                     $('#ticketButton').html('Mark as ONGOING');
                 }
+                $('#ticketResolutionInput').html('');
                 $('#ticketResolutionDiv').html('');
                 $('#ticketStatus2').removeClass('text-amber-300');
                 $('#ticketStatus2').removeClass('text-teal-500');
@@ -325,7 +367,8 @@
                     $('#ticketButton').removeClass('hidden');
                     $('#ticketButton').html('Mark as DONE');
                 }
-                $('#ticketResolutionDiv').html(`<hr class="my-5">
+                $('#ticketResolutionDiv').html('');
+                $('#ticketResolutionInput').html(`<hr class="my-5">
                                                 <label for="ticketResolution" class="block mb-2 text-sm font-medium text-white">Resolution</label>
                                                 <textarea style="resize: none;" id="ticketResolution" name="ticketResolution" rows="4" class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
                 $('#ticketStatus2').removeClass('text-red-500');
