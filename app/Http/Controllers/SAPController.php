@@ -236,9 +236,9 @@ class SAPController extends Controller
         }
 
         $sap = SAP::find($id);
-        $sap->type = $type;
         $sap->request = $saprequest;
         $sap->remarks = $remarks;
+        $sap->type = $type;
         $sap->code = $code;
         $sap->wtax_code = $wtax_code;
         $sap->AR_inCharge = $AR_inCharge;

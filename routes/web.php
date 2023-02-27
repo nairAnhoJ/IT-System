@@ -79,8 +79,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/ticketing/reports', [TicketController::class, 'genReport'])->name('ticket.genReports');
     
     Route::get('/ticketing/sap', [SAPController::class, 'index'])->name('sap.index');
-    Route::post('/ticketing/sap/edit', [SAPController::class, 'edit'])->name('sap.edit');
     Route::post('/ticketing/sap/store', [SAPController::class, 'store'])->name('sap.store');
+    Route::post('/ticketing/sap/edit', [SAPController::class, 'edit'])->name('sap.edit');
+    Route::post('/ticketing/sap/update', [SAPController::class, 'update'])->name('sap.update');
 
     // Items
     Route::get('/inventory/items', [ItemController::class, 'index'])->name('item.index');

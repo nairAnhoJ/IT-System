@@ -291,6 +291,8 @@
                         $('#contact_email3').val(result.contact_email3);
                         $("#saprequest option[value='ADD']").remove();
                         $("#saprequest").val('UPDATE');
+                        $("#sapID").val(id);
+                        $('#frmSAP').attr('action', "{{ route('sap.update') }}");
                     }
                 })
             });
