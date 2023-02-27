@@ -30,11 +30,12 @@
     <div style="height: calc(100vh - 65px);" class="py-4 px-8 text-gray-200 w-screen overflow-x-auto">
         <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">SAP BUSINESS PARTNER</h1>
 
-            <form action="{{ route('sap.store') }}" method="POST" class="w-full grid grid-cols-9 gap-2 content-center">
+            <form action="{{ route('sap.store') }}" method="POST" id="frmSAP" class="w-full grid grid-cols-9 gap-2 content-center">
                 @csrf
+                <input type="hidden" id="sapID" name="id">
                 <div class="leading-7 py-px text-sm">Type of Request</div>
                 <div class="col-span-2">
-                    <select name="type" id="request" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                    <select name="saprequest" id="saprequest" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
                         <option value="ADD">ADD</option>
                         <option value="UPDATE">UPDATE</option>
                         <option value="ACTIVE">ACTIVE</option>
@@ -174,7 +175,12 @@
                     <input type="text" id="contact_email3" name="contact_email3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                 </div>
 
-                <button type="submit" class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</button>
+                <div class="col-span-5 self-center">
+                    <a href="{{ route('sap.index') }}" class="block text-center text-white w-36 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-red-800">Clear</a>
+                </div>
+                <div class="col-span-4 justify-self-end">
+                    <button type="submit" class="text-white w-36 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 my-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</button>
+                </div>
             </form>
 
 
@@ -215,11 +221,9 @@
                             $x = 1;   
                         @endphp
                         @foreach ($sapbps as $sapbp)
-                            <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <tr class="border-b bg-gray-900 border-gray-700 hover:bg-gray-800">
                                 <th scope="row" class="px-6 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <span>
-                                        {{ $x++ }}
-                                    </span>
+                                    {{ $x++ }}
                                 </th>
                                 <td class="px-6 py-1.5">
                                     {{ $sapbp->code }}
@@ -228,7 +232,7 @@
                                     {{ $sapbp->name }}
                                 </td>
                                 <td class="px-6 py-1.5">
-                                    <a data-id="{{ $sapbp->id }}" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <a data-id="{{ $sapbp->id }}" type="button" class="sapEdit cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -245,6 +249,50 @@
                 $("#sapTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
+            });
+
+            jQuery(document).on( "click", ".sapEdit", function(ep){
+                var id = $(this).data('id');
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('sap.edit') }}",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#type').val(result.type);
+                        $('#saprequest').val(result.saprequest);
+                        $('#remarks').val(result.remarks);
+                        $('#code').val(result.code);
+                        $('#wtax_code').val(result.wtax_code);
+                        $('#AR_inCharge').val(result.AR_inCharge);
+                        $('#isOnHold').val(result.isOnHold);
+                        $('#AR_email').val(result.AR_email);
+                        $('#name').val(result.name);
+                        $('#isAutoEmail').val(result.isAutoEmail);
+                        $('#payment_terms').val(result.payment_terms);
+                        $('#billing_address').val(result.billing_address);
+                        $('#style').val(result.style);
+                        $('#shipping_address').val(result.shipping_address);
+                        $('#contact_name1').val(result.contact_name1);
+                        $('#contact_no1').val(result.contact_no1);
+                        $('#contact_email1').val(result.contact_email1);
+                        $('#tin').val(result.tin);
+                        $('#contact_name2').val(result.contact_name2);
+                        $('#contact_no2').val(result.contact_no2);
+                        $('#contact_email2').val(result.contact_email2);
+                        $('#sales_employee').val(result.sales_employee);
+                        $('#contact_name3').val(result.contact_name3);
+                        $('#contact_no3').val(result.contact_no3);
+                        $('#contact_email3').val(result.contact_email3);
+                        $("#saprequest option[value='ADD']").remove();
+                        $("#saprequest").val('UPDATE');
+                    }
+                })
             });
         });
     </script>
