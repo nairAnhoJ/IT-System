@@ -142,9 +142,35 @@ class ItemController extends Controller
 
     public function defective(Request $request){
         $defectiveID = $request->defectiveID;
-        DB::update("UPDATE items SET is_Defective=1, computer_id=1, status='DEFECTIVE', edited_by=?  WHERE id=?", [auth()->user()->name, $defectiveID]);
+        $old_desc = (DB::table('items')->where('id', $defectiveID)->first())->description;
+        $new_desc = preg_replace("/\(([^()]*+|(?R))*\)/","", $old_desc);
+        DB::update("UPDATE items SET description=?, is_Defective=1, computer_id=1, status='DEFECTIVE', edited_by=?  WHERE id=?", [$new_desc, auth()->user()->name, $defectiveID]);
         return redirect()->route('item.index');
     }
+
+    public function status(Request $request){
+        $statusID = $request->statusID;
+        $thisStatus = $request->thisStatus;
+
+        if($thisStatus == 'SPARE'){
+            $remarks = strtoupper($request->remarks);
+            $old_desc = (DB::table('items')->where('id', $statusID)->first())->description;
+            DB::update("UPDATE items SET description=?, computer_id=1, status='USED', edited_by=?  WHERE id=?", [$old_desc.' ('.$remarks.')', auth()->user()->name, $statusID]);
+        }else if($thisStatus == 'USED'){
+            $old_desc = (DB::table('items')->where('id', $statusID)->first())->description;
+            $new_desc = preg_replace("/\(([^()]*+|(?R))*\)/","", $old_desc);
+            DB::update("UPDATE items SET description=?, computer_id=1, status='SPARE', edited_by=?  WHERE id=?", [$new_desc, auth()->user()->name, $statusID]);
+        }
+        return redirect()->route('item.index');
+    }
+
+    // public function spare(Request $request){
+    //     $usedID = $request->usedID;
+    //     $old_desc = (DB::table('items')->where('id', $usedID)->first())->description;
+    //     $new_desc = preg_replace("/\(([^()]*+|(?R))*\)/","", $old_desc);
+    //     DB::update("UPDATE items SET description=?, computer_id=1, status='USED', edited_by=?  WHERE id=?", [$new_desc, auth()->user()->name, $usedID]);
+    //     return redirect()->route('item.index');
+    // }
     
     public function defectiveIndex(){
         $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.description, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site FROM (((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) WHERE items.is_Defective = 1 ORDER BY items.id DESC');

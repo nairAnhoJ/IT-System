@@ -25,32 +25,67 @@
         ::-webkit-scrollbar-thumb:hover {
           background: rgb(95, 95, 110); 
         }
-    /* ::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-    } */
+        /* ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        } */
 
-    #thl::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -8px;
-        width: 8px;
-        height: 32px;
-        background-color: rgb(75 85 99 / var(--tw-bg-opacity));
-    }
+        #thl::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -8px;
+            width: 8px;
+            height: 32px;
+            background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+        }
 
-    #thr::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        right: -8px;
-        width: 8px;
-        height: 32px;
-        background-color: rgb(75 85 99 / var(--tw-bg-opacity));
-    }
-
+        #thr::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -8px;
+            width: 8px;
+            height: 32px;
+            background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+        }
     </style>
+
+    {{-- STATUS CONFIRMATION MODAL --}}
+        <!-- Modal toggle -->
+        <button id="statusConfirmation" data-modal-target="statusModal" data-modal-toggle="statusModal" class="hidden text-white bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800" type="button"></button>
+        
+        <!-- Main modal -->
+        <div id="statusModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+            <div class="relative w-full h-full max-w-2xl md:h-auto">
+                <!-- Modal content -->
+                <form action="{{ route('item.status') }}" method="POST" enctype="multipart/form-data" class="relative rounded-lg shadow bg-gray-700">
+                    @csrf
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between px-6 py-4 border-b rounded-t border-gray-600">
+                        <h3 id="changeStatusHeader" class="text-xl font-semibold text-yellow-300">
+                            Mark as Used
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-hide="statusModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="px-6 py-4">
+                        <input type="hidden" id="statusID" name="statusID" value="">
+                        <input type="hidden" id="thisStatus" name="thisStatus" value="">
+                        <div id="divModalBody">
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center py-3 px-5 space-x-2 border-t rounded-b border-gray-600">
+                        <button type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Submit</button>
+                        <button data-modal-hide="statusModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {{-- STATUS CONFIRMATION MODAL END --}}
 
     {{-- DEFECTIVE CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
@@ -170,8 +205,11 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 border-t rounded-b border-gray-600">
-                        <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-700 text-gray-100 border-red-500 hover:text-white hover:bg-red-600 focus:ring-red-600">Mark as Defective</button>
-                        <button data-modal-toggle="itemModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
+                        <div id="divStatus">
+
+                        </div>
+                        <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-700 text-gray-100 border-red-500 hover:text-white hover:bg-red-600 focus:ring-red-600">Mark as Defective</button>
+                        <button id="btnCancel" data-modal-toggle="itemModal" type="button" class="w-44 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </div>
             </div>
@@ -283,7 +321,7 @@
                     @foreach ($items as $item)
                         <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}">
+                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}">
                                     {{ $item->code }}
                                 </span>
                             </td>
@@ -362,8 +400,20 @@
                 $('#site').html(site);
 
                 var status = $(this).find("span").data('status');
+                var com = $(this).find("span").data('com');
                 $('#status').html(status);
                 $('#updateStatus').val(status);
+                if(status == 'SPARE'){
+                    $('#divStatus').html(`
+                        <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Used</button>
+                    `);
+                }else if(status == 'USED' && com == 'N/A'){
+                    $('#divStatus').html(`
+                        <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Spare</button>
+                    `);
+                }else{
+                    $('#divStatus').html(``);
+                }
 
                 var date_delivered = $(this).find("span").data('date_delivered');
                 $('#date_delivered').html(date_delivered);
@@ -383,6 +433,30 @@
                 $('#defectiveID').val(id);
 
                 $('#defectiveConfirmation').click();
+            });
+
+            jQuery(document).on("click", "#btnStatus", function(){
+                var id = $('#itemID').val();
+                var status = $(this).data('status');
+                $('#statusID').val(id);
+                $('#thisStatus').val(status);
+                if(status == 'SPARE'){
+                    $('#changeStatusHeader').html('Mark as Used');
+                    $('#divModalBody').html(`
+                        <label for="remarks" class="block mb-2 text-sm font-medium text-white">Remarks</label>
+                        <input required type="text" id="remarks" name="remarks" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                    `);
+                }else if(status == 'USED'){
+                    $('#changeStatusHeader').html('Mark as Spare');
+                    $('#divModalBody').html(`
+                        <p class="text-base leading-relaxed text-white">
+                            Are you sure you want to mark this item as spare?
+                        </p>
+                    `);
+                }
+
+                $('#btnCancel').click();
+                $('#statusConfirmation').click();
             });
         });
     </script>
