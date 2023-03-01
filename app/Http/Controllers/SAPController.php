@@ -104,6 +104,7 @@ class SAPController extends Controller
 
         $ticket = new Ticket();
         $ticket->ticket_no = $ticketNo;
+        $ticket->sap_id = $sap->id;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
         $ticket->nature_of_problem = '5';
@@ -266,6 +267,7 @@ class SAPController extends Controller
 
         $ticket = new Ticket();
         $ticket->ticket_no = $ticketNo;
+        $ticket->sap_id = $sap->id;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
         $ticket->nature_of_problem = '5';

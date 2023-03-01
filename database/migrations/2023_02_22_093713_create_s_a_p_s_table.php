@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->string('type')->nullable();
             $table->string('request')->nullable();
-            $table->string('remarks')->nullable();
-            $table->string('name')->nullable();
+            $table->string('remarks');
+            $table->string('name');
             $table->string('billing_address')->nullable();
             $table->string('shipping_address')->nullable();
             $table->string('tin')->nullable();

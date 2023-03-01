@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('ticket_no');
+            $table->string('sap_id')->nullable();
             $table->bigInteger('user_id');
             $table->string('department');
             $table->string('nature_of_problem');
