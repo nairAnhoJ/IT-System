@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/ticketing/sap/store', [SAPController::class, 'store'])->name('sap.store');
     Route::post('/ticketing/sap/edit', [SAPController::class, 'edit'])->name('sap.edit');
     Route::post('/ticketing/sap/update', [SAPController::class, 'update'])->name('sap.update');
+    Route::post('/ticketing/sap/details', [SAPController::class, 'details'])->name('sap.details');
 
     // Items
     Route::get('/inventory/items', [ItemController::class, 'index'])->name('item.index');

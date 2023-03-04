@@ -319,13 +319,6 @@
                                 <div class="">
                                     <input type="text" id="contact_email3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                
-                                <div class="col-span-5 self-center">
-                                    <a href="{{ route('sap.index') }}" class="block text-center text-white w-36 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-red-800">Clear</a>
-                                </div>
-                                <div class="col-span-4 justify-self-end">
-                                    <button type="submit" class="text-white w-36 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 my-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -505,14 +498,6 @@
                 $('#AttachedFileButton').addClass('hidden');
             }
             
-            var sap_id = $(this).find("span").data('sap_id');
-            if(sap_id != ""){
-                $('#SAPButton').removeClass('hidden');
-                $('#SAPID').val(sap_id);
-            }else{
-                $('#SAPButton').addClass('hidden');
-            }
-            
             var status = $(this).find("span").data('status');
             $('#ticketStatus').val(status);
             $('#ticketStatus2').html(status);
@@ -568,12 +553,59 @@
                 $('#ticketStatus2').removeClass('text-teal-500');
                 $('#ticketStatus2').addClass('text-neutral-300');
             }
+            
+            var sap_id = $(this).find("span").data('sap_id');
+            if(sap_id != "" && status != 'DONE'){
+                $('#SAPButton').removeClass('hidden');
+                $('#SAPID').val(sap_id);
+            }else{
+                $('#SAPButton').addClass('hidden');
+            }
 
             $('#viewTicket').click();
         });
+
         $('#SAPButton').click(function(){
             var sapID = $('#SAPID').val();
-            $('#viewSAP').click();
+            var _token = $('input[name="_token"]').val();
+            
+            $.ajax({
+                url: "{{ route('sap.details') }}",
+                method: "POST",
+                dataType: 'json',
+                data: {
+                    sapID: sapID,
+                    _token: _token
+                },
+                success:function(result){
+                    $('#request').val(result.request);
+                    $('#remarks').val(result.remarks);
+                    $('#type').val(result.type);
+                    $('#code').val(result.code);
+                    $('#wtax_code').val(result.wtax_code);
+                    $('#AR_inCharge').val(result.AR_inCharge);
+                    $('#isOnHold').val(result.isOnHold);
+                    $('#AR_email').val(result.AR_email);
+                    $('#name').val(result.name);
+                    $('#isAutoEmail').val(result.isAutoEmail);
+                    $('#payment_terms').val(result.payment_terms);
+                    $('#billing_address').val(result.billing_address);
+                    $('#style').val(result.style);
+                    $('#shipping_address').val(result.shipping_address);
+                    $('#contact_name1').val(result.contact_name1);
+                    $('#contact_no1').val(result.contact_no1);
+                    $('#contact_email1').val(result.contact_email1);
+                    $('#tin').val(result.tin);
+                    $('#contact_name2').val(result.contact_name2);
+                    $('#contact_no2').val(result.contact_no2);
+                    $('#contact_email2').val(result.contact_email2);
+                    $('#sales_employee').val(result.sales_employee);
+                    $('#contact_name3').val(result.contact_name3);
+                    $('#contact_no3').val(result.contact_no3);
+                    $('#contact_email3').val(result.contact_email3);
+                    $('#viewSAP').click();
+                }
+            })
         });
     });
   </script>

@@ -281,4 +281,49 @@ class SAPController extends Controller
 
         return redirect()->route('sap.index');
     }
+
+    public function details(Request $request){
+        $sap = DB::table('sapbp')->where('id', $request->sapID)->first();
+
+        if($sap->isOnHold == 1){
+            $OH = 'YES';
+        }else{
+            $OH = 'NO';
+        }
+        if($sap->isAutoEmail == 1){
+            $AE = 'YES';
+        }else{
+            $AE = 'NO';
+        }
+
+        $result = array(
+            'request' => $sap->request,
+            'remarks' => $sap->remarks,
+            'type' => $sap->type,
+            'code' => $sap->code,
+            'wtax_code' => $sap->wtax_code,
+            'AR_inCharge' => $sap->AR_inCharge,
+            'isOnHold' => $OH,
+            'AR_email' => $sap->AR_email,
+            'name' => $sap->name,
+            'isAutoEmail' => $AE,
+            'payment_terms' => $sap->payment_terms,
+            'billing_address' => $sap->billing_address,
+            'style' => $sap->style,
+            'shipping_address' => $sap->shipping_address,
+            'contact_name1' => $sap->contact_name1,
+            'contact_no1' => $sap->contact_no1,
+            'contact_email1' => $sap->contact_email1,
+            'tin' => $sap->tin,
+            'contact_name2' => $sap->contact_name2,
+            'contact_no2' => $sap->contact_no2,
+            'contact_email2' => $sap->contact_email2,
+            'sales_employee' => $sap->sales_employee,
+            'contact_name3' => $sap->contact_name3,
+            'contact_no3' => $sap->contact_no3,
+            'contact_email3' => $sap->contact_email3,
+        );
+
+        echo json_encode($result);
+    }
 }
