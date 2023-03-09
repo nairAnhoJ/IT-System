@@ -70,14 +70,32 @@
                 <input required type="text" value="{{ $User }}" id="user" name="user" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
             </div>
 
+            <label for="department" class="mt-5 block text-sm font-medium text-white">Department</label>
+            <select id="department" name="department" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                <option value="N/A">N/A</option>
+                @foreach ($departments as $dept)
+                    <option {{ $Department == $dept->id ? 'selected' : ''; }} value="{{ $dept->id }}">{{ $dept->name }}</option>
+                @endforeach
+            </select>
+
             <div class="mt-5">
                 <label for="description" class="block text-sm font-medium text-white">Description</label>
                 <input required type="text" value="{{ $Description }}" id="description" name="description" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
             </div>
 
             <div class="mt-5">
-                <label for="serial_no" class="block text-sm font-medium text-white">Serial Number</label>
+                <label for="serial_no" class="block text-sm font-medium text-white">Serial / SIM Card Number</label>
                 <input required type="text" value="{{ $SerialNo }}" id="serial_no" name="serial_no" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+            </div>
+
+            <div class="mt-5">
+                <label for="cost" class="block text-sm font-medium text-white">Cost (₱)</label>
+                <input required type="text" value="{{ $Cost }}" id="cost" name="cost" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+            </div>
+
+            <div class="mt-5">
+                <label for="color" class="block text-sm font-medium text-white">Color</label>
+                <input required type="text" value="{{ $Color }}" id="color" name="color" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
             </div>
 
             <div class="mt-5">
@@ -95,9 +113,29 @@
                 {{-- <input required type="text" value="{{ $Site }}" id="site" name="site" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"> --}}
             </div>
 
-            <div class="mt-5">
+            <label for="status" class="mt-5 block text-sm font-medium text-white">Status</label>
+            <select id="status" name="status" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                <option {{ $Status == 'NEW' ? 'selected' : ''; }} value="NEW">Brand New</option>
+                <option {{ $Status == 'OLD' ? 'selected' : ''; }} value="OLD">Old Unit</option>
+            </select>
+
+            {{-- <div class="mt-5">
                 <label for="status" class="block text-sm font-medium text-white">Status</label>
                 <input required type="text" value="{{ $Status }}" id="status" name="status" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+            </div> --}}
+
+            <div class="mt-5">
+                <label for="date_issued" class="block text-sm font-medium text-white">Date Issued</label>
+                <div class="relative">
+                    <div class="relative">
+                        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <input datepicker datepicker-autohide type="text" id="date_issued" name="date_issued" value="{{ $DateIssued == 'N/A' ? '' : date('m-d-Y') }}" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" required>
+                    </div>
+                </div>
             </div>
 
             <div class="mt-5">

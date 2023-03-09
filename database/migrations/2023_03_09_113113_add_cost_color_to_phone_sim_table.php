@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->string('is_Defective')->after('status')->default('0');
+        Schema::table('phone_sims', function (Blueprint $table) {
+            $table->string('department')->after('user')->default('N/A');
+            $table->string('color')->after('status')->default('N/A');
+            $table->string('cost')->after('status')->default('N/A');
+            $table->string('date_issued')->after('invoice')->default('N/A');
         });
     }
 
@@ -25,7 +28,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('items', function (Blueprint $table) {
+        Schema::table('phone_sims', function (Blueprint $table) {
             //
         });
     }

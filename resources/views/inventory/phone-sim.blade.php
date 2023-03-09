@@ -167,6 +167,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 border-t rounded-b border-gray-600">
+                        <a href="#" target="_blank" id="btnIssuance" data-modal-toggle="itemModal" type="button" class="tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-500 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Print Issuance Form</a>
                         <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-700 text-gray-100 border-red-500 hover:text-white hover:bg-red-600 focus:ring-red-600">Mark as Defective</button>
                         <button data-modal-toggle="itemModal" type="button" class="tracking-wider focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
@@ -238,8 +239,8 @@
             <table class="min-w-full text-sm text-left text-gray-400">
                 <thead class="relative top-0 text-xs uppercase bg-gray-600 text-gray-400 border-x-8 border-gray-600">
                     <tr class="bg-gray-600 sticky top-0">
-                        <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
-                            #
+                        <th id="thr" scope="col" class="sticky top-0 py-2 text-center">
+                            ACTION
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             ITEM
@@ -251,7 +252,7 @@
                             DESCRIPTION
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            SERIAL NUMBER
+                            SERIAL / SIM NO
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             REMARKS
@@ -265,9 +266,6 @@
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE DELIVERED
                         </th>
-                        <th id="thr" scope="col" class="sticky top-0 py-2 text-center">
-                            ACTION
-                        </th>
                     </tr>
                 </thead>
                 <tbody id="itemTableBody" style="max-height: calc(100% - 126px);">
@@ -276,13 +274,14 @@
                     @endphp
                     @foreach ($items as $item)
                         <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
-                            <th scope="row" class="py-3 px-6 font-medium text-white text-center">
-                                <span data-id="{{ $item->id }}" data-item="{{ $item->item }}" data-user="{{ $item->user }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" data-remarks="{{ $item->remarks }}" data-site="{{ $item->site_name }}" data-status="{{ $item->status }}" data-date_del="{{ $item->date_del }}">
-                                    {{ $x++ }}
-                                </span>
-                            </th>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                {{ $item->item }}
+                                <a href="{{ url('/inventory/phone-sim/edit/'.$item->id ) }}" class="editButton font-medium text-blue-500 hover:underline">Edit</a> | 
+                                <a type="button" data-id="{{ $item->id }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" class="deleteButton font-medium text-red-500 hover:underline">Delete</a>
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                <span data-id="{{ $item->id }}" data-item="{{ $item->item }}" data-user="{{ $item->user }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" data-remarks="{{ $item->remarks }}" data-site="{{ $item->site_name }}" data-status="{{ $item->status }}" data-date_del="{{ $item->date_del }}">
+                                    {{ $item->item }}
+                                </span>
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->user }}
@@ -304,10 +303,6 @@
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->date_del }}
-                            </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <a href="{{ url('/inventory/phone-sim/edit/'.$item->id ) }}" class="editButton font-medium text-blue-500 hover:underline">Edit</a> | 
-                                <a type="button" data-id="{{ $item->id }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" class="deleteButton font-medium text-red-500 hover:underline">Delete</a>
                             </td>
                         </tr>
                     @endforeach
@@ -343,6 +338,7 @@
             $('#itemTableBody tr').click(function() {
                 var id = $(this).find("span").data('id');
                 $('#itemID').val(id);
+                $('#btnIssuance').attr('href', `/inventory/phone-sim/issuance-form/${id}`);
 
                 var item = $(this).find("span").data('item');
                 $('#item').html(item);
@@ -378,6 +374,10 @@
                 $('#defectiveID').val(id);
 
                 $('#defectiveConfirmation').click();
+            });
+
+            $('#btnIssuance').click(function(){
+
             });
         });
     </script>

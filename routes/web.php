@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptInChargeController;
+use App\Http\Controllers\IssuanceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemRequestController;
 use App\Http\Controllers\ItemTypeController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\TicketCategoryController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Models\DeptInCharge;
+use App\Models\Issuance;
 use App\Models\PhoneSim;
 use App\Models\TicketCategory;
 use Illuminate\Support\Facades\DB;
@@ -118,6 +120,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/phone-sim/delete', [PhoneSimController::class, 'delete'])->name('phoneSim.delete');
     Route::post('/inventory/phone-sim//mark-as-defective', [PhoneSimController::class, 'defective'])->name('phoneSim.defective');
     Route::get('/inventory/phone-sim/invoice-download/{id}', [PhoneSimController::class, 'download']);
+
+    Route::get('/inventory/phone-sim/issuance-form/{id}', [PhoneSimController::class, 'issuance']);
 
     Route::get('/inventory/phone-sim/defective', [PhoneSimController::class, 'defectivePhoneIndex'])->name('defectivePhone.index');
     Route::post('/inventory/phone-sim/defective/restore', [PhoneSimController::class, 'defectivePhoneRestore'])->name('defectivePhone.restore');

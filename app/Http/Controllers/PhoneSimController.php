@@ -22,11 +22,16 @@ class PhoneSimController extends Controller
 
     public function add(){
         $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->get();
 
         $Item = "";
         $User = "";
+        $Department = "";
         $SerialNo = "";
+        $Cost = "";
+        $Color = "";
         $Description = "";
+        $DateIssued = date('m-d-Y');
         $DateDelivered = date('m-d-Y');
         $Action = "add";
         $Remarks = '';
@@ -35,7 +40,7 @@ class PhoneSimController extends Controller
         $ItemID = '';
         // $Invoice = '';
 
-        return view('inventory.phone-sim-add-edit', compact('Item', 'sites', 'User', 'SerialNo', 'Description', 'DateDelivered', 'Action', 'ItemID', 'Remarks', 'Site', 'Status'));
+        return view('inventory.phone-sim-add-edit', compact('Item', 'sites', 'User', 'SerialNo', 'Description', 'DateDelivered', 'Action', 'ItemID', 'Remarks', 'Site', 'Status', 'departments', 'Department', 'Cost', 'Color', 'DateIssued'));
     }
 
     public function store(Request $request){
@@ -47,6 +52,10 @@ class PhoneSimController extends Controller
         $site = $request->site;
         $status = $request->status;
         $date_del = $request->date_del;
+        $department = $request->department;
+        $cost = $request->cost;
+        $color = $request->color;
+        $date_issued = $request->date_issued;
 
         $request->validate([
             'user' => 'required',
@@ -65,13 +74,17 @@ class PhoneSimController extends Controller
         $PhoneSim = new PhoneSim();
         $PhoneSim->item = $item;
         $PhoneSim->user = strtoupper($user);
-        $PhoneSim->desc = $description;
+        $PhoneSim->desc = strtoupper($description);
         $PhoneSim->serial_no = strtoupper($serial_no);
-        $PhoneSim->remarks = $remarks;
+        $PhoneSim->remarks = strtoupper($remarks);
         $PhoneSim->site = $site;
         $PhoneSim->status = $status;
         $PhoneSim->invoice = $invoicePath;
         $PhoneSim->date_del = $date_del;
+        $PhoneSim->department = $department;
+        $PhoneSim->cost = $cost;
+        $PhoneSim->color = strtoupper($color);
+        $PhoneSim->date_issued = $date_issued;
         $PhoneSim->save();
 
         return redirect()->route('phoneSim.index');
@@ -80,6 +93,7 @@ class PhoneSimController extends Controller
     public function edit($id){
         $item = PhoneSim::find($id);
         $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->get();
         
         $ItemID = $item->id;
         $Item = $item->item;
@@ -90,20 +104,28 @@ class PhoneSimController extends Controller
         $Site = $item->site;
         $Status = $item->status;
         $DateDelivered = $item->date_del;
+        $Department = $item->department;
+        $Cost = $item->cost;
+        $Color = $item->color;
+        $DateIssued = $item->date_issued;
         $Action = "edit";
 
-        return view('inventory.phone-sim-add-edit', compact('sites', 'ItemID', 'Item', 'User', 'Description', 'SerialNo', 'Remarks', 'Site', 'Status', 'DateDelivered', 'Action'));
+        return view('inventory.phone-sim-add-edit', compact('sites', 'ItemID', 'Item', 'User', 'Description', 'SerialNo', 'Remarks', 'Site', 'Status', 'DateDelivered', 'Action', 'departments', 'Department', 'Cost', 'Color', 'DateIssued'));
     }
 
     public function update(Request $request){
         $ItemID = $request->itemID;
         $user = strtoupper($request->user);
-        $description = $request->description;
+        $description = strtoupper($request->description);
         $serial_no = strtoupper($request->serial_no);
-        $remarks = $request->remarks;
+        $remarks = strtoupper($request->remarks);
         $site = $request->site;
         $status = $request->status;
         $date_del = $request->date_del;
+        $department = $request->department;
+        $cost = $request->cost;
+        $color = $request->color;
+        $date_issued = $request->date_issued;
 
         // if(isset($request->invoice)){
         //     $oldInvoice = (DB::table('phone_sims')->where('id', $ItemID)->first())->invoice;
@@ -116,7 +138,7 @@ class PhoneSimController extends Controller
         //     $invoice = $request->invoice;
         //     DB::update('UPDATE phone_sims SET phone_sims.user=?, phone_sims.desc=?, phone_sims.serial_no=?, phone_sims.remarks=?, phone_sims.site=?, phone_sims.status=?, phone_sims.invoice=?, phone_sims.date_del=? WHERE phone_sims.id=?', [$user, $description, $serial_no, $remarks, $site, $status, $invoicePath, $date_del, $ItemID]);
         // }else{
-            DB::update('UPDATE phone_sims SET phone_sims.user=?, phone_sims.desc=?, phone_sims.serial_no=?, phone_sims.remarks=?, phone_sims.site=?, phone_sims.status=?, phone_sims.date_del=? WHERE phone_sims.id=?', [$user, $description, $serial_no, $remarks, $site, $status, $date_del, $ItemID]);
+            DB::update('UPDATE phone_sims SET phone_sims.user=?, phone_sims.desc=?, phone_sims.serial_no=?, phone_sims.remarks=?, phone_sims.site=?, phone_sims.status=?, phone_sims.date_del=?, phone_sims.department=?, phone_sims.cost=?, phone_sims.color=?, phone_sims.date_issued=? WHERE phone_sims.id=?', [$user, $description, $serial_no, $remarks, $site, $status, $date_del, $department, $cost, strtoupper($color), $date_issued, $ItemID]);
         // }
 
         return redirect()->route('phoneSim.index');
@@ -131,7 +153,7 @@ class PhoneSimController extends Controller
 
     public function defective(Request $request){
         $defectiveID = $request->defectiveID;
-        DB::update('UPDATE phone_sims SET is_Defective=1 WHERE id=?', [$defectiveID]);
+        DB::update('UPDATE phone_sims SET is_Defective=1, user=?, remarks=?, status=? WHERE id=?', ['N/A', 'DEFECTIVE', 'DEFECTIVE', $defectiveID]);
         return redirect()->route('phoneSim.index');
     }
 
@@ -142,7 +164,14 @@ class PhoneSimController extends Controller
 
     public function defectivePhoneRestore(Request $request){
         $defectiveID = $request->defectiveID;
-        DB::update('UPDATE phone_sims SET is_Defective=0 WHERE id=?', [$defectiveID]);
+        DB::update('UPDATE phone_sims SET is_Defective=0, user=?, remarks=?, status=? WHERE id=?', ['N/A', 'SPARE', 'SPARE', $defectiveID]);
         return redirect()->route('defectivePhone.index');
+    }
+
+    public function issuance($id){
+        // $item = DB::table('phone_sims')->where('id', $id)->first();
+        $item = DB::select('SELECT phone_sims.id, phone_sims.user, departments.name AS department , phone_sims.date_issued, sites.name AS site, phone_sims.desc, phone_sims.serial_no, phone_sims.remarks, phone_sims.cost, phone_sims.color, phone_sims.status FROM phone_sims INNER JOIN departments ON phone_sims.department = departments.id INNER JOIN sites ON phone_sims.site = sites.id WHERE phone_sims.id = ?', [$id]);
+
+        return view('inventory.issuance', compact('item'));
     }
 }
