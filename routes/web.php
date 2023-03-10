@@ -188,6 +188,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/system-management/settings/update', [SettingController::class, 'update'])->name('settings.update');
         Route::post('/system-management/settings/test-connection', [SettingController::class, 'test'])->name('settings.test');
 
+        Route::get('/system-management/settings/user-agreement-for-devices', [SettingController::class, 'uadIndex'])->name('settings.uadIndex');
+        Route::post('/system-management/settings/user-agreement-for-devices/test-print', [SettingController::class, 'uadTest'])->name('settings.uadTest');
+        Route::post('/system-management/settings/user-agreement-for-devices/update', [SettingController::class, 'uadupdate'])->name('settings.uadupdate');
+
     // ========================================= SYSTEM MANAGEMENT END =========================================
 
 });

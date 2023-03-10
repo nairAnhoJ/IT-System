@@ -72,7 +72,7 @@
 
             <label for="department" class="mt-5 block text-sm font-medium text-white">Department</label>
             <select id="department" name="department" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
-                <option value="N/A">N/A</option>
+                <option value="1">N/A</option>
                 @foreach ($departments as $dept)
                     <option {{ $Department == $dept->id ? 'selected' : ''; }} value="{{ $dept->id }}">{{ $dept->name }}</option>
                 @endforeach

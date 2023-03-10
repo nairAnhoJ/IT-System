@@ -11,7 +11,7 @@ class DepartmentController extends Controller
     public function index(){
         $inCharge = DB::table('dept_in_charges')->first();
         $deptInCharge = $inCharge->dept_id;
-        $depts = DB::table('departments')->orderBy('name', 'asc')->get();
+        $depts = DB::table('departments')->orderBy('name', 'asc')->where('id','!=','1')->get();
         $users = DB::table('users')->where('id','!=','1')->get();
         $dics = DB::table('users')->where('dept_id', $deptInCharge)->where('id', '!=', '1')->orderBy('name', 'asc')->get();
         return view('admin.system-management.department', compact('depts', 'dics', 'deptInCharge','users'));

@@ -22,7 +22,7 @@ class PhoneSimController extends Controller
 
     public function add(){
         $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
-        $departments = DB::table('departments')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->where('id','!=','1')->get();
 
         $Item = "";
         $User = "";
@@ -93,7 +93,7 @@ class PhoneSimController extends Controller
     public function edit($id){
         $item = PhoneSim::find($id);
         $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
-        $departments = DB::table('departments')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->where('id','!=','1')->get();
         
         $ItemID = $item->id;
         $Item = $item->item;
@@ -170,8 +170,10 @@ class PhoneSimController extends Controller
 
     public function issuance($id){
         // $item = DB::table('phone_sims')->where('id', $id)->first();
-        $item = DB::select('SELECT phone_sims.id, phone_sims.user, departments.name AS department , phone_sims.date_issued, sites.name AS site, phone_sims.desc, phone_sims.serial_no, phone_sims.remarks, phone_sims.cost, phone_sims.color, phone_sims.status FROM phone_sims INNER JOIN departments ON phone_sims.department = departments.id INNER JOIN sites ON phone_sims.site = sites.id WHERE phone_sims.id = ?', [$id]);
+        $item = (DB::select('SELECT phone_sims.id, phone_sims.item, phone_sims.user, departments.name AS department , phone_sims.date_issued, sites.name AS site, phone_sims.desc, phone_sims.serial_no, phone_sims.remarks, phone_sims.cost, phone_sims.color, phone_sims.status FROM phone_sims INNER JOIN departments ON phone_sims.department = departments.id INNER JOIN sites ON phone_sims.site = sites.id WHERE phone_sims.id = ?', [$id]))[0];
+        $settings = (DB::table('settings')->where('id', 1)->first());
 
-        return view('inventory.issuance', compact('item'));
+
+        return view('inventory.issuance', compact('item', 'settings'));
     }
 }

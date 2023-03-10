@@ -44,35 +44,35 @@
         <h1 class="font-medium text-2xl text-center tracking-wider mt-1">ISSUANCE FORM</h1>
 
         <div class="px-20 mt-2">
-            <div class="grid grid-cols-5 gap-x-2 text-sm">
+            <div class="grid grid-cols-7 gap-x-2 text-sm">
                 <div>Name: </div>
-                <div class="font-semibold col-span-2 tracking-wide">{{ $item[0]->user}}</div>
+                <div class="font-semibold col-span-4 tracking-wide">{{ $item->user}}</div>
                 <div>Date Issued: </div>
-                <div class="font-semibold tracking-wide">{{ $item[0]->date_issued}}</div>
+                <div class="font-semibold tracking-wide">{{ $item->date_issued}}</div>
 
                 <div>Department: </div>
-                <div class="font-semibold col-span-2 tracking-wide">{{ $item[0]->department}}</div>
+                <div class="font-semibold col-span-4 tracking-wide">{{ $item->department}}</div>
                 <div>Location: </div>
-                <div class="font-semibold tracking-wide">{{ $item[0]->site}}</div>
+                <div class="font-semibold tracking-wide">{{ $item->site}}</div>
             </div>
         </div>
 
         <hr class="mt-2">
 
         <div class="px-20 mt-2">
-            <div class="grid grid-cols-6 gap-x-2 text-xs">
+            <div class="grid grid-cols-7 gap-x-2 text-xs">
                 <div>Brand Name: </div>
-                <div class="font-semibold col-span-3 tracking-wide">{{ $item[0]->desc}}</div>
+                <div class="font-semibold col-span-4 tracking-wide">{{ $item->desc}}</div>
                 <div>Cost: </div>
-                <div class="font-semibold tracking-wide">{{ '₱ '.number_format($item[0]->cost, 2, '.', ',')}}</div>
+                <div class="font-semibold tracking-wide">{{ (preg_match("/[a-z]/i", $item->cost)) ? $item[0]->cost : '₱ '.number_format($item->cost, 2, '.', ',') }}</div>
                 <div>Serial/SIM No: </div>
-                <div class="font-semibold col-span-3 tracking-wide">{{ $item[0]->serial_no}}</div>
+                <div class="font-semibold col-span-4 tracking-wide">{{ $item->serial_no}}</div>
                 <div>Color: </div>
-                <div class="font-semibold tracking-wide">{{ $item[0]->color}}</div>
+                <div class="font-semibold tracking-wide">{{ $item->color}}</div>
                 <div>Remarks: </div>
-                <div class="font-semibold col-span-3 tracking-wide">{{ $item[0]->remarks}}</div>
+                <div class="font-semibold col-span-4 tracking-wide">{{ $item->remarks}}</div>
                 <div>Status: </div>
-                <div class="font-semibold tracking-wide">{{ $item[0]->status}}</div>
+                <div class="font-semibold tracking-wide">{{ $item->status}}</div>
 
             </div>
         </div>
@@ -81,13 +81,37 @@
 
         <h1 class="font-semibold text-base text-center tracking-wider mt-1">INSTRUCTION FROM HEREIN UNDER IS IMPORTANT. PLEASE READ THEM CAREFULLY</h1>
 
-        <h1>
-            
-        </h1>
+        <div class="px-10">
+            <h1 style="box-shadow: inset 0 0 0 1000px red;" class="border inline border-neutral-900 px-2 py-px text-white font-semibold tracking-wide">USER AGREEMENT</h1>
+            <textarea readonly style="font-size: 10px;" id="userAgreement" class="w-full h-auto leading-3 resize-none border-neutral-900 border">{{ $item->item != 'SIM CARD' && $item->item != 'PHONE' ? $settings->user_agreement_device : $settings->user_agreement_phonesim }}</textarea>
+            <p style="font-size: 10px;" class="mt-14 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p>
+            <div class="grid grid-cols-3 mt-3">
+                <div class="text-xs">
+                    Prepared by:
+                </div>
+                <div></div>
+                <div class="text-xs">
+                    Received By:
+                </div>
+
+                <div class="border-b border-neutral-900 h-5"></div>
+                <div></div>
+                <div class="border-b border-neutral-900 h-5"></div>
+
+                <div class="text-xs text-center">
+                    Signature over Printed Name and Date
+                </div>
+                <div></div>
+                <div class="text-xs text-center">
+                    Signature over Printed Name and Date
+                </div>
+            </div>
+        </div>
 
         <script>
             $(document).ready(function(){
-
+                var sh = $('#userAgreement').prop('scrollHeight');
+                $('#userAgreement').height((sh + 5) + 'px');
             });
         </script>
     </body>

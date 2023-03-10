@@ -21,7 +21,7 @@
                         {{ __('Ticketing') }}
                     </x-nav-link>
 
-                    @if (auth()->user()->role == 'admin' || auth()->user()->dept_id == 1)
+                    @if (auth()->user()->role == 'admin' || auth()->user()->dept_id == 2)
                         <button id="ddInventoryLink" data-dropdown-toggle="ddInventory" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium md:hover:bg-transparent text-sm md:hover:text-gray-200 md:p-0 md:w-auto text-gray-400 hover:text-gray-200 focus:text-white border-b-2 border-transparent hover:border-blue-300 text-center
                         @php
                             if ( request()->routeIs('item.index') || request()->routeIs('computer.index') || request()->routeIs('item.index') || request()->routeIs('item.add') || request()->routeIs('phoneSim.index') || request()->routeIs('phoneSim.add') || request()->routeIs('phoneSim.edit') || request()->routeIs('defectivePhone.index') || request()->routeIs('defectiveIndex.index') ) {

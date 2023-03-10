@@ -56,7 +56,7 @@
     <div id="notifMessage" class="absolute top-20 w-full mx-auto">
     </div>
 
-    <div style="height: calc(100vh - 65px);" class="p-6 text-gray-200 w-screen">
+    <div class="p-6 text-gray-200 w-screen overflow-x-hidden">
         <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">Settings</h1>
 
         <form id="smtpForm" action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
@@ -122,6 +122,14 @@
                 </div>
             {{-- ============================= TEST CONNECTION MODAL END ============================= --}}
         </form>
+
+        <hr class="my-5 border-gray-500">
+
+        <div class="mt-10">
+            <h1 class="font-medium text-lg mb-3">ISSUANCE FORM USER AGREEMENT</h1>
+            <a href="{{ route('settings.uadIndex') }}" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 mr-3">Edit User Agreement for Devices</a>
+            <a type="button" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Edit User Agreement for Phone/SIM Card</a>
+        </div>
     </div>
 
     <script>
