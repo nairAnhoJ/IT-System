@@ -409,6 +409,7 @@
                     `);
                 }else if(status == 'USED' && com == 'N/A'){
                     $('#divStatus').html(`
+                        <a href="/inventory/items/issuance-form/${id}" target='_blank' type="button" class="tracking-wider mr-2 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Print Issuance Form</a>
                         <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Spare</button>
                     `);
                 }else{
@@ -443,8 +444,42 @@
                 if(status == 'SPARE'){
                     $('#changeStatusHeader').html('Mark as Used');
                     $('#divModalBody').html(`
-                        <label for="remarks" class="block mb-2 text-sm font-medium text-white">Remarks</label>
+                        <label for="user" class="block mt-2 text-sm font-medium text-white">User</label>
+                        <input required type="text" id="user" name="user" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+
+                        <label for="department" class="mt-2 block text-sm font-medium text-white">Department</label>
+                        <select required id="department" name="department" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                            @foreach ($depts as $dept)
+                                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <label for="cost" class="block mt-2 text-sm font-medium text-white">Cost</label>
+                        <input required type="text" id="cost" name="cost" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+
+                        <label for="color" class="block mt-2 text-sm font-medium text-white">Color</label>
+                        <input required type="text" id="color" name="color" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+
+                        <label for="status" class="mt-2 block text-sm font-medium text-white">Status</label>
+                        <select required id="status" name="status" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                                <option value="BRAND NEW">Brand New</option>
+                                <option value="OLD UNIT">Old Unit</option>
+                        </select>
+
+                        <label for="remarks" class="block mt-2 text-sm font-medium text-white">Remarks</label>
                         <input required type="text" id="remarks" name="remarks" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                
+                        <label for="date_issued" class="block text-sm font-medium text-white">Date Issued</label>
+                        <div class="relative">
+                            <div class="relative">
+                                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <input datepicker datepicker-autohide type="text" id="date_issued" name="date_issued" value="{{ date('m-d-Y') }}" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" required>
+                            </div>
+                        </div>
                     `);
                 }else if(status == 'USED'){
                     $('#changeStatusHeader').html('Mark as Spare');
@@ -457,6 +492,10 @@
 
                 $('#btnCancel').click();
                 $('#statusConfirmation').click();
+            });
+
+            jQuery(document).on("click", "#btnStatus", function(){
+
             });
         });
     </script>

@@ -97,6 +97,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/items/change-status', [ItemController::class, 'status'])->name('item.status');
     Route::get('/inventory/items/invoice-download/{id}', [ItemController::class, 'download']);
 
+    Route::get('/inventory/items/issuance-form/{id}', [ItemController::class, 'issuance']);
+
     Route::get('/inventory/items/defective', [ItemController::class, 'defectiveIndex'])->name('defectiveIndex.index');
     Route::post('/inventory/items/defective/restore', [ItemController::class, 'defectiveRestore'])->name('defectiveIndex.restore');
 
@@ -191,6 +193,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/system-management/settings/user-agreement-for-devices', [SettingController::class, 'uadIndex'])->name('settings.uadIndex');
         Route::post('/system-management/settings/user-agreement-for-devices/test-print', [SettingController::class, 'uadTest'])->name('settings.uadTest');
         Route::post('/system-management/settings/user-agreement-for-devices/update', [SettingController::class, 'uadupdate'])->name('settings.uadupdate');
+
+        Route::get('/system-management/settings/user-agreement-for-phonesim', [SettingController::class, 'uapsIndex'])->name('settings.uapsIndex');
+        Route::post('/system-management/settings/user-agreement-for-phonesim/test-print', [SettingController::class, 'uapsTest'])->name('settings.uapsTest');
+        Route::post('/system-management/settings/user-agreement-for-phonesim/update', [SettingController::class, 'uapsupdate'])->name('settings.uapsupdate');
 
     // ========================================= SYSTEM MANAGEMENT END =========================================
 

@@ -11,7 +11,9 @@ class ItemController extends Controller
 {
     public function index(){
         $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.description, items.is_Defective, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site FROM (((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) WHERE items.is_Defective = 0 ORDER BY items.id DESC');
-        return view('inventory.items', compact('items'));
+        $depts = DB::table('departments')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+
+        return view('inventory.items', compact('items', 'depts'));
     }
 
     public function add(){
@@ -153,24 +155,27 @@ class ItemController extends Controller
         $thisStatus = $request->thisStatus;
 
         if($thisStatus == 'SPARE'){
+            $user = strtoupper($request->user);
+            $department = $request->department;
+            $cost = $request->cost;
+            $color = strtoupper($request->color);
+            $status = $request->status;
             $remarks = strtoupper($request->remarks);
-            $old_desc = (DB::table('items')->where('id', $statusID)->first())->description;
-            DB::update("UPDATE items SET description=?, computer_id=1, status='USED', edited_by=?  WHERE id=?", [$old_desc.' ('.$remarks.')', auth()->user()->name, $statusID]);
+            $date_issued = $request->date_issued;
+
+            DB::table('items')
+                ->where('id', $statusID)
+                ->update(['i_user' => $user,'i_department' => $department, 'i_cost' => $cost, 'i_color' => $color, 'i_status' => $status, 'i_remarks' => $remarks, 'i_date_issued' => $date_issued, 'computer_id' => 1, 'status' => 'USED', 'edited_by' => auth()->user()->name]);
+
         }else if($thisStatus == 'USED'){
-            $old_desc = (DB::table('items')->where('id', $statusID)->first())->description;
-            $new_desc = preg_replace("/\(([^()]*+|(?R))*\)/","", $old_desc);
-            DB::update("UPDATE items SET description=?, computer_id=1, status='SPARE', edited_by=?  WHERE id=?", [$new_desc, auth()->user()->name, $statusID]);
+
+            DB::table('items')
+                ->where('id', $statusID)
+                ->update(['i_user' => null, 'i_department' => null, 'i_cost' => null, 'i_color' => null, 'i_status' => null, 'i_remarks' => null, 'i_date_issued' => null, 'computer_id' => 1, 'status' => 'SPARE', 'edited_by' => auth()->user()->name]);
+
         }
         return redirect()->route('item.index');
     }
-
-    // public function spare(Request $request){
-    //     $usedID = $request->usedID;
-    //     $old_desc = (DB::table('items')->where('id', $usedID)->first())->description;
-    //     $new_desc = preg_replace("/\(([^()]*+|(?R))*\)/","", $old_desc);
-    //     DB::update("UPDATE items SET description=?, computer_id=1, status='USED', edited_by=?  WHERE id=?", [$new_desc, auth()->user()->name, $usedID]);
-    //     return redirect()->route('item.index');
-    // }
     
     public function defectiveIndex(){
         $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.description, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site FROM (((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) WHERE items.is_Defective = 1 ORDER BY items.id DESC');
@@ -181,5 +186,28 @@ class ItemController extends Controller
         $defectiveID = $request->defectiveID;
         DB::update("UPDATE items SET is_Defective=0, computer_id=1, status='SPARE', edited_by=?  WHERE id=?", [auth()->user()->name, $defectiveID]);
         return redirect()->route('defectiveIndex.index');
+    }
+
+    public function issuance($id){
+        $item = (DB::select('SELECT items.id, item_types.name AS item_name, items.brand, items.serial_no, items.description, sites.name as site_name, items.i_user, departments.name AS dept_name, items.i_cost, items.i_color, items.i_status, items.i_remarks, items.i_date_issued FROM items INNER JOIN item_types ON items.type_id = item_types.id INNER JOIN sites ON items.site_id = sites.id INNER JOIN departments ON items.i_department = departments.id WHERE items.id = ?', [$id]))[0];
+
+        $item = (object) [
+            'user' => $item->i_user,
+            'date_issued' => $item->i_date_issued,
+            'department' => $item->dept_name,
+            'site' => $item->site_name,
+            'desc' => $item->brand.' '.$item->description,
+            'cost' => $item->i_cost,
+            'serial_no' => $item->serial_no,
+            'color' => $item->i_color,
+            'remarks' => $item->i_remarks,
+            'status' => $item->i_status,
+            'item' => $item->item_name
+        ];
+
+        $settings = (DB::table('settings')->where('id', 1)->first());
+
+
+        return view('inventory.issuance', compact('item', 'settings'));
     }
 }

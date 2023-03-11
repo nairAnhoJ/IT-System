@@ -76,13 +76,13 @@ class SettingController extends Controller
             'date_issued' => date('m/d/Y'),
             'department' => 'IT',
             'site' => 'PARAÑAQUE',
-            'desc' => 'APPLE IPHONE 14 PRO MAX',
-            'cost' => "77990",
-            'serial_no' => '3364982134685146',
-            'color' => 'DEEP PURPLE',
+            'desc' => 'MACBOOK PRO',
+            'cost' => "300000",
+            'serial_no' => '697842915379464',
+            'color' => 'SILVER',
             'remarks' => 'WITH CHARGER',
             'status' => 'BRAND NEW',
-            'item' => 'Device',
+            'item' => 'LAPTOP',
         ];
 
         $settings = (object) [
@@ -94,6 +94,41 @@ class SettingController extends Controller
 
     public function uadupdate(Request $request){
         DB::table('settings')->where('id', 1)->update(['user_agreement_device' => $request->aud]);
+
+        return redirect()->route('settings.index');
+    }
+
+
+    public function uapsIndex(){
+        $settings = DB::table('settings')->first();
+
+        return view('admin.system-management.uaps-edit', compact('settings'));
+    }
+
+    public function uapsTest(Request $request){
+        $item = (object) [
+            'user' => strtoupper('Salvador Felipe Jacinto Dalí y Domenech'),
+            'date_issued' => date('m/d/Y'),
+            'department' => 'IT',
+            'site' => 'PARAÑAQUE',
+            'desc' => 'APPLE IPHONE 14 PRO MAX',
+            'cost' => "77990",
+            'serial_no' => '3364982134685146',
+            'color' => 'DEEP PURPLE',
+            'remarks' => 'WITH CHARGER',
+            'status' => 'BRAND NEW',
+            'item' => 'PHONE',
+        ];
+
+        $settings = (object) [
+            "user_agreement_phonesim" => $request->aups
+        ];
+
+        return view('inventory.issuance', compact('item', 'settings'));
+    }
+
+    public function uapsupdate(Request $request){
+        DB::table('settings')->where('id', 1)->update(['user_agreement_phonesim' => $request->aups]);
 
         return redirect()->route('settings.index');
     }

@@ -26,7 +26,7 @@
         }
     </style>
 
-    <body onload="window.print()" class="font-sans antialiased w-screen">
+    <body class="font-sans antialiased w-screen">
         <div class="px-20 mt-3">
             <div class="grid grid-cols-4 gap-x-4">
                 <div class="self-center justify-self-end">
@@ -64,7 +64,7 @@
                 <div>Brand Name: </div>
                 <div class="font-semibold col-span-4 tracking-wide">{{ $item->desc}}</div>
                 <div>Cost: </div>
-                <div class="font-semibold tracking-wide">{{ (preg_match("/[a-z]/i", $item->cost)) ? $item[0]->cost : '₱ '.number_format($item->cost, 2, '.', ',') }}</div>
+                <div class="font-semibold tracking-wide">{{ (preg_match("/[a-zA-Z]/i", $item->cost)) ? $item->cost : '₱ '.number_format($item->cost, 2, '.', ',') }}</div>
                 <div>Serial/SIM No: </div>
                 <div class="font-semibold col-span-4 tracking-wide">{{ $item->serial_no}}</div>
                 <div>Color: </div>
@@ -83,7 +83,7 @@
 
         <div class="px-10">
             <h1 style="box-shadow: inset 0 0 0 1000px red;" class="border inline border-neutral-900 px-2 py-px text-white font-semibold tracking-wide">USER AGREEMENT</h1>
-            <textarea readonly style="font-size: 10px;" id="userAgreement" class="w-full h-auto leading-3 resize-none border-neutral-900 border">{{ $item->item != 'SIM CARD' && $item->item != 'PHONE' ? $settings->user_agreement_device : $settings->user_agreement_phonesim }}</textarea>
+            <textarea readonly style="font-size: 10px;" id="userAgreement" class="w-full h-auto leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea>
             <p style="font-size: 10px;" class="mt-14 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p>
             <div class="grid grid-cols-3 mt-3">
                 <div class="text-xs">
@@ -112,6 +112,8 @@
             $(document).ready(function(){
                 var sh = $('#userAgreement').prop('scrollHeight');
                 $('#userAgreement').height((sh + 5) + 'px');
+                window.onafterprint = window.close;
+                window.print();
             });
         </script>
     </body>
