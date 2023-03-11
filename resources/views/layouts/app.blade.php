@@ -21,7 +21,7 @@
         <script src="https://unpkg.com/flowbite@1.5.3/dist/datepicker.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased overflow-x-hidden">
         @yield('issuance')
         <div class="min-h-screen bg-gray-900">
             @include('layouts.navigation')

@@ -83,13 +83,13 @@
                 $(this).height((sh+10)+'px');
             });
 
-            $('#btnTestPrint').click(function(){ target='_blank'
+            $('#btnTestPrint').click(function(){
                 $('#frmAUD').prop('action', `{{ route('settings.uadTest') }}`);
                 $('#frmAUD').prop('target', '_blank');
                 $('#frmAUD').submit();
             });
 
-            $('#btnSave').click(function(){ target='_blank'
+            $('#btnSave').click(function(){
                 $('#frmAUD').prop('action', `{{ route('settings.uadupdate') }}`);
                 $('#frmAUD').submit();
             });
