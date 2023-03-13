@@ -75,12 +75,12 @@
     <script>
         $(document).ready(function(){
             var sh = $('#uad').prop('scrollHeight');
-            $('#uad').height((sh+5)+'px');
+            $('#uad').height((sh+10)+'px');
 
             $('#uad').keyup(function(){
                 $(this).height('5px');
                 var sh = $(this).prop('scrollHeight');
-                $(this).height((sh+5)+'px');
+                $(this).height((sh+10)+'px');
             });
 
             $('#btnTestPrint').click(function(){
