@@ -100,7 +100,6 @@
                             @csrf
                             <input type="hidden" id="ticketID" name="ticketID">
                             <input type="hidden" id="ticketStatus" name="ticketStatus">
-                            <input type="hidden" id="SAPID" name="SAPID">
                             <span id="ticketNumber"></span>
                             <br>
                             <span id="ticketRequester" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDepartment" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDate" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketStatus2" class="text-sm"></span>
@@ -397,7 +396,7 @@
                 @foreach ($tickets as $ticket)
                     <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                         <th scope="row" class="py-3 px-6 font-medium text-white text-center">
-                            <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-sap_id="{{ $ticket->sap_id }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
+                            <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-is_SAP="{{ $ticket->is_SAP }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
                                 {{ $ticket->ticket_no }}
                             </span>
                         </th>
@@ -554,10 +553,9 @@
                 $('#ticketStatus2').addClass('text-neutral-300');
             }
             
-            var sap_id = $(this).find("span").data('sap_id');
-            if(sap_id != "" && status != 'DONE'){
+            var is_SAP = $(this).find("span").data('is_sap');
+            if(is_SAP != "0" && status != 'DONE'){
                 $('#SAPButton').removeClass('hidden');
-                $('#SAPID').val(sap_id);
             }else{
                 $('#SAPButton').addClass('hidden');
             }
@@ -566,7 +564,7 @@
         });
 
         $('#SAPButton').click(function(){
-            var sapID = $('#SAPID').val();
+            var ticketID = $('#ticketID').val();
             var _token = $('input[name="_token"]').val();
             
             $.ajax({
@@ -574,12 +572,12 @@
                 method: "POST",
                 dataType: 'json',
                 data: {
-                    sapID: sapID,
+                    ticketID: ticketID,
                     _token: _token
                 },
                 success:function(result){
                     $('#request').val(result.request);
-                    $('#remarks').val(result.remarks);
+                    $('#remarks').val(result.description);
                     $('#type').val(result.type);
                     $('#code').val(result.code);
                     $('#wtax_code').val(result.wtax_code);

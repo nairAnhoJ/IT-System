@@ -21,9 +21,9 @@ class TicketController extends Controller
         $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
 
         if($userDeptID != $deptInCharge){
-            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.sap_id, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE department = ? ORDER BY tickets.id DESC", [$userDeptID]);
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE department = ? ORDER BY tickets.id DESC", [$userDeptID]);
         }else{
-            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.sap_id, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id ORDER BY tickets.id DESC");
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id ORDER BY tickets.id DESC");
         }
 
         // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, users.name AS user, departments.name AS dept, tickets.nature_of_problem, tickets.assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users ON tickets.user_id = users.id INNER JOIN departments ON tickets.department = departments.id ORDER BY tickets.id DESC");
@@ -88,6 +88,7 @@ class TicketController extends Controller
         if($attachment != null){
             $ticket->attachment = $attPath;
         }
+        $ticket->is_SAP = '0';
         $ticket->save();
         
         // ===================================================================================================================

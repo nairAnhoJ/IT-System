@@ -75,8 +75,6 @@ class SAPController extends Controller
 
         $sap = new SAP();
         $sap->type = $type;
-        $sap->request = $saprequest;
-        $sap->remarks = $remarks;
         $sap->code = $code;
         $sap->wtax_code = $wtax_code;
         $sap->AR_inCharge = $AR_inCharge;
@@ -104,7 +102,6 @@ class SAPController extends Controller
 
         $ticket = new Ticket();
         $ticket->ticket_no = $ticketNo;
-        $ticket->sap_id = $sap->id;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
         $ticket->nature_of_problem = '5';
@@ -114,6 +111,31 @@ class SAPController extends Controller
         if($bir_attachment != null){
             $ticket->attachment = $attPath;
         }
+        $ticket->is_SAP = '1';
+        $ticket->type = $type;
+        $ticket->code = $code;
+        $ticket->wtax_code = $wtax_code;
+        $ticket->AR_inCharge = $AR_inCharge;
+        $ticket->isOnHold = $isOnHold;
+        $ticket->AR_email = $AR_email;
+        $ticket->name = $name;
+        $ticket->isAutoEmail = $isAutoEmail;
+        $ticket->payment_terms = $payment_terms;
+        $ticket->billing_address = $billing_address;
+        $ticket->style = $style;
+        $ticket->bir_attachment = $bir_attachment;
+        $ticket->shipping_address = $shipping_address;
+        $ticket->contact_name1 = $contact_name1;
+        $ticket->contact_no1 = $contact_no1;
+        $ticket->contact_email1 = $contact_email1;
+        $ticket->tin = $tin;
+        $ticket->contact_name2 = $contact_name2;
+        $ticket->contact_no2 = $contact_no2;
+        $ticket->contact_email2 = $contact_email2;
+        $ticket->sales_employee = $sales_employee;
+        $ticket->contact_name3 = $contact_name3;
+        $ticket->contact_no3 = $contact_no3;
+        $ticket->contact_email3 = $contact_email3;
         $ticket->save();
 
         return redirect()->route('sap.index');
@@ -237,8 +259,6 @@ class SAPController extends Controller
         }
 
         $sap = SAP::find($id);
-        $sap->request = $saprequest;
-        $sap->remarks = $remarks;
         $sap->type = $type;
         $sap->code = $code;
         $sap->wtax_code = $wtax_code;
@@ -267,7 +287,6 @@ class SAPController extends Controller
 
         $ticket = new Ticket();
         $ticket->ticket_no = $ticketNo;
-        $ticket->sap_id = $sap->id;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
         $ticket->nature_of_problem = '5';
@@ -277,13 +296,38 @@ class SAPController extends Controller
         if($bir_attachment != null){
             $ticket->attachment = $attPath;
         }
+        $ticket->is_SAP = '1';
+        $ticket->type = $type;
+        $ticket->code = $code;
+        $ticket->wtax_code = $wtax_code;
+        $ticket->AR_inCharge = $AR_inCharge;
+        $ticket->isOnHold = $isOnHold;
+        $ticket->AR_email = $AR_email;
+        $ticket->name = $name;
+        $ticket->isAutoEmail = $isAutoEmail;
+        $ticket->payment_terms = $payment_terms;
+        $ticket->billing_address = $billing_address;
+        $ticket->style = $style;
+        $ticket->bir_attachment = $bir_attachment;
+        $ticket->shipping_address = $shipping_address;
+        $ticket->contact_name1 = $contact_name1;
+        $ticket->contact_no1 = $contact_no1;
+        $ticket->contact_email1 = $contact_email1;
+        $ticket->tin = $tin;
+        $ticket->contact_name2 = $contact_name2;
+        $ticket->contact_no2 = $contact_no2;
+        $ticket->contact_email2 = $contact_email2;
+        $ticket->sales_employee = $sales_employee;
+        $ticket->contact_name3 = $contact_name3;
+        $ticket->contact_no3 = $contact_no3;
+        $ticket->contact_email3 = $contact_email3;
         $ticket->save();
 
         return redirect()->route('sap.index');
     }
 
     public function details(Request $request){
-        $sap = DB::table('sapbp')->where('id', $request->sapID)->first();
+        $sap = DB::table('tickets')->where('id', $request->ticketID)->first();
 
         if($sap->isOnHold == 1){
             $OH = 'YES';
@@ -297,8 +341,8 @@ class SAPController extends Controller
         }
 
         $result = array(
-            'request' => $sap->request,
-            'remarks' => $sap->remarks,
+            'request' => $sap->subject,
+            'description' => $sap->description,
             'type' => $sap->type,
             'code' => $sap->code,
             'wtax_code' => $sap->wtax_code,
