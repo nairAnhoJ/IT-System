@@ -521,7 +521,7 @@
                 $('#cancelButtonDiv').html('');
                 $('#ticketResolutionInput').html(`<hr class="my-5">
                                                 <label for="ticketResolution" class="block mb-2 text-sm font-medium text-white">Resolution</label>
-                                                <textarea style="resize: none;" id="ticketResolution" name="ticketResolution" rows="4" class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
+                                                <textarea required style="resize: none;" id="ticketResolution" name="ticketResolution" rows="4" class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
                 $('#ticketStatus2').removeClass('text-red-500');
                 $('#ticketStatus2').removeClass('text-teal-500');
                 $('#ticketStatus2').addClass('text-amber-300');
