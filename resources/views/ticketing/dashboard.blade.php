@@ -554,7 +554,8 @@
             }
             
             var is_SAP = $(this).find("span").data('is_sap');
-            if(is_SAP != "0" && status != 'DONE'){
+            
+            if(is_SAP != "0"){
                 $('#SAPButton').removeClass('hidden');
             }else{
                 $('#SAPButton').addClass('hidden');
