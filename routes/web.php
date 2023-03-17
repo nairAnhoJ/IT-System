@@ -44,6 +44,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    if(auth()->user()->first_time_login == 1){
+        return redirect()->route('changePass');
+    }
+
+
     $userDeptID = auth()->user()->dept_id;
     // $userRow = DB::table('users')->where('id', $userID)->get();
     // $userDeptID = $userRow[0]->dept_id;
@@ -70,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/change-password', [UserController::class, 'changePass'])->name('changePass');
 
     // Ticketing
     Route::get('/ticketing/dashboard', [TicketController::class, 'index'])->name('ticket.index');
@@ -165,6 +172,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/system-management/user/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::post('/system-management/user/update', [UserController::class, 'update'])->name('user.update');
         Route::post('/system-management/user/delete', [UserController::class, 'delete'])->name('user.delete');
+
+        Route::post('/update-pass', [UserController::class, 'updatePass'])->name('updatePass');
 
         // Ticket Category
         Route::get('/system-management/ticket-category', [TicketCategoryController::class, 'index'])->name('category.index');

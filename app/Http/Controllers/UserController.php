@@ -56,4 +56,19 @@ class UserController extends Controller
         DB::delete('delete from users where id = ?', [$request->id]);
         return redirect()->route('user.index')->with('success', 'User details has been deleted successfully');
     }
+
+    public function changePass(){
+        return view('change-pass');
+    }
+
+    public function updatePass(Request $request){
+
+        $request->validate([
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        DB::update('update users set password=?, first_time_login=0 where id = ?', [Hash::make($request->password), auth()->user()->id]);
+
+        return redirect()->route('dashboard');
+    }
 }
