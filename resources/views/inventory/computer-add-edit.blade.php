@@ -70,9 +70,11 @@
             </div>
 
             <label for="type" class="mt-3 block text-sm font-medium text-white">Type</label>
-            <select id="type" name="type" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+            <select {{ $Action != 'add' ? 'disabled' : ''; }} id="type" name="type" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                 <option {{ $type == 'DESKTOP' ? 'selected' : ''; }} value="DESKTOP">DESKTOP</option>
-                <option {{ $type == 'LAPTOP' ? 'selected' : ''; }} value="LAPTOP">LAPTOP</option>
+                @if ($Action != 'add')
+                    <option {{ $type == 'LAPTOP' ? 'selected' : ''; }} value="LAPTOP">LAPTOP</option>
+                @endif
             </select>
 
             <label for="status" class="mt-3 block text-sm font-medium text-white">Status</label>

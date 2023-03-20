@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Computer;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -163,9 +164,54 @@ class ItemController extends Controller
             $remarks = strtoupper($request->remarks);
             $date_issued = $request->date_issued;
 
-            DB::table('items')
-                ->where('id', $statusID)
-                ->update(['i_user' => $user,'i_department' => $department, 'i_cost' => $cost, 'i_color' => $color, 'i_status' => $status, 'i_remarks' => $remarks, 'i_date_issued' => $date_issued, 'computer_id' => 1, 'status' => 'USED', 'edited_by' => auth()->user()->name]);
+            $thisItem = DB::table('items')->where('id', $statusID)->first();
+            if($thisItem->type_id == '13'){
+                $lastComputerCode = DB::table('computers')->orderBy('id','desc')->first();
+                if($lastComputerCode->code != 'N/A'){
+                    $lastCC = substr($lastComputerCode->code, -6);
+                    $lastCC++;
+                    while(mb_strlen($lastCC, "UTF-8") < 6){
+                        $lastCC = "0{$lastCC}";
+                    }
+                    $computerCode = "HII_PC-{$lastCC}";
+                }else{
+                    $computerCode = 'HII_PC-000001';
+                }
+    
+                $computer = new Computer();
+                $computer->code = $computerCode;
+                $computer->user = strtoupper($user);
+                $computer->site = $thisItem->site_id;
+                $computer->ip_add = '0.0.0.0';
+                $computer->type = 'LAPTOP';
+                $computer->status = 'WORKING';
+                $computer->conducted_by = auth()->user()->name;
+                $computer->date_conducted = date('m-d-Y');
+                $computer->save();
+
+                $com_id = $computer->id;
+                // dd($com_id);
+
+                DB::table('items')
+                    ->where('id', $statusID)
+                    ->update([
+                        'i_user' => $user,
+                        'i_department' => $department,
+                        'i_cost' => $cost,
+                        'i_color' => $color,
+                        'i_status' => $status,
+                        'i_remarks' => $remarks,
+                        'i_date_issued' => $date_issued,
+                        'computer_id' => $com_id,
+                        'status' => 'USED',
+                        'edited_by' => auth()->user()->name
+                    ]);
+            }else{
+                DB::table('items')
+                    ->where('id', $statusID)
+                    ->update(['i_user' => $user,'i_department' => $department, 'i_cost' => $cost, 'i_color' => $color, 'i_status' => $status, 'i_remarks' => $remarks, 'i_date_issued' => $date_issued, 'computer_id' => 1, 'status' => 'USED', 'edited_by' => auth()->user()->name]);
+            }
+
 
         }else if($thisStatus == 'USED'){
 

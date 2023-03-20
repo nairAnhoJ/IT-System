@@ -407,7 +407,7 @@
                     $('#divStatus').html(`
                         <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Used</button>
                     `);
-                }else if(status == 'USED' && com == 'N/A'){
+                }else if(status == 'USED'){
                     $('#divStatus').html(`
                         <a href="/inventory/items/issuance-form/${id}" target='_blank' type="button" class="tracking-wider mr-2 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Print Issuance Form</a>
                         <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Spare</button>
