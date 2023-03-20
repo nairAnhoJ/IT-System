@@ -105,6 +105,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/items/invoice-download/{id}', [ItemController::class, 'download']);
 
     Route::get('/inventory/items/issuance-form/{id}', [ItemController::class, 'issuance']);
+    Route::post('/inventory/items/edit-issuance-form', [ItemController::class, 'issuanceEdit'])->name('issuance.edit');
+    Route::post('/inventory/items/update-issuance-form', [ItemController::class, 'issuanceUpdate'])->name('issuance.update');
 
     Route::get('/inventory/items/defective', [ItemController::class, 'defectiveIndex'])->name('defectiveIndex.index');
     Route::post('/inventory/items/defective/restore', [ItemController::class, 'defectiveRestore'])->name('defectiveIndex.restore');

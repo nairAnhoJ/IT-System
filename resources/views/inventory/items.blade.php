@@ -53,13 +53,13 @@
 
     {{-- STATUS CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
-        <button id="statusConfirmation" data-modal-target="statusModal" data-modal-toggle="statusModal" class="hidden text-white bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800" type="button"></button>
+        <button id="statusConfirmation" data-modal-target="statusModal" data-modal-toggle="statusModal" class="hidden text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700" type="button"></button>
         
         <!-- Main modal -->
         <div id="statusModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
-                <form action="{{ route('item.status') }}" method="POST" enctype="multipart/form-data" class="relative rounded-lg shadow bg-gray-700">
+                <form action="{{ route('item.status') }}" method="POST" id="statusForm" enctype="multipart/form-data" class="relative rounded-lg shadow bg-gray-700">
                     @csrf
                     <!-- Modal header -->
                     <div class="flex items-start justify-between px-6 py-4 border-b rounded-t border-gray-600">
@@ -79,8 +79,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center py-3 px-5 space-x-2 border-t rounded-b border-gray-600">
-                        <button type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Submit</button>
-                        <button data-modal-hide="statusModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Cancel</button>
+                        <button type="submit" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700">Submit</button>
+                        <button data-modal-hide="statusModal" type="button" class="rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -89,7 +89,7 @@
 
     {{-- DEFECTIVE CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
-        <button id="defectiveConfirmation" data-modal-target="defectiveModal" data-modal-toggle="defectiveModal" class="hidden text-white bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800" type="button"></button>
+        <button id="defectiveConfirmation" data-modal-target="defectiveModal" data-modal-toggle="defectiveModal" class="hidden text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700" type="button"></button>
         
         <!-- Main modal -->
         <div id="defectiveModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
@@ -115,8 +115,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center py-3 px-5 space-x-2 border-t rounded-b border-gray-600">
-                        <button data-modal-hide="defectiveModal" type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Yes</button>
-                        <button data-modal-hide="defectiveModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Cancel</button>
+                        <button data-modal-hide="defectiveModal" type="submit" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700">Yes</button>
+                        <button data-modal-hide="defectiveModal" type="button" class="rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -125,7 +125,7 @@
 
     {{-- DELETE CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
-        <button id="deleteConfirmation" data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="hidden text-white bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800" type="button"></button>
+        <button id="deleteConfirmation" data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="hidden text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700" type="button"></button>
         
         <!-- Main modal -->
         <div id="deleteModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
@@ -154,8 +154,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-2 border-t rounded-b border-gray-600">
-                        <button data-modal-hide="deleteModal" type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Yes</button>
-                        <button data-modal-hide="deleteModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Cancel</button>
+                        <button data-modal-hide="deleteModal" type="submit" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700">Yes</button>
+                        <button data-modal-hide="deleteModal" type="button" class="rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -164,11 +164,11 @@
 
     {{-- VIEW ITEM MODAL --}}
         <!-- ========================================================= Modal toggle ========================================================= -->
-        <button id="viewItem" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="itemModal"></button>
+        <button id="viewItem" class="hidden text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700" type="button" data-modal-toggle="itemModal"></button>
         
         <!-- ========================================================= Main modal ========================================================= -->
         <div id="itemModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-            <div class="relative w-full h-full max-w-4xl md:h-auto">
+            <div class="relative w-full h-full max-w-5xl md:h-auto">
                 <!-- Modal content -->
                 <div class="relative rounded-lg shadow bg-gray-700 text-sm">
                     <!-- Modal header -->
@@ -187,6 +187,8 @@
                             <div id="type" class="col-span-4 font-semibold"></div>
                             <div>Description: </div>
                             <div id="desc" class="col-span-4 font-semibold"></div>
+                            <div>Remarks: </div>
+                            <div id="remarks" class="col-span-4 font-semibold"></div>
                             <div>Serial Number: </div>
                             <div id="serial_no" class="col-span-4 font-semibold"></div>
                             <div>Status: </div>
@@ -198,8 +200,8 @@
                             <div id="invoiceLabel" class="self-center">Invoice</div>
                             <div id="invoiceForm" class="col-span-4 font-semibold">
                                 <input type="hidden" id="itemID" name="itemID">
-                                <button type="button" data-modal-toggle="viewInvoice" class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View</button>
-                                <a id="invoiceDownloadButton" href="" class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Download</a>
+                                <button type="button" data-modal-toggle="viewInvoice" class="text-white font-medium rounded-lg text-sm px-5 py-1.5 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">View</button>
+                                <a id="invoiceDownloadButton" href="" class="text-white font-medium rounded-lg text-sm px-5 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Download</a>
                             </div>
                         </div>
                     </div>
@@ -208,8 +210,8 @@
                         <div id="divStatus">
 
                         </div>
-                        <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-700 text-gray-100 border-red-500 hover:text-white hover:bg-red-600 focus:ring-red-600">Mark as Defective</button>
-                        <button id="btnCancel" data-modal-toggle="itemModal" type="button" class="w-44 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
+                        <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="w-44 tracking-wider mr-3 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-700 text-gray-100 border-red-500 hover:text-white hover:bg-red-600">Mark as Defective</button>
+                        <button id="btnCancel" data-modal-toggle="itemModal" type="button" class="w-44 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600">Close</button>
                     </div>
                 </div>
             </div>
@@ -237,7 +239,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 border-t rounded-b border-gray-600">
-                        <button data-modal-toggle="viewInvoice" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
+                        <button data-modal-toggle="viewInvoice" type="button" class="rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600">Close</button>
                     </div>
                 </div>
             </div>
@@ -250,18 +252,18 @@
                 <h1 class="font-extrabold leading-none text-3xl text-blue-500 tracking-wide">ITEMS</h1>
             </div>
             <div class="justify-self-end">
-                <a href="{{ route('defectiveIndex.index') }}" class="h-full text-white focus:ring-4 font-medium rounded-lg text-sm px-10 py-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Defective Items</a>
+                <a href="{{ route('defectiveIndex.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Defective Items</a>
             </div>
         </div>
 
         {{-- CONTROLS --}}
         <div class="grid grid-cols-2 mb-0 h-10">
             <div class="h-8">
-                <a href="{{ route('item.add') }}" type="button" class="h-full text-white focus:ring-4 font-medium rounded-lg text-sm px-10 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Add Item</a>
+                <a href="{{ route('item.add') }}" type="button" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Add Item</a>
             </div>
             <div class="flex gap-x-3 h-8">
                 <div class="w-1/3">
-                    {{-- <select id="countries" class="border text-sm rounded-lg block px-2.5 pt-1 pb-0 w-full h-full bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                    {{-- <select id="countries" class="border text-sm rounded-lg block px-2.5 pt-1 pb-0 w-full h-full bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500">
                         <option selected value="">All Item Type</option>
                         @foreach ($types as $type)
                             <option value="{{$type->name}}">{{ ucfirst(strtolower($type->name)) }}</option>
@@ -274,7 +276,7 @@
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                         </div>
-                        <input type="text" id="tableSearch" autocomplete="off" class="h-full border text-sm rounded-lg block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required>
+                        <input type="text" id="tableSearch" autocomplete="off" class="h-full border text-sm rounded-lg block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" placeholder="Search" required>
                     </div>
                 </div>
             </div>
@@ -321,7 +323,7 @@
                     @foreach ($items as $item)
                         <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}">
+                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-remarks="{{ $item->remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}">
                                     {{ $item->code }}
                                 </span>
                             </td>
@@ -393,6 +395,9 @@
                 var desc = $(this).find("span").data('desc');
                 $('#desc').html(desc);
 
+                var remarks = $(this).find("span").data('remarks');
+                $('#remarks').html(remarks);
+
                 var serial_no = $(this).find("span").data('serial_no');
                 $('#serial_no').html(serial_no);
 
@@ -405,12 +410,13 @@
                 $('#updateStatus').val(status);
                 if(status == 'SPARE'){
                     $('#divStatus').html(`
-                        <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Used</button>
+                        <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600">Mark as Used</button>
                     `);
                 }else if(status == 'USED'){
                     $('#divStatus').html(`
-                        <a href="/inventory/items/issuance-form/${id}" target='_blank' type="button" class="tracking-wider mr-2 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Print Issuance Form</a>
-                        <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600 focus:ring-blue-600">Mark as Spare</button>
+                        <button id="btnEditDetails" data-status="${status}" type="button" class="tracking-wider mr-2 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600">Edit Details</button>
+                        <a href="/inventory/items/issuance-form/${id}" target='_blank' class="tracking-wider mr-2 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600">Print Issuance Form</a>
+                        <button id="btnStatus" data-status="${status}" type="button" class="w-44 tracking-wider mr-3 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-blue-700 text-gray-100 border-blue-600 hover:text-white hover:bg-blue-600">Mark as Spare</button>
                     `);
                 }else{
                     $('#divStatus').html(``);
@@ -445,29 +451,29 @@
                     $('#changeStatusHeader').html('Mark as Used');
                     $('#divModalBody').html(`
                         <label for="user" class="block mt-2 text-sm font-medium text-white">User</label>
-                        <input required type="text" id="user" name="user" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                        <input required type="text" id="user" name="user" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" autocomplete="off">
 
                         <label for="department" class="mt-2 block text-sm font-medium text-white">Department</label>
-                        <select required id="department" name="department" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                        <select required id="department" name="department" autocomplete="off" class="border text-sm rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                             @foreach ($depts as $dept)
                                 <option value="{{ $dept->id }}">{{ $dept->name }}</option>
                             @endforeach
                         </select>
 
                         <label for="cost" class="block mt-2 text-sm font-medium text-white">Cost</label>
-                        <input required type="text" id="cost" name="cost" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                        <input required type="text" id="cost" name="cost" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" autocomplete="off">
 
                         <label for="color" class="block mt-2 text-sm font-medium text-white">Color</label>
-                        <input required type="text" id="color" name="color" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                        <input required type="text" id="color" name="color" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" autocomplete="off">
 
                         <label for="status" class="mt-2 block text-sm font-medium text-white">Status</label>
-                        <select required id="status" name="status" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                        <select required id="status" name="status" autocomplete="off" class="border text-sm rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                                 <option value="BRAND NEW">Brand New</option>
                                 <option value="OLD UNIT">Old Unit</option>
                         </select>
 
                         <label for="remarks" class="block mt-2 text-sm font-medium text-white">Remarks</label>
-                        <input required type="text" id="remarks" name="remarks" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                        <input required type="text" id="remarks" name="remarks" class="block w-full p-2 mb-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" autocomplete="off">
                 
                         <label for="date_issued" class="block text-sm font-medium text-white">Date Issued</label>
                         <div class="relative">
@@ -477,7 +483,7 @@
                                         <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
-                                <input datepicker datepicker-autohide type="text" id="date_issued" name="date_issued" value="{{ date('m-d-Y') }}" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" required>
+                                <input datepicker datepicker-autohide type="text" id="date_issued" name="date_issued" value="{{ date('m-d-Y') }}" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:border-blue-500 block w-full pl-10 p-2.5" required>
                             </div>
                         </div>
                     `);
@@ -494,8 +500,26 @@
                 $('#statusConfirmation').click();
             });
 
-            jQuery(document).on("click", "#btnStatus", function(){
+            jQuery(document).on("click", "#btnEditDetails", function(){
+                var id = $('#itemID').val();
+                var _token = $('input[name="_token"]').val();
 
+                $.ajax({
+                    url:"{{ route('issuance.edit') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#divModalBody').html(result);
+                        $('#changeStatusHeader').html('Edit Issuance Details');
+                        $('#statusID').val(id);
+                        $('#btnCancel').click();
+                        $('#statusConfirmation').click();
+                        $('#statusForm').prop('action', `{{ route('issuance.update') }}`);
+                    }
+                });
             });
         });
     </script>
