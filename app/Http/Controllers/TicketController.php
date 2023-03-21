@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -135,6 +136,73 @@ class TicketController extends Controller
         // ===================================================================================================================
     }
 
+    public function createForIT(){
+        $cats = DB::select('SELECT * FROM ticket_categories ORDER BY ticket_categories.name ASC');
+        $dic = (DB::table('dept_in_charges')->first())->dept_id;
+        $users = DB::table('users')->where('dept_id', '!=', $dic)->orderBy('name', 'asc')->get();
+
+        return view('ticketing.create-ticket', compact('cats', 'users'));
+    }
+
+    public function storeForIT(Request $request){
+        $nature = $request->nature;
+        $user = $request->user;
+        $user_dept = (DB::table('users')->where('id', $user)->first())->dept_id;
+        $subject = $request->subject;
+        $description = $request->description;
+        $resolution = $request->resolution;
+        $attachment = $request->attachment;
+
+        $request->validate([
+            'subject' => ['required'],
+            'description' => ['required'],
+            'resolution' => ['required'],
+            'attachment' => ['nullable'],
+        ]);
+
+        $TicketID = DB::table('tickets')->orderBy('id','DESC')->first();
+        if(isset($TicketID)){
+            $TicketID = $TicketID->id + 1;
+            if(strlen($TicketID) <= 4){
+                $TicketIDLength = 4 - strlen($TicketID);
+        
+                for($x = 1; $x <= $TicketIDLength; $x++){
+                    $TicketID = "0{$TicketID}";
+                }
+            }else{
+                $TicketID = substr($TicketID, -4);
+            }
+        }else{
+            $TicketID = '0001';
+        }
+        $ticketNo = date('m').$TicketID;
+
+        $attPath = null;
+        if($attachment != null){
+            $unique = Str::random(12);
+            $attPath = $request->file('attachment')->storeAs('attachments/'.date('mY'), date('Ymd') . '-' . $ticketNo . '.' . $request->file('attachment')->getClientOriginalExtension(), 'public');
+        }
+
+        $ticket = new Ticket();
+        $ticket->ticket_no = $ticketNo;
+        $ticket->user_id = $user;
+        $ticket->department = $user_dept;
+        $ticket->nature_of_problem = $nature;
+        $ticket->assigned_to = auth()->user()->id;
+        $ticket->subject = $subject;
+        $ticket->description = $description;
+        $ticket->resolution = $resolution;
+        if($attachment != null){
+            $ticket->attachment = $attPath;
+        }
+        $ticket->status = 'DONE';
+        $ticket->done_by = auth()->user()->id;
+        $ticket->is_SAP = '0';
+        $ticket->save();
+
+        return redirect()->route('ticket.index');
+    }
+
     public function update(Request $request){
         $id = $request->ticketID;
         $status = $request->ticketStatus;
@@ -203,7 +271,8 @@ class TicketController extends Controller
             $request->validate([
                 'ticketResolution' => 'required',
             ]);
-            DB::update('update tickets set status = "DONE", resolution = ?, end_date_time = NOW()  where id = ?', [$request->ticketResolution, $id]);
+        
+            DB::update('update tickets set status = "DONE", done_by = ?, resolution = ?, end_date_time = NOW()  where id = ?', [auth()->user()->id, $request->ticketResolution, $id]);
         
             // ===================================================================================================================
                     

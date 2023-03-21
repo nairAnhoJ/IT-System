@@ -81,7 +81,9 @@ Route::middleware('auth')->group(function () {
     // Ticketing
     Route::get('/ticketing/dashboard', [TicketController::class, 'index'])->name('ticket.index');
     Route::get('/ticketing/create', [TicketController::class, 'create'])->name('ticket.create');
+    Route::get('/ticketing/create-ticket', [TicketController::class, 'createForIT'])->name('ticket.createForIT');
     Route::post('/ticketing/store', [TicketController::class, 'store'])->name('ticket.store');
+    Route::post('/ticketing/store-ticket', [TicketController::class, 'storeForIT'])->name('ticket.storeForIT');
     Route::post('/ticketing/temp', [TicketController::class, 'temp'])->name('ticket.temp');
     Route::post('/ticketing/update', [TicketController::class, 'update'])->name('ticket.update');
     Route::get('/ticketing/reports', [TicketController::class, 'report'])->name('ticket.reports');
