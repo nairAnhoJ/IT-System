@@ -296,6 +296,8 @@
         });
 
         $('.userEdit').click(function(){
+            $('#password').attr('required', false);
+            $('#password_confirmation').attr('required', false);
             var id = $(this).data('id');
             var action = "{{ route('user.update') }}";
             $('#id_no').val('');

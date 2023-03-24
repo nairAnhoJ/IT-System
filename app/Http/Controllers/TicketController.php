@@ -197,6 +197,8 @@ class TicketController extends Controller
         }
         $ticket->status = 'DONE';
         $ticket->done_by = auth()->user()->id;
+        $ticket->start_date_time = date('Y-m-d H:i:s');
+        $ticket->end_date_time = date('Y-m-d H:i:s');
         $ticket->is_SAP = '0';
         $ticket->save();
 
@@ -367,7 +369,7 @@ class TicketController extends Controller
         $userF = $request->user;
         $userfilter = "";
         if($userF != 0){
-            $userfilter = " AND tickets.assigned_to = ".$userF;
+            $userfilter = " AND tickets.done_by = ".$userF;
         }
 
         $categoryF = $request->category;
