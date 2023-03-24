@@ -78,7 +78,7 @@
             <form method="POST" action="{{ route('updatePass') }}" class="self-center w-96 bg-gray-800 p-7 rounded-xl">
                 @csrf
                 <div class="mb-6">
-                  <label for="password" class="block mb-2 text-sm font-medium text-white">New Password</label>
+                  <label for="password" class="block mb-2 text-sm font-medium text-white">New Password<span class="ml-3 text-xs italic">(minimum of 8 characters)</span></label>
                   <input type="password" id="password" name="password" class="border text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" required>
                 </div>
                 <div class="mb-6">

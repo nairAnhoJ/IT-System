@@ -203,12 +203,17 @@
                                 <button type="button" data-modal-toggle="viewInvoice" class="text-white font-medium rounded-lg text-sm px-5 py-1.5 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">View</button>
                                 <a id="invoiceDownloadButton" href="" class="text-white font-medium rounded-lg text-sm px-5 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Download</a>
                             </div>
+                            <hr class="col-span-5 mt-3">
+                            <div class="col-span-5 text-xl text-blue-400 font-bold mt-3">User Description</div>
+                            <div class="mt-1">User: </div>
+                            <div id="itemUser" class="col-span-4 font-semibold"></div>
+                            <div class="mt-1">Department: </div>
+                            <div id="itemDept" class="col-span-4 font-semibold"></div>
                         </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 border-t rounded-b border-gray-600">
                         <div id="divStatus">
-
                         </div>
                         <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="w-44 tracking-wider mr-3 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-700 text-gray-100 border-red-500 hover:text-white hover:bg-red-600">Mark as Defective</button>
                         <button id="btnCancel" data-modal-toggle="itemModal" type="button" class="w-44 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600">Close</button>
@@ -323,7 +328,7 @@
                     @foreach ($items as $item)
                         <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-remarks="{{ $item->remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}">
+                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-remarks="{{ $item->remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}" data-i_user="{{ $item->i_user }}" data-i_dept="{{ $item->dept_name }}">
                                     {{ $item->code }}
                                 </span>
                             </td>
@@ -339,7 +344,7 @@
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->date_purchased }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center font-medium tracking-wide whitespace-nowrap {{ ($item->status == 'SPARE') ? 'text-emerald-400' : 'text-red-400'; }}">
                                 {{ $item->status }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
@@ -428,6 +433,17 @@
                 var invoice_no = $(this).find("span").data('invoice_no');
                 var path = `{{ asset('storage/${invoice_no}') }}`;
                 $('#itemInvoice').prop('src', path);
+
+                var i_user = $(this).find("span").data('i_user');
+                if(i_user != ''){
+                    $('#itemUser').html(i_user);
+                }else{
+                    $('#itemUser').html('N/A');
+                }
+
+                var i_dept = $(this).find("span").data('i_dept');
+                $('#itemDept').html(i_dept);
+
 
                 var src = `{{ url('/inventory/items/invoice-download/${id}') }}`;
                 $('#invoiceDownloadButton').prop('href', src);
