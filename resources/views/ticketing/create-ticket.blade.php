@@ -38,14 +38,37 @@
                 @endforeach
             </select>
 
-            <div class="mt-5">
+
+            <div>
+                <label for="brand" class="mt-3 block text-sm font-medium text-white">User</label>
+                <div class="wrapper w-full relative">
+                    <div class="select-btn flex items-center justify-between rounded-md bg-gray-700 p-2 h-9 cursor-pointer">
+                        <span>{{ $users[0]->name }}</span>
+                        <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                    </div>
+                    <div class="content bg-gray-700 mt-1 rounded-md p-3 hidden absolute w-full z-50 border border-gray-500">
+                        <div class="search relative">
+                            <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                            <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                        </div>
+                        <ul class="listOption options mt-2 max-h-64 overflow-y-auto">
+                            @foreach ($users as $user)
+                                <li data-id="{{ $user->id }}" data-name="{{ $user->name }}" class="h-9 cursor-pointer hover:bg-gray-800 rounded-md flex items-center pl-3 leading-9">{{ $user->name }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <input type="hidden" name="user" value="{{ $users[0]->id }}">
+                </div>
+            </div>
+
+            {{-- <div class="mt-5">
                 <label for="user" class="block text-sm font-medium text-white">User</label>
                 <select required id="user" name="user" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                     @foreach ($users as $user)
                         <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <div class="mt-5">
                 <label for="subject" class="block text-sm font-medium text-white">Subject</label>
@@ -121,6 +144,50 @@
                     $('#ResolutionDiv').addClass('hidden');
                     $('#resolution').prop('required', false)
                 }
+            });
+
+
+
+
+
+
+
+            $('.select-btn').click(function(e){
+                $('.content').not($(this).closest('.wrapper').find('.content')).addClass('hidden');
+                $(this).closest('.wrapper').find('.content').toggleClass('hidden');
+                $(this).closest('.wrapper').find('.uil-angle-down').toggleClass('-rotate-180');
+                e.stopPropagation();
+            });
+
+            function searchFilter(searchInput){
+                $(".listOption li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(searchInput) > -1)
+                });
+            }
+
+            $('.content').click(function(e){
+                e.stopPropagation();
+            });
+            
+            $(".selectSearch").on("input", function() {
+                var value = $(this).val().toLowerCase();
+                searchFilter(value);
+            });
+
+            $(".listOption li").click(function(){
+                var id = $(this).data('id');
+                var name = $(this).data('name');
+                $(this).closest('.wrapper').find('input').val(id);
+                $(this).closest('.wrapper').find('.select-btn span').html(name);
+                $('.content').addClass('hidden');
+                $('.selectSearch').val('');
+                var value = $(".selectSearch").val().toLowerCase();
+                searchFilter(value);
+            });
+
+            $(document).click(function() {
+                $('.content').addClass('hidden');
+                $('.uil-angle-down').removeClass('-rotate-180');
             });
         });
     </script>
