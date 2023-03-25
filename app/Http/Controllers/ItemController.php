@@ -79,6 +79,7 @@ class ItemController extends Controller
         $item->status = 'SPARE';
         $item->computer_id = '1';
         $item->site_id = '1';
+        $item->i_department = '1';
         $item->added_by = strtoupper($user_name);
         $item->edited_by = strtoupper($user_name);
         $item->save();

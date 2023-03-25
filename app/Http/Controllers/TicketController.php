@@ -150,13 +150,17 @@ class TicketController extends Controller
         $user_dept = (DB::table('users')->where('id', $user)->first())->dept_id;
         $subject = $request->subject;
         $description = $request->description;
-        $resolution = $request->resolution;
+        $status = $request->status;
         $attachment = $request->attachment;
+
+        if($status == 'DONE'){
+            $resolution = $request->resolution;
+        }
 
         $request->validate([
             'subject' => ['required'],
             'description' => ['required'],
-            'resolution' => ['required'],
+            // 'resolution' => ['required'],
             'attachment' => ['nullable'],
         ]);
 
@@ -191,14 +195,18 @@ class TicketController extends Controller
         $ticket->assigned_to = auth()->user()->id;
         $ticket->subject = $subject;
         $ticket->description = $description;
-        $ticket->resolution = $resolution;
+        if($status == 'DONE'){
+            $ticket->resolution = $resolution;
+            $ticket->done_by = auth()->user()->id;
+            $ticket->start_date_time = date('Y-m-d H:i:s');
+            $ticket->end_date_time = date('Y-m-d H:i:s');
+        }else if($status == 'ONGOING'){
+            $ticket->start_date_time = date('Y-m-d H:i:s');
+        }
         if($attachment != null){
             $ticket->attachment = $attPath;
         }
-        $ticket->status = 'DONE';
-        $ticket->done_by = auth()->user()->id;
-        $ticket->start_date_time = date('Y-m-d H:i:s');
-        $ticket->end_date_time = date('Y-m-d H:i:s');
+        $ticket->status = $status;
         $ticket->is_SAP = '0';
         $ticket->save();
 

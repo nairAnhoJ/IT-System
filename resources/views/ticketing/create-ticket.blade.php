@@ -58,15 +58,33 @@
             </div>
 
             <div class="mt-5">
+                <label for="description" class="block text-sm font-medium text-white">Status</label>
+                <div class="flex">
+                    <div class="flex items-center">
+                        <input checked type="radio" value="PENDING" name="status" class="statusRadio w-4 h-4 text-blue-600 focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600">
+                        <label for="statusPending" class="ml-1 text-sm font-medium text-red-500">PENDING</label>
+                    </div>
+                    <div class="flex items-center ml-4">
+                        <input type="radio" value="ONGOING" name="status" class="statusRadio w-4 h-4 text-blue-600 focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600">
+                        <label for="statusOngoing" class="ml-1 text-sm font-medium text-amber-300">ONGOING</label>
+                    </div>
+                    <div class="flex items-center ml-4">
+                        <input type="radio" value="DONE" name="status" class="statusRadio w-4 h-4 text-blue-600 focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600">
+                        <label for="statusDone" class="ml-1 text-sm font-medium text-teal-500">DONE</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ResolutionDiv" class="hidden mt-5">
                 <label for="resolution" class="block text-sm font-medium text-white">Resolution</label>
-                <textarea required name="resolution" id="resolution" autocomplete="off" rows="3" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"></textarea>
+                <textarea name="resolution" id="resolution" autocomplete="off" rows="3" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"></textarea>
             </div>
 
             <div class="mt-5">
                 <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
                 <div class="grid grid-cols-5 gap-x-5">
                     <div class="col-span-5">
-                        <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept="image/*">
+                        <input id="attachment" name="attachment" class="block w-full h-10 text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400" type="file" accept="image/*">
                     </div>
                 </div>
             </div>
@@ -91,6 +109,18 @@
                 var incharge = $(this).find('option:selected').data('incharge');
                 $('#ticketInChargeDisplay').html(incharge);
                 $('#ticketInCharge').html(incharge);
+            });
+
+            $('.statusRadio').click(function(){
+                var status = $(this).val();
+
+                if(status == 'DONE'){
+                    $('#ResolutionDiv').removeClass('hidden');
+                    $('#resolution').prop('required', true)
+                }else{
+                    $('#ResolutionDiv').addClass('hidden');
+                    $('#resolution').prop('required', false)
+                }
             });
         });
     </script>
