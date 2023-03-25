@@ -114,6 +114,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/items/defective/restore', [ItemController::class, 'defectiveRestore'])->name('defectiveIndex.restore');
 
     Route::get('/inventory/items/return', [ItemController::class, 'returnItem'])->name('return.index');
+    Route::post('/inventory/items/return/print', [ItemController::class, 'returnPrint'])->name('return.print');
+    Route::post('/inventory/items/return/update', [ItemController::class, 'returnUpdate'])->name('return.update');
 
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');

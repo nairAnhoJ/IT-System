@@ -41,25 +41,25 @@
 
         <hr class="mt-2">
 
-        <h1 class="font-medium text-2xl text-center tracking-wider mt-1">ISSUANCE FORM</h1>
+        <h1 class="font-medium text-2xl text-center tracking-wider mt-1">RETURN FORM</h1>
 
         <div class="px-20 mt-2">
             <div class="grid grid-cols-7 gap-x-2 text-sm">
                 <div>Name: </div>
-                <div class="font-semibold col-span-4 tracking-wide">{{ $item->user}}</div>
-                <div>Date Returned: </div>
-                <div class="font-semibold tracking-wide">{{ $item->date_issued }}</div>
+                <div class="font-semibold col-span-3 tracking-wide">{{ $name}}</div>
+                <div class="col-span-2">Date Returned: </div>
+                <div class="font-semibold tracking-wide">{{ $date_returned}}</div>
 
                 <div>Department: </div>
-                <div class="font-semibold col-span-4 tracking-wide">{{ $item->department}}</div>
-                <div>Location: </div>
-                <div class="font-semibold tracking-wide">{{ $item->site}}</div>
+                <div class="font-semibold col-span-3 tracking-wide">{{ $dept}}</div>
+                <div class="col-span-2">Location: </div>
+                <div class="font-semibold tracking-wide">{{ $site }}</div>
             </div>
         </div>
 
         <hr class="my-2">
 
-        <div class="px-20">
+        {{-- <div class="px-20">
             <div class="grid grid-cols-7 gap-x-2 text-xs">
                 <div>Brand Name: </div>
                 <div class="font-semibold col-span-4 tracking-wide">{{ $item->desc}}</div>
@@ -73,9 +73,8 @@
                 <div class="font-semibold col-span-4 tracking-wide">{{ $item->remarks}}</div>
                 <div>Status: </div>
                 <div class="font-semibold tracking-wide">{{ $item->status}}</div>
-
             </div>
-        </div>
+        </div> --}}
 
         <hr class="my-4">
 
@@ -83,24 +82,20 @@
 
         <div style="width: 856px" class="px-10 mx-auto">
             <h1 style="box-shadow: inset 0 0 0 1000px red;" class="border inline border-neutral-900 px-2 py-px text-white font-semibold tracking-wide">USER AGREEMENT</h1>
-            <textarea readonly style="font-size: 11px;" id="userAgreement" class="w-full leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea>
-            <p style="font-size: 10px;" class="mt-32 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p>
+            {{-- <textarea readonly style="font-size: 11px;" id="userAgreement" class="w-full leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea> --}}
+            {{-- <p style="font-size: 10px;" class="mt-32 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p> --}}
             <div class="grid grid-cols-3 mt-3">
-                <div class="text-xs">
-                    Prepared by:
-                </div>
+                <div></div>
                 <div></div>
                 <div class="text-xs">
                     Received By:
                 </div>
 
-                <div class="border-b border-neutral-900 h-5"></div>
+                <div></div>
                 <div></div>
                 <div class="border-b border-neutral-900 h-5"></div>
 
-                <div class="text-xs text-center">
-                    Signature over Printed Name and Date
-                </div>
+                <div></div>
                 <div></div>
                 <div class="text-xs text-center">
                     Signature over Printed Name and Date

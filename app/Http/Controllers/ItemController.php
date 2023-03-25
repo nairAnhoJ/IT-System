@@ -343,8 +343,51 @@ class ItemController extends Controller
 
     public function returnItem(){
         $sites = DB::table('sites')->orderBy('name', 'asc')->get();
+        $depts = DB::table('departments')->where('id', '!=', '1')->orderBy('name', 'asc')->get();
         $items = DB::table('items')->where('status', 'USED')->orderBy('id', 'asc')->get();
+        $itemCount = $items->count();
 
-        return view('inventory.return-items', compact('sites', 'items'));
+        return view('inventory.return-items', compact('sites', 'items', 'itemCount', 'depts'));
+    }
+
+    public function returnUpdate(Request $request){
+        $name = $request->name;
+        $dept = $request->dept;
+        $site = $request->site;
+        $count = $request->count;
+
+        for($x = 1; $x <= $count; $x++){
+            $itemName = 'item'.$x;
+            $itemID = $request->$itemName;
+        }
+
+        return view('inventory.issuance');
+    }
+
+    public function returnPrint(Request $request){
+        $name = $request->name;
+        $dept_id = $request->dept;
+        $site_id = $request->site;
+        $count = $request->count;
+        $date_returned = $request->date_returned;
+
+        $dept = (DB::table('departments')->where('id', $dept_id)->first())->name;
+        $site = (DB::table('sites')->where('id', $site_id)->first())->name;
+
+        $items = [];
+
+        for($x = 1; $x <= $count; $x++){
+            $itemName = 'item'.$x;
+            $itemRemarksName = 'item'.$x;
+            $itemID = $request->$itemName;
+            $itemRemarks = $request->$itemRemarksName;
+
+            $thisItem = DB::table('items')->where('id', $itemID)->first();
+            $itemObject = (object)[
+                'code' => $thisItem->code,
+            ];
+        }
+
+        return view('inventory.return', compact('name', 'dept', 'site', 'date_returned'));
     }
 }
