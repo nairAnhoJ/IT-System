@@ -3,7 +3,7 @@
     <meta http-equiv="Refresh" content="60">
     @endsection
     @section('title')
-    Ticketing
+    HII - Ticketing System
     @endsection
     <style>
         /* width */

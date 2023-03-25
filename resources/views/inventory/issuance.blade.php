@@ -27,7 +27,7 @@
     </style>
 
     <body class="font-sans antialiased w-screen">
-        <div class="px-20 mt-3">
+        <div class="px-20 mt-7">
             <div class="grid grid-cols-4 gap-x-4">
                 <div class="self-center justify-self-end">
                     <img src="{{ asset('storage\images\logo\TMH_BT_RAYMOND.png') }}" class="block w-20 h-auto" alt="">
@@ -57,9 +57,9 @@
             </div>
         </div>
 
-        <hr class="mt-2">
+        <hr class="my-2">
 
-        <div class="px-20 mt-2">
+        <div class="px-20">
             <div class="grid grid-cols-7 gap-x-2 text-xs">
                 <div>Brand Name: </div>
                 <div class="font-semibold col-span-4 tracking-wide">{{ $item->desc}}</div>
@@ -77,14 +77,14 @@
             </div>
         </div>
 
-        <hr class="mt-2">
+        <hr class="my-4">
 
-        <h1 class="font-semibold text-base text-center tracking-wider mt-1">INSTRUCTION FROM HEREIN UNDER IS IMPORTANT. PLEASE READ THEM CAREFULLY</h1>
+        <h1 class="font-semibold text-base text-center tracking-wider">INSTRUCTION FROM HEREIN UNDER IS IMPORTANT. PLEASE READ THEM CAREFULLY</h1>
 
         <div style="width: 856px" class="px-10 mx-auto">
             <h1 style="box-shadow: inset 0 0 0 1000px red;" class="border inline border-neutral-900 px-2 py-px text-white font-semibold tracking-wide">USER AGREEMENT</h1>
-            <textarea readonly style="font-size: 10px;" id="userAgreement" class="w-full leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea>
-            <p style="font-size: 10px;" class="mt-14 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p>
+            <textarea readonly style="font-size: 11px;" id="userAgreement" class="w-full leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea>
+            <p style="font-size: 10px;" class="mt-32 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p>
             <div class="grid grid-cols-3 mt-3">
                 <div class="text-xs">
                     Prepared by:

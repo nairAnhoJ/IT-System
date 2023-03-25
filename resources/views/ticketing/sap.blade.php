@@ -1,6 +1,6 @@
 <x-app-layout>
     @section('title')
-    SAP BP
+    HII - Ticketing System
     @endsection
     <style>
         /* width */

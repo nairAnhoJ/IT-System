@@ -257,6 +257,7 @@
                 <h1 class="font-extrabold leading-none text-3xl text-blue-500 tracking-wide">ITEMS</h1>
             </div>
             <div class="justify-self-end">
+                <a href="{{ route('return.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Return Item/s</a>
                 <a href="{{ route('defectiveIndex.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Defective Items</a>
             </div>
         </div>

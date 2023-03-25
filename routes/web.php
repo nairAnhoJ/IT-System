@@ -113,6 +113,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/items/defective', [ItemController::class, 'defectiveIndex'])->name('defectiveIndex.index');
     Route::post('/inventory/items/defective/restore', [ItemController::class, 'defectiveRestore'])->name('defectiveIndex.restore');
 
+    Route::get('/inventory/items/return', [ItemController::class, 'returnItem'])->name('return.index');
+
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');
     Route::get('/request/items/add', [ItemRequestController::class, 'add'])->name('reqItem.add');

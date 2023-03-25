@@ -1,6 +1,6 @@
 <x-app-layout>
     @section('title')
-    Ticketing - Report
+    HII - Ticketing System
     @endsection
     <style>
         /* width */
