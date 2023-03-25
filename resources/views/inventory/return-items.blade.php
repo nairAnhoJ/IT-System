@@ -38,22 +38,50 @@
             </div> --}}
         </div>
         <div class="mt-10">
-            <div class="grid grid-cols-8 gap-x-6 content-center">
-                <div class="">
-                    Name:
+            <div class="grid grid-cols-8 gap-x-10 content-center">
+                <div class="flex items-center">
+                    <span>Name:</span>
                 </div>
                 <div class="col-span-3">
                     <div>
                         <input type="text" id="small-input" class="block w-full p-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
                     </div>
                 </div>
-                <div class="">
-                    Department:
+                <div class="flex items-center">
+                    <span>Department:</span>
                 </div>
                 <div class="col-span-3">
                     <div>
                         <input type="text" id="small-input" class="block w-full p-2 border rounded-lg sm:text-xs bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
                     </div>
+                </div>
+                <div class="flex items-center mt-4">
+                    <span>Location:</span>
+                </div>
+                <div class="col-span-3 mt-4">
+                    <div>
+                        <select id="site" name="site" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                            @foreach ($sites as $site)
+                                <option value="{{ $site->id }}">{{ $site->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-1/2 flex justify-between items-center mt-7">
+                <h1 class="font-bold text-2xl tracking-wider text-gray-200">ITEMS</h1>
+                <button><i class="uil uil-plus-circle text-blue-500 text-4xl"></i><span class="leading-9">Add Item</span></button>
+            </div>
+
+            <div>
+                <div class="mt-3">
+                    <label for="countries" class="block text-sm font-medium text-white">ITEM 1</label>
+                    <select id="site" name="site" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                        @foreach ($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->brand }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 

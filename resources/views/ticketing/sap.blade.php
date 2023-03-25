@@ -30,7 +30,7 @@
     <div style="height: calc(100vh - 65px);" class="py-4 px-8 text-gray-200 w-screen overflow-x-auto">
         <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">SAP BUSINESS PARTNER</h1>
 
-            <form action="{{ route('sap.store') }}" method="POST" id="frmSAP" class="w-full grid grid-cols-9 gap-2 content-center">
+            <form action="{{ route('sap.store') }}" method="POST" id="frmSAP" enctype="multipart/form-data" class="w-full grid grid-cols-9 gap-2 content-center">
                 @csrf
                 <input type="hidden" id="sapID" name="id">
                 <div class="leading-7 py-px text-sm">Type of Request</div>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="leading-7 py-px justify-self-end text-sm">BIR 2303</div>
                 <div class="col-span-2">
-                    <input style="height: 30px;" name="bir_attachment" class="block w-full text-xs border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400" id="bir_attachment" type="file">
+                    <input id="bir_attachment" name="bir_attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept="image/*">
                 </div>
 
 

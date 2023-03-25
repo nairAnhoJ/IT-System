@@ -342,6 +342,9 @@ class ItemController extends Controller
     }
 
     public function returnItem(){
-        return view('inventory.return-items');
+        $sites = DB::table('sites')->orderBy('name', 'asc')->get();
+        $items = DB::table('items')->where('status', 'USED')->orderBy('id', 'asc')->get();
+
+        return view('inventory.return-items', compact('sites', 'items'));
     }
 }
