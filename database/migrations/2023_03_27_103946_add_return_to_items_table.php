@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->text('date_returned')->after('site_id')->default('N/A');
-            $table->text('prev_user_dept')->after('site_id')->default('N/A');
-            $table->text('prev_user')->after('site_id')->default('N/A');
+            $table->string('date_returned')->after('site_id')->default('N/A');
+            $table->string('prev_user_dept')->after('site_id')->default('N/A');
+            $table->string('prev_user')->after('site_id')->default('N/A');
         });
     }
 
