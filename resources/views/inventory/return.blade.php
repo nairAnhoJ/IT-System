@@ -4,8 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        @yield('meta')
-        <title>Issuance Form</title>
+        <title>Return Form</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.css" />
@@ -43,47 +42,46 @@
 
         <h1 class="font-medium text-2xl text-center tracking-wider mt-1">RETURN FORM</h1>
 
-        <div class="px-20 mt-2">
-            <div class="grid grid-cols-7 gap-x-2 text-sm">
-                <div>Name: </div>
-                <div class="font-semibold col-span-3 tracking-wide">{{ $name}}</div>
+        <div class="px-20 my-2">
+            <div class="grid grid-cols-11 gap-x-2 text-sm">
+                <div class=" col-span-2">Name: </div>
+                <div class="font-semibold col-span-5 tracking-wide">{{ $name}}</div>
                 <div class="col-span-2">Date Returned: </div>
-                <div class="font-semibold tracking-wide">{{ $date_returned}}</div>
+                <div class="font-semibold col-span-2 tracking-wide">{{ $date_returned}}</div>
 
-                <div>Department: </div>
-                <div class="font-semibold col-span-3 tracking-wide">{{ $dept}}</div>
+                <div class=" col-span-2">Department: </div>
+                <div class="font-semibold col-span-5 tracking-wide">{{ $dept}}</div>
                 <div class="col-span-2">Location: </div>
-                <div class="font-semibold tracking-wide">{{ $site }}</div>
+                <div class="font-semibold col-span-2 tracking-wide">{{ $site }}</div>
             </div>
         </div>
 
         <hr class="my-2">
 
-        {{-- <div class="px-20">
-            <div class="grid grid-cols-7 gap-x-2 text-xs">
-                <div>Brand Name: </div>
-                <div class="font-semibold col-span-4 tracking-wide">{{ $item->desc}}</div>
-                <div>Cost: </div>
-                <div class="font-semibold tracking-wide">{{ (preg_match("/[a-zA-Z]/i", $item->cost)) ? $item->cost : '₱ '.number_format($item->cost, 2, '.', ',') }}</div>
-                <div>Serial/SIM No: </div>
-                <div class="font-semibold col-span-4 tracking-wide">{{ $item->serial_no}}</div>
-                <div>Color: </div>
-                <div class="font-semibold tracking-wide">{{ $item->color}}</div>
-                <div>Remarks: </div>
-                <div class="font-semibold col-span-4 tracking-wide">{{ $item->remarks}}</div>
-                <div>Status: </div>
-                <div class="font-semibold tracking-wide">{{ $item->status}}</div>
-            </div>
-        </div> --}}
+        <div class="px-20">
+            @php
+                $x = 1;
+            @endphp
+            @foreach ($items as $item)
+                <div class="grid grid-cols-11 grid-rows-3 gap-x-2 text-sm my-4">
+                    <div class="row-span-3 justify-self-center font-bold text-xl flex"><span class="self-center">{{$x++}}</span></div>
+                    <div class=" col-span-2">Item Code: </div>
+                    <div class="font-semibold col-span-4 tracking-wide">{{ $item->code}}</div>
+                    <div class=" col-span-2">Item Type: </div>
+                    <div class="font-semibold col-span-2 tracking-wide">{{ $item->type}}</div>
+                    <div class=" col-span-2">Description: </div>
+                    <div class="font-semibold col-span-4 tracking-wide">{{ $item->desc}}</div>
+                    <div class=" col-span-2">Serial Number: </div>
+                    <div class="font-semibold col-span-2 tracking-wide">{{ $item->serial_no}}</div>
+                    <div class=" col-span-2">Remarks: </div>
+                    <div class="font-semibold col-span-7 tracking-wide">{{ $item->remarks}}</div>
+                </div>
+            @endforeach
+        </div>
 
         <hr class="my-4">
 
-        <h1 class="font-semibold text-base text-center tracking-wider">INSTRUCTION FROM HEREIN UNDER IS IMPORTANT. PLEASE READ THEM CAREFULLY</h1>
-
         <div style="width: 856px" class="px-10 mx-auto">
-            <h1 style="box-shadow: inset 0 0 0 1000px red;" class="border inline border-neutral-900 px-2 py-px text-white font-semibold tracking-wide">USER AGREEMENT</h1>
-            {{-- <textarea readonly style="font-size: 11px;" id="userAgreement" class="w-full leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea> --}}
-            {{-- <p style="font-size: 10px;" class="mt-32 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p> --}}
             <div class="grid grid-cols-3 mt-3">
                 <div></div>
                 <div></div>
@@ -93,7 +91,7 @@
 
                 <div></div>
                 <div></div>
-                <div class="border-b border-neutral-900 h-5"></div>
+                <div class="border-b border-neutral-900 h-7"></div>
 
                 <div></div>
                 <div></div>
@@ -105,8 +103,6 @@
 
         <script>
             $(document).ready(function(){
-                var sh = $('#userAgreement').prop('scrollHeight');
-                $('#userAgreement').height((sh) + 'px');
                 window.onafterprint = window.close;
                 window.print();
             });
