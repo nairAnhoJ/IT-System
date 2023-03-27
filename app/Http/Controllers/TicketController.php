@@ -223,7 +223,7 @@ class TicketController extends Controller
         $req = DB::table('users')->where('id', $thisTicket->user_id)->first();
 
         if($status == 'PENDING'){
-            if(auth()->user()->dept_id != $deptInCharge){
+            if($request->isCancel == '1'){
                 DB::update('update tickets set status = "CANCELLED" where id = ?', [$id]);
                 
                 return redirect()->route('ticket.index');

@@ -85,7 +85,7 @@
             @endif
         </div>
 
-        <!-- ========================================================= Modal toggle ========================================================= -->
+        <!-- ====================================================== Modal toggle ====================================================== -->
         <button id="viewTicket" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="ticketModal">
         </button>
         
@@ -93,13 +93,14 @@
         <div id="ticketModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-4xl md:h-auto">
                 <!-- Modal content -->
-                <form enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
+                <form id="statusUpdateForm" enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
                         <h3 class="text-2xl font-semibold text-white leading-5 tracking-wide">
                             @csrf
                             <input type="hidden" id="ticketID" name="ticketID">
                             <input type="hidden" id="ticketStatus" name="ticketStatus">
+                            <input type="hidden" id="isCancel" name="isCancel" value="0">
                             <span id="ticketNumber"></span>
                             <br>
                             <span id="ticketRequester" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDepartment" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDate" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketStatus2" class="text-sm"></span>
@@ -130,16 +131,16 @@
                         @if (auth()->user()->dept_id == $deptInCharge)
                             <button data-modal-toggle="ticketModal" type="submit" id="ticketButton" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 mr-3 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"></button>
                         @endif
-                        @if (auth()->user()->dept_id != $deptInCharge)
-                        <div id="cancelButtonDiv"></div>
-                        @endif
+                        <div id="cancelButtonDiv">
+                            
+                        </div>
                         <button data-modal-toggle="ticketModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </form>
             </div>
         </div>
         
-        <!-- ========================================================= Attached File modal ========================================================= -->
+        <!-- ====================================================== Attached File modal ====================================================== -->
         <div id="AttachedFileModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-6xl md:h-auto">
                 <!-- Modal content -->
@@ -508,7 +509,7 @@
                     $('#ticketButton').removeClass('hidden');
                     $('#ticketButton').html('Mark as ONGOING');
                 }
-                $('#cancelButtonDiv').html(`<button id="cancelButton" type="submit" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel</button>`);
+                $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel</button>`);
                 $('#ticketResolutionInput').html('');
                 $('#ticketResolutionDiv').html('');
                 $('#ticketStatus2').removeClass('text-amber-300');
@@ -608,6 +609,11 @@
                     $('#viewSAP').click();
                 }
             })
+        });
+
+        jQuery(document).on( "click", "#cancelButton", function(){
+            $('#isCancel').val('1');
+            $('#statusUpdateForm').submit();
         });
     });
   </script>
