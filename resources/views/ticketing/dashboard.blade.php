@@ -509,7 +509,7 @@
                     $('#ticketButton').removeClass('hidden');
                     $('#ticketButton').html('Mark as ONGOING');
                 }
-                $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel</button>`);
+                $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
                 $('#ticketResolutionInput').html('');
                 $('#ticketResolutionDiv').html('');
                 $('#ticketStatus2').removeClass('text-amber-300');
@@ -522,7 +522,7 @@
                     $('#ticketButton').html('Mark as DONE');
                 }
                 $('#ticketResolutionDiv').html('');
-                $('#cancelButtonDiv').html('');
+                $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
                 $('#ticketResolutionInput').html(`<hr class="my-5">
                                                 <label for="ticketResolution" class="block mb-2 text-sm font-medium text-white">Resolution</label>
                                                 <textarea required style="resize: none;" id="ticketResolution" name="ticketResolution" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
