@@ -30,6 +30,7 @@ class ComputerController extends Controller
         $stors = DB::table('items')->where('type_id', 4)->where('computer_id', 1)->get();
         $gpus = DB::table('items')->where('type_id', 5)->where('computer_id', 1)->get();
         $psus = DB::table('items')->where('type_id', 6)->where('computer_id', 1)->get();
+        $oss = DB::table('items')->where('type_id', 14)->where('computer_id', 1)->get();
         $monitors = DB::table('items')->where('type_id', 7)->where('computer_id', 1)->get();
         $mouses = DB::table('items')->where('type_id', 8)->where('computer_id', 1)->get();
         $kbs = DB::table('items')->where('type_id', 9)->where('computer_id', 1)->get();
@@ -39,7 +40,7 @@ class ComputerController extends Controller
         $Action = 'add';
         $ComputerID = '';
         
-        return view('inventory.computer-add-edit', compact('Action', 'ComputerID', 'sites', 'laptops', 'mobos', 'procs', 'rams', 'stors', 'gpus', 'psus', 'monitors', 'mouses', 'kbs', 'lans', 'others', 'user', 'ip_add', 'type', 'status', 'siteEdit'));
+        return view('inventory.computer-add-edit', compact('Action', 'ComputerID', 'sites', 'laptops', 'mobos', 'procs', 'rams', 'stors', 'gpus', 'psus', 'oss', 'monitors', 'mouses', 'kbs', 'lans', 'others', 'user', 'ip_add', 'type', 'status', 'siteEdit'));
     }
 
     public function store(Request $request){
@@ -63,6 +64,7 @@ class ComputerController extends Controller
         $stor4 = $request->stor4;
         $gpu = $request->gpu;
         $psu = $request->psu;
+        $os = $request->os;
         $monitor = $request->monitor;
         $mouse = $request->mouse;
         $kb = $request->kb;
@@ -155,6 +157,10 @@ class ComputerController extends Controller
             DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $psu]);
         }
 
+        if($os != null){
+            DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $os]);
+        }
+
         if($monitor != null){
             DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $monitor]);
         }
@@ -210,6 +216,7 @@ class ComputerController extends Controller
         $stors = DB::table('items')->where('type_id', 4)->where('computer_id', 1)->get();
         $gpus = DB::table('items')->where('type_id', 5)->where('computer_id', 1)->get();
         $psus = DB::table('items')->where('type_id', 6)->where('computer_id', 1)->get();
+        $oss = DB::table('items')->where('type_id', 14)->where('computer_id', 1)->get();
         $monitors = DB::table('items')->where('type_id', 7)->where('computer_id', 1)->get();
         $mouses = DB::table('items')->where('type_id', 8)->where('computer_id', 1)->get();
         $kbs = DB::table('items')->where('type_id', 9)->where('computer_id', 1)->get();
@@ -224,6 +231,7 @@ class ComputerController extends Controller
         $selstors = DB::table('items')->where('type_id', 4)->where('computer_id', $id)->get();
         $selgpus = DB::table('items')->where('type_id', 5)->where('computer_id', $id)->get();
         $selpsus = DB::table('items')->where('type_id', 6)->where('computer_id', $id)->get();
+        $seloss = DB::table('items')->where('type_id', 14)->where('computer_id', $id)->get();
         $selmonitors = DB::table('items')->where('type_id', 7)->where('computer_id', $id)->get();
         $selmouses = DB::table('items')->where('type_id', 8)->where('computer_id', $id)->get();
         $selkbs = DB::table('items')->where('type_id', 9)->where('computer_id', $id)->get();
@@ -233,7 +241,7 @@ class ComputerController extends Controller
         $Action = 'edit';
         $ComputerID = $id;
         
-        return view('inventory.computer-add-edit', compact('Action', 'ComputerID', 'sites', 'laptops', 'mobos', 'procs', 'rams', 'stors', 'gpus', 'psus', 'monitors', 'mouses', 'kbs', 'lans', 'others', 'user', 'ip_add', 'type', 'status', 'siteEdit', 'sellaptops', 'selmobos', 'selprocs', 'selrams', 'selstors', 'selgpus', 'selpsus', 'selmonitors', 'selmouses', 'selkbs', 'sellans', 'selothers'));
+        return view('inventory.computer-add-edit', compact('Action', 'ComputerID', 'sites', 'laptops', 'mobos', 'procs', 'rams', 'stors', 'gpus', 'psus', 'seloss', 'monitors', 'mouses', 'kbs', 'lans', 'others', 'user', 'ip_add', 'type', 'status', 'siteEdit', 'sellaptops', 'selmobos', 'selprocs', 'selrams', 'selstors', 'selgpus', 'selpsus', 'selmonitors', 'selmouses', 'selkbs', 'sellans', 'selothers'));
     }
 
     public function update(Request $request){

@@ -209,6 +209,8 @@
                             <div id="itemUser" class="col-span-4 font-semibold"></div>
                             <div class="mt-1">Department: </div>
                             <div id="itemDept" class="col-span-4 font-semibold"></div>
+                            <div id="dateDescTitle" class="mt-1">Remarks: </div>
+                            <div id="itemRemarks" class="col-span-4 font-semibold"></div>
                             <div id="dateDescTitle" class="mt-1">Date Issued: </div>
                             <div id="itemDate" class="col-span-4 font-semibold"></div>
                         </div>
@@ -331,7 +333,7 @@
                     @foreach ($items as $item)
                         <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-remarks="{{ $item->remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}" data-i_user="{{ $item->i_user }}" data-i_dept="{{ $item->dept_name }}" data-i_date_issued="{{ $item->i_date_issued }}" data-prev_user="{{ $item->prev_user }}" data-prev_user_dept="{{ $item->prev_user_dept }}" data-date_returned="{{ $item->date_returned }}">
+                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-i_remarks="{{ $item->i_remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}" data-i_user="{{ $item->i_user }}" data-i_dept="{{ $item->dept_name }}" data-i_date_issued="{{ $item->i_date_issued }}" data-prev_user="{{ $item->prev_user }}" data-prev_user_dept="{{ $item->prev_user_dept }}" data-date_returned="{{ $item->date_returned }}" data-return_remarks="{{ $item->return_remarks }}">
                                     {{ $item->code }}
                                 </span>
                             </td>
@@ -403,9 +405,6 @@
                 var desc = $(this).find("span").data('desc');
                 $('#desc').html(desc);
 
-                var remarks = $(this).find("span").data('remarks');
-                $('#remarks').html(remarks);
-
                 var serial_no = $(this).find("span").data('serial_no');
                 $('#serial_no').html(serial_no);
 
@@ -434,6 +433,9 @@
                     var prev_user_dept = $(this).find("span").data('prev_user_dept');
                     $('#itemDept').html(prev_user_dept);
 
+                    var return_remarks = $(this).find("span").data('return_remarks');
+                    $('#itemRemarks').html(return_remarks);
+
                     var date_returned = $(this).find("span").data('date_returned');
                     $('#itemDate').html(date_returned);
 
@@ -456,6 +458,9 @@
 
                     var i_dept = $(this).find("span").data('i_dept');
                     $('#itemDept').html(i_dept);
+
+                    var i_remarks = $(this).find("span").data('i_remarks');
+                    $('#itemRemarks').html(i_remarks);
 
                     var i_date_issued = $(this).find("span").data('i_date_issued');
                     $('#itemDate').html(i_date_issued);

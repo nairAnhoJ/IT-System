@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class ItemController extends Controller
 {
     public function index(){
-        $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.remarks, items.description, items.is_Defective, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site, items.i_user, departments.name AS dept_name, items.i_date_issued, items.prev_user, items.prev_user_dept, items.date_returned FROM ((((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) INNER JOIN departments ON items.i_department = departments.id) WHERE items.is_Defective = 0 ORDER BY items.id DESC');
+        $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.remarks, items.description, items.is_Defective, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site, items.i_user, departments.name AS dept_name, items.i_remarks, items.i_date_issued, items.prev_user, items.prev_user_dept, items.return_remarks, items.date_returned FROM ((((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) INNER JOIN departments ON items.i_department = departments.id) WHERE items.is_Defective = 0 ORDER BY items.id DESC');
         $depts = DB::table('departments')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
 
         return view('inventory.items', compact('items', 'depts'));
@@ -358,18 +358,21 @@ class ItemController extends Controller
         for($x = 1; $x <= $count; $x++){
             $itemName = 'item'.$x;
             $itemID = $request->$itemName;
+            $itemRemarksName = 'remarks'.$x;
+            $itemRemarks = $request->$itemRemarksName;
 
             $thisItem = DB::table('items')->where('id', $itemID)->first();
             $thisDept = (DB::table('departments')->where('id', $dept)->first())->name;
             if($thisItem->type_id == '13'){
                 $com_id = $thisItem->computer_id;
-                DB::delete('delete computers where id = ?', [$com_id]);
+                DB::table('computers')->where('id', $com_id)->delete();
             }
             DB::table('items')
                 ->where('id', $itemID)
                 ->update([
                     'prev_user' => strtoupper($name),
                     'prev_user_dept' => $thisDept,
+                    'return_remarks' => $itemRemarks,
                     'date_returned' => $date_returned,
                     'i_user' => null,
                     'i_department' => 1,
@@ -403,8 +406,8 @@ class ItemController extends Controller
 
         for($x = 1; $x <= $count; $x++){
             $itemName = 'item'.$x;
-            $itemRemarksName = 'remarks'.$x;
             $itemID = $request->$itemName;
+            $itemRemarksName = 'remarks'.$x;
             $itemRemarks = $request->$itemRemarksName;
 
             $thisItem = DB::table('items')

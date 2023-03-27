@@ -442,6 +442,29 @@
                 </div>
 
                 <div>
+                    <label for="brand" class="mt-3 block text-sm font-medium text-white">Operating System</label>
+                    <div class="wrapper w-full relative">
+                        <div class="select-btn flex items-center justify-between rounded-md bg-gray-700 p-2 h-9 cursor-pointer">
+                            <span>{{ isset($seloss[0]->code) ? $seloss[0]->code : 'Select Power Supply' }}</span>
+                            <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                        </div>
+                        <div class="content bg-gray-700 mt-1 rounded-md p-3 hidden absolute w-full z-50 border border-gray-500">
+                            <div class="search relative">
+                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                            </div>
+                            <ul class="listOption options mt-2 max-h-64 overflow-y-auto">
+                                <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-800 rounded-md flex items-center pl-3 leading-9">None</li>
+                                @foreach ($oss as $os)
+                                    <li data-id="{{ $os->id }}" data-code="{{ $os->code }}" class="h-9 cursor-pointer hover:bg-gray-800 rounded-md flex items-center pl-3 leading-9">{{ $os->code }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" name="os" value="{{ isset($seloss[0]->id) ? $seloss[0]->id : '' }}">
+                    </div>
+                </div>
+
+                <div>
                     <label for="brand" class="mt-3 block text-sm font-medium text-white">Monitor</label>
                     <div class="wrapper w-full relative">
                         <div class="select-btn flex items-center justify-between rounded-md bg-gray-700 p-2 h-9 cursor-pointer">
