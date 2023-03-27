@@ -224,7 +224,7 @@ class TicketController extends Controller
 
         if($status == 'PENDING'){
             if($request->isCancel == '1'){
-                DB::update('update tickets set status = "CANCELLED" where id = ?', [$id]);
+                DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
                 
                 return redirect()->route('ticket.index');
             }else{
@@ -279,7 +279,7 @@ class TicketController extends Controller
 
         }else if($status == 'ONGOING'){
             if($request->isCancel == '1'){
-                DB::update('update tickets set status = "CANCELLED" where id = ?', [$id]);
+                DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
                 
                 return redirect()->route('ticket.index');
             }else{
