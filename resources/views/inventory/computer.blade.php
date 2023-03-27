@@ -117,6 +117,8 @@
                                 <div id="specGpu" class="col-span-4 font-semibold"></div>
                                 <div>Power Supply: </div>
                                 <div id="specPsu" class="col-span-4 font-semibold"></div>
+                                <div>Operating System: </div>
+                                <div id="specOs" class="col-span-4 font-semibold"></div>
                                 <div>Monitor: </div>
                                 <div id="specMonitor" class="col-span-4 font-semibold"></div>
                                 <div>Mouse: </div>
@@ -301,6 +303,7 @@
                         $('#specStore4').html(result.specStore[3]);
                         $('#specGpu').html(result.specGpu);
                         $('#specPsu').html(result.specPsu);
+                        $('#specOs').html(result.specOs);
                         $('#specMonitor').html(result.specMonitor);
                         $('#specMouse').html(result.specMouse);
                         $('#specKb').html(result.specKB);

@@ -105,6 +105,8 @@ class ComputerController extends Controller
 
         $comID = (DB::table('computers')->orderBy('id', 'desc')->first())->id;
 
+        dd($stor3);
+
         if($laptop != null){
             DB::update("UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?", ['USED', $comID, $site, auth()->user()->name, $laptop]);
         }
@@ -177,6 +179,7 @@ class ComputerController extends Controller
             DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $lan]);
         }
 
+
         if($other1 != null){
             DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $other1]);
         }
@@ -241,7 +244,7 @@ class ComputerController extends Controller
         $Action = 'edit';
         $ComputerID = $id;
         
-        return view('inventory.computer-add-edit', compact('Action', 'ComputerID', 'sites', 'laptops', 'mobos', 'procs', 'rams', 'stors', 'gpus', 'psus', 'seloss', 'monitors', 'mouses', 'kbs', 'lans', 'others', 'user', 'ip_add', 'type', 'status', 'siteEdit', 'sellaptops', 'selmobos', 'selprocs', 'selrams', 'selstors', 'selgpus', 'selpsus', 'selmonitors', 'selmouses', 'selkbs', 'sellans', 'selothers'));
+        return view('inventory.computer-add-edit', compact('Action', 'ComputerID', 'sites', 'laptops', 'mobos', 'procs', 'rams', 'stors', 'gpus', 'psus', 'oss', 'monitors', 'mouses', 'kbs', 'lans', 'others', 'user', 'ip_add', 'type', 'status', 'siteEdit', 'sellaptops', 'selmobos', 'selprocs', 'selrams', 'selstors', 'selgpus', 'selpsus', 'seloss', 'selmonitors', 'selmouses', 'selkbs', 'sellans', 'selothers'));
     }
 
     public function update(Request $request){
@@ -265,6 +268,7 @@ class ComputerController extends Controller
         $stor4 = $request->stor4;
         $gpu = $request->gpu;
         $psu = $request->psu;
+        $os = $request->os;
         $monitor = $request->monitor;
         $mouse = $request->mouse;
         $kb = $request->kb;
@@ -336,6 +340,10 @@ class ComputerController extends Controller
 
         if($psu != null){
             DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $psu]);
+        }
+
+        if($os != null){
+            DB::update('UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?', ['USED', $comID, $site, auth()->user()->name, $os]);
         }
 
         if($monitor != null){
@@ -437,6 +445,13 @@ class ComputerController extends Controller
             $thisSpecPsu = 'N/A';
         }
         
+        $specOs = DB::table('items')->where('computer_id', $request->computerID)->where('type_id', 14)->first();
+        if(isset($specOs->id)){
+            $thisSpecOs = $specOs->brand.' '.$specOs->description;
+        }else{
+            $thisSpecOs = 'N/A';
+        }
+        
         $specMonitor = DB::table('items')->where('computer_id', $request->computerID)->where('type_id', 7)->first();
         if(isset($specMonitor->id)){
             $thisSpecMonitor = $specMonitor->brand.' '.$specMonitor->description;
@@ -485,6 +500,7 @@ class ComputerController extends Controller
             'specStore' => $specStore,
             'specGpu' => $thisSpecGpu,
             'specPsu' => $thisSpecPsu,
+            'specOs' => $thisSpecOs,
             'specMonitor' => $thisSpecMonitor,
             'specMouse' => $thisSpecMouse,
             'specKB' => $thisSpecKB,

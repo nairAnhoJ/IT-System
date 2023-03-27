@@ -70,11 +70,17 @@
             </div>
 
             <label for="type" class="mt-3 block text-sm font-medium text-white">Type</label>
-            <select {{ $Action != 'add' ? 'disabled' : ''; }} id="type" name="type" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
-                <option {{ $type == 'DESKTOP' ? 'selected' : ''; }} value="DESKTOP">DESKTOP</option>
+            <select id="type" name="type" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                @if ($type == 'DESKTOP' || $Action != 'add')
+                    <option value="DESKTOP">DESKTOP</option>
+                @else
+                    <option value="LAPTOP">LAPTOP</option>
+                @endif
+
+                {{-- <option {{ $type == 'DESKTOP' ? 'selected' : ''; }} value="DESKTOP">DESKTOP</option>
                 @if ($Action != 'add')
                     <option {{ $type == 'LAPTOP' ? 'selected' : ''; }} value="LAPTOP">LAPTOP</option>
-                @endif
+                @endif --}}
             </select>
 
             <label for="status" class="mt-3 block text-sm font-medium text-white">Status</label>
@@ -575,7 +581,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <input type="hidden" name="other1" value="{{ $otherArrayName[0] }}">
+                        <input type="hidden" name="other1" value="{{ $otherArrayID[0] }}">
                     </div>
                 </div>
 
@@ -598,7 +604,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <input type="hidden" name="other2" value="{{ $otherArrayName[1] }}">
+                        <input type="hidden" name="other2" value="{{ $otherArrayID[1] }}">
                     </div>
                 </div>
 
@@ -621,7 +627,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <input type="hidden" name="other3" value="{{ $otherArrayName[2] }}">
+                        <input type="hidden" name="other3" value="{{ $otherArrayID[2] }}">
                     </div>
                 </div>
 
@@ -644,7 +650,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <input type="hidden" name="other4" value="{{ $otherArrayName[3] }}">
+                        <input type="hidden" name="other4" value="{{ $otherArrayID[3] }}">
                     </div>
                 </div>
 
@@ -667,7 +673,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <input type="hidden" name="other5" value="{{ $otherArrayName[4] }}">
+                        <input type="hidden" name="other5" value="{{ $otherArrayID[4] }}">
                     </div>
                 </div>
             {{-- SPECS END --}}
