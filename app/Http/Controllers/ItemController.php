@@ -427,4 +427,10 @@ class ItemController extends Controller
 
         return view('inventory.return', compact('name', 'dept', 'site', 'date_returned', 'items'));
     }
+
+
+
+    public function disposalIndex(){
+        return view('inventory.items-for-disposal');
+    }
 }

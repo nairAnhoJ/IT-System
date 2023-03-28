@@ -117,6 +117,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/items/return/print', [ItemController::class, 'returnPrint'])->name('return.print');
     Route::post('/inventory/items/return/update', [ItemController::class, 'returnUpdate'])->name('return.update');
 
+    Route::get('/inventory/items/for-dispose', [ItemController::class, 'disposalIndex'])->name('disposal.index');
+    Route::post('/inventory/items/for-dispose/add', [ItemController::class, 'disposalAdd'])->name('disposal.add');
+    Route::post('/inventory/items/for-dispose/restore', [ItemController::class, 'disposalRestore'])->name('disposal.restore');
+    Route::get('/inventory/items/disposed', [ItemController::class, 'returnItem'])->name('disposed.index');
+
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');
     Route::get('/request/items/add', [ItemRequestController::class, 'add'])->name('reqItem.add');
