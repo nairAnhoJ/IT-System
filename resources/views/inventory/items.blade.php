@@ -204,12 +204,12 @@
                                 <a id="invoiceDownloadButton" href="" class="text-white font-medium rounded-lg text-sm px-5 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Download</a>
                             </div>
                             <hr class="col-span-5 mt-3">
-                            <div id="userDescTitle" class="col-span-5 text-xl text-blue-400 font-bold mt-3">User Description</div>
+                            <div id="userDescTitle" class="col-span-5 text-xl text-blue-500 font-bold mt-3">User Description</div>
                             <div class="mt-1">User: </div>
                             <div id="itemUser" class="col-span-4 font-semibold"></div>
                             <div class="mt-1">Department: </div>
                             <div id="itemDept" class="col-span-4 font-semibold"></div>
-                            <div id="dateDescTitle" class="mt-1">Remarks: </div>
+                            <div class="mt-1">Remarks: </div>
                             <div id="itemRemarks" class="col-span-4 font-semibold"></div>
                             <div id="dateDescTitle" class="mt-1">Date Issued: </div>
                             <div id="itemDate" class="col-span-4 font-semibold"></div>
