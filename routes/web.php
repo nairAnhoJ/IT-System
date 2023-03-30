@@ -119,8 +119,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/inventory/items/for-dispose', [ItemController::class, 'disposalIndex'])->name('disposal.index');
     Route::post('/inventory/items/for-dispose/add', [ItemController::class, 'disposalAdd'])->name('disposal.add');
-    Route::post('/inventory/items/for-dispose/restore', [ItemController::class, 'disposalRestore'])->name('disposal.restore');
-    Route::get('/inventory/items/disposed', [ItemController::class, 'returnItem'])->name('disposed.index');
+    Route::post('/inventory/items/for-dispose/remove', [ItemController::class, 'disposalRemove'])->name('disposal.remove');
+    Route::post('/inventory/items/for-dispose/disposed', [ItemController::class, 'disposalDisposed'])->name('disposal.disposed');
+    Route::post('/inventory/items/for-dispose/print', [ItemController::class, 'disposalPrint'])->name('disposal.print');
+    Route::get('/inventory/items/for-dispose/{page}', [ItemController::class, 'disposalPaginate']);
+    Route::get('/inventory/items/for-dispose/{page}/{search}', [ItemController::class, 'disposalSearch']);
+
+
+    Route::get('/inventory/items/disposed', [ItemController::class, 'disposedIndex'])->name('disposed.index');
+    Route::get('/inventory/items/disposed/{page}', [ItemController::class, 'disposedPaginate']);
+    Route::get('/inventory/items/disposed/{page}/{search}', [ItemController::class, 'disposedSearch']);
 
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');

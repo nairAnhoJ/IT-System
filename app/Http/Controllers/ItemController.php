@@ -430,7 +430,122 @@ class ItemController extends Controller
 
 
 
+
+
+
     public function disposalIndex(){
-        return view('inventory.items-for-disposal');
+        $items = DB::table('items')->where('for_disposal', '1')->orderBy('brand', 'asc')->paginate(100);
+        $itemCount = DB::table('items')->where('for_disposal', '1')->count();
+        $search = "";
+        $page = 1;
+
+        return view('inventory.items-for-disposal', compact('search', 'items', 'page', 'itemCount'));
     }
+
+    public function disposalAdd(Request $request){
+        DB::table('items')->where('id', $request->disposeID)->update([
+            "status" => "FOR DISPOSAL",
+            "for_disposal" => '1',
+            "edited_by" => auth()->user()->name,
+        ]);
+
+        return redirect()->route('defectiveIndex.index');
+    }
+
+    public function disposalPrint(){
+        $items = DB::table('items')
+        ->select('item_types.name', DB::raw('count(items.id) as count'))
+        ->join('item_types', 'items.type_id', '=', 'item_types.id')
+        ->groupBy('item_types.name')
+        ->where('for_disposal', '1')
+        ->orderBy('item_types.name', 'asc')
+        ->get();
+
+        return view('inventory.disposal', compact('items'));
+    }
+
+    public function disposalDisposed(){
+        DB::table('items')->where('for_disposal', '1')->update([
+            'status' => 'DISPOSED',
+            'is_Defective' => '0',
+            'for_disposal' => '0',
+            'is_disposed' => '1',
+        ]);
+
+        return redirect()->route('disposal.index');
+    }
+
+    public function disposalRemove(Request $request){
+        DB::table('items')->where('id', $request->removeID)->update([
+            'status' => 'DEFECTIVE',
+            'is_Defective' => '1',
+            'for_disposal' => '0',
+        ]);
+
+        return redirect()->route('disposal.index');
+    }
+
+    public function disposalPaginate($page){
+        $items = DB::table('items')->where('for_disposal', '1')->orderBy('brand', 'asc')->paginate(100,'*','page',$page);
+        $itemCount = DB::table('items')->where('for_disposal', '1')->count();
+        $search = "";
+        return view('inventory.items-for-disposal', compact('search', 'items', 'page', 'itemCount'));
+    }
+
+    public function disposalSearch($page, $search){
+        $items = DB::table('items')
+            ->select('*')
+            ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+            ->where('for_disposal', '1')
+            ->orderBy('brand', 'asc')
+            ->paginate(100,'*','page',$page);
+
+        $itemCount = DB::table('items')
+            ->select('*')
+            ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+            ->where('for_disposal', '1')
+            ->orderBy('brand', 'asc')
+            ->count();
+
+        return view('inventory.items-for-disposal', compact('search', 'items', 'page', 'itemCount'));
+    }
+
+
+
+
+
+    public function disposedIndex(){
+        $items = DB::table('items')->where('is_disposed', '1')->orderBy('brand', 'asc')->paginate(100);
+        $itemCount = DB::table('items')->where('is_disposed', '1')->count();
+        $search = "";
+        $page = 1;
+
+        return view('inventory.disposed', compact('search', 'items', 'page', 'itemCount'));
+    }
+
+    public function disposedPaginate($page){
+        $items = DB::table('items')->where('is_disposed', '1')->orderBy('brand', 'asc')->paginate(100,'*','page',$page);
+        $itemCount = DB::table('items')->where('is_disposed', '1')->count();
+        $search = "";
+        return view('inventory.disposed', compact('search', 'items', 'page', 'itemCount'));
+    }
+
+    public function disposedSearch($page, $search){
+        $items = DB::table('items')
+            ->select('*')
+            ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+            ->where('is_disposed', '1')
+            ->orderBy('brand', 'asc')
+            ->paginate(100,'*','page',$page);
+
+        $itemCount = DB::table('items')
+            ->select('*')
+            ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+            ->where('is_disposed', '1')
+            ->orderBy('brand', 'asc')
+            ->count();
+
+        return view('inventory.disposed', compact('search', 'items', 'page', 'itemCount'));
+    }
+
 }

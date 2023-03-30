@@ -52,7 +52,7 @@
 
     </style>
 
-    {{-- DEFECTIVE CONFIRMATION MODAL --}}
+    {{-- RESTORE CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
         <button id="defectiveConfirmation" data-modal-target="defectiveModal" data-modal-toggle="defectiveModal" class="hidden text-white bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800" type="button"></button>
         
@@ -86,7 +86,43 @@
                 </form>
             </div>
         </div>
-    {{-- DEFECTIVE CONFIRMATION MODAL END --}}
+    {{-- RESTORE CONFIRMATION MODAL END --}}
+
+    {{-- DISPOSE CONFIRMATION MODAL --}}
+        <!-- Modal toggle -->
+        <button id="disposeConfirmation" data-modal-target="disposeModal" data-modal-toggle="disposeModal" class="hidden text-white bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800" type="button"></button>
+        
+        <!-- Main modal -->
+        <div id="disposeModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+            <div class="relative w-full h-full max-w-2xl md:h-auto">
+                <!-- Modal content -->
+                <form action="{{ route('disposal.add') }}" method="POST" enctype="multipart/form-data" class="relative rounded-lg shadow bg-gray-700">
+                    @csrf
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between px-6 py-4 border-b rounded-t border-gray-600">
+                        <h3 class="text-xl font-semibold text-yellow-300">
+                            Warning
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-hide="disposeModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="px-6 py-4">
+                        <input type="hidden" id="disposeID" name="disposeID" value="">
+                        <p class="text-base leading-relaxed text-white">
+                            Are you sure you want to mark this item as for disposal?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center py-3 px-5 space-x-2 border-t rounded-b border-gray-600">
+                        <button data-modal-hide="disposeModal" type="submit" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Yes</button>
+                        <button data-modal-hide="disposeModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {{-- DISPOSE CONFIRMATION MODAL END --}}
 
     {{-- DELETE CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
@@ -170,7 +206,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 border-t rounded-b border-gray-600">
-                        <button id="btnDefective" data-modal-toggle="itemModal" type="button" class="tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-emerald-800 text-gray-100 border-emerald-700 hover:text-white hover:bg-emerald-700 focus:ring-emerald-700">Restore</button>
+                        <button id="btnRestore" data-modal-toggle="itemModal" type="button" class="tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-emerald-800 text-gray-100 border-emerald-700 hover:text-white hover:bg-emerald-700 focus:ring-emerald-700">Restore</button>
+                        <button id="btnDispose" data-modal-toggle="itemModal" type="button" class="tracking-wider mr-3 focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-red-800 text-gray-100 border-red-700 hover:text-white hover:bg-red-700 focus:ring-red-700">Dispose</button>
                         <button data-modal-toggle="itemModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </div>
@@ -207,7 +244,10 @@
     {{-- VIEW INVOICE MODAL END --}}
 
     <div style="height: calc(100vh - 65px);" class="p-3 text-gray-200 w-screen">
-        <h1 class="mb-2 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">DEFECTIVE ITEMS</h1>
+        <div class="flex justify-between">
+            <h1 class="mb-2 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">DEFECTIVE ITEMS</h1>
+            <a href="{{ route('disposal.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-8 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Items For Disposal</a>
+        </div>
 
         {{-- CONTROLS --}}
         <div class="mb-0 h-10">
@@ -253,9 +293,9 @@
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             SITE
                         </th>
-                        <th id="thr" scope="col" class="sticky top-0 py-2 text-center">
+                        {{-- <th id="thr" scope="col" class="sticky top-0 py-2 text-center">
                             ACTION
-                        </th>
+                        </th> --}}
                     </tr>
                 </thead>
                 <tbody id="itemTableBody" style="max-height: calc(100% - 126px);">
@@ -290,10 +330,10 @@
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->site }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
-                                {{-- <a href="{{ url('/inventory/items/edit/'.$item->id ) }}" class="editButton font-medium text-blue-500 hover:underline">Edit</a> |  --}}
+                            {{-- <td class="py-3 px-6 text-center whitespace-nowrap">
+                                <a href="{{ url('/inventory/items/edit/'.$item->id ) }}" class="editButton font-medium text-blue-500 hover:underline">Edit</a> | 
                                 <a type="button" data-id="{{ $item->id }}" data-code="{{ $item->code }}" class="deleteButton font-medium text-red-500 hover:underline">Delete</a>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                 </tbody>
@@ -346,6 +386,13 @@
                 var status = $(this).find("span").data('status');
                 $('#status').html(status);
                 $('#updateStatus').val(status);
+                if(status == 'FOR DISPOSAL'){
+                    $('#btnRestore').addClass('hidden');
+                    $('#btnDispose').addClass('hidden');
+                }else{
+                    $('#btnRestore').removeClass('hidden');
+                    $('#btnDispose').removeClass('hidden');
+                }
 
                 var date_delivered = $(this).find("span").data('date_delivered');
                 $('#date_delivered').html(date_delivered);
@@ -360,11 +407,18 @@
                 $('#viewItem').click();
             });
 
-            $('#btnDefective').click(function(){
+            $('#btnRestore').click(function(){
                 var id = $('#itemID').val();
                 $('#defectiveID').val(id);
 
                 $('#defectiveConfirmation').click();
+            });
+
+            $('#btnDispose').click(function(){
+                var id = $('#itemID').val();
+                $('#disposeID').val(id);
+
+                $('#disposeConfirmation').click();
             });
         });
     </script>

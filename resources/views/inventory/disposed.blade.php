@@ -117,8 +117,7 @@
                 <h1 class="font-extrabold leading-none text-3xl text-blue-500 tracking-wide">ITEMS FOR DISPOSAL</h1>
             </div>
             <div class="justify-self-end">
-                <a href="{{ route('defectiveIndex.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Defective Items</a>
-                <a href="{{ route('disposed.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Disposed Items</a>
+                <a href="{{ route('disposal.index') }}" class="h-full text-white font-medium rounded-lg text-sm px-8 py-2 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Items For Disposal</a>
             </div>
         </div>
         <div>
@@ -126,11 +125,11 @@
                 <div class="mb-3">
                     <div class="md:grid md:grid-cols-2">
                         <div class="flex">
-                            <form action="{{ route('disposal.print') }}" method="POST" target='_blank'>
+                            {{-- <form action="{{ route('disposal.print') }}" method="POST" target='_blank'>
                                 @csrf
                                 <button type="submit" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2.5 mr-2 bg-blue-600 hover:bg-blue-700 focus:outline-none">Print List</button>
                             </form>
-                            <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2.5 mr-2 bg-red-600 hover:bg-red-700 focus:outline-none">Dispose All Items</a>
+                            <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" class="h-full text-white font-medium rounded-lg text-sm px-10 py-2.5 mr-2 bg-red-600 hover:bg-red-700 focus:outline-none">Dispose All Items</a> --}}
                         </div>
                         <div class="justify-self-end w-full xl:w-4/5">
                             <form method="GET" action="" id="searchForm" class="w-full">
@@ -168,9 +167,6 @@
                                     <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                         Serial Number
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                        Action
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -184,9 +180,6 @@
                                         </td>
                                         <td class="px-6 py-4 text-center whitespace-nowrap">
                                             {{ $item->serial_no }}
-                                        </td>
-                                        <td class="px-6 py-4 text-center whitespace-nowrap">
-                                            <a type="button" data-id="{{ $item->id }}" data-modal-target="removeModal" data-modal-toggle="removeModal" class="removeButton cursor-pointer text-red-600 hover:underline font-semibold text-sm">Remove</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -219,7 +212,7 @@
                         <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
                             <ul class="inline-flex items-center -space-x-px">
                                 <li>
-                                    <a href="{{ ($search == '') ? url('/inventory/items/for-dispose/'.$prev) : url('/inventory/items/for-dispose/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                    <a href="{{ ($search == '') ? url('/inventory/items/disposed/'.$prev) : url('/inventory/items/disposed/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
                                         <i class="uil uil-arrow-left text-2xl"></i>
                                         <span class="sr-only">Previous</span>
                                     </a>
@@ -228,7 +221,7 @@
                                     <p class="block w-20 h-9 leading-9 text-center z-10 text-gray-400 bg-gray-700">Page {{ $page }}</p>
                                 </li>
                                 <li>
-                                    <a href="{{ ($search == '') ? url('/inventory/items/for-dispose/'.$next) : url('/inventory/items/for-dispose/'.$next.'/'.$search); }}" class="{{ ($to == $itemCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                    <a href="{{ ($search == '') ? url('/inventory/items/disposed/'.$next) : url('/inventory/items/disposed/'.$next.'/'.$search); }}" class="{{ ($to == $itemCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                                         <i class="uil uil-arrow-right text-2xl"></i>
                                         <span class="sr-only">Next</span>
                                     </a>
@@ -247,9 +240,9 @@
             $('#searchButton').click(function(){
                 var search = $('#searchInput').val();
                 if(search != ""){
-                    $('#searchForm').prop('action', `{{ url('/inventory/items/for-dispose/1/${search}') }}`);
+                    $('#searchForm').prop('action', `{{ url('/inventory/items/disposed/1/${search}') }}`);
                 }else{
-                    $('#searchForm').prop('action', `{{ url('/inventory/items/for-dispose/1') }}`);
+                    $('#searchForm').prop('action', `{{ url('/inventory/items/disposed/1') }}`);
                 }
                 $('#searchForm').submit();
             });
