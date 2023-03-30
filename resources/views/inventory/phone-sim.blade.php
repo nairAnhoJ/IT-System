@@ -223,13 +223,19 @@
                 <div class="w-1/3">
                 </div>
                 <div class="flex items-center w-2/3">
-                    <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-full h-full">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                    <form method="GET" action="" id="searchForm" class="w-full">
+                        <label for="searchInput" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </div>
+                            <input type="search" id="searchInput" class="block w-full px-4 py-2.5 pl-10 text-sm text-gray-100 border border-gray-600 rounded-lg bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="SEARCH" value="{{ $search }}" autocomplete="off">
+                            <button id="clearButton" type="button" class=" absolute right-20 bottom-1">
+                                <i class="uil uil-times text-2xl"></i>
+                            </button>
+                            <button id="searchButton" type="button" style="bottom: 5px; right: 5px;" type="submit" class="text-white absolute bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2.5 py-1.5">Search</button>
                         </div>
-                        <input type="text" id="tableSearch" autocomplete="off" class="h-full border text-sm rounded-lg block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -309,15 +315,71 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- PAGINATION --}}
+            <div class="grid md:grid-cols-2 mt-3 px-3">
+                @php
+                    $prev = $page - 1;
+                    $next = $page + 1;
+                    $from = ($prev * 100) + 1;
+                    $to = $page * 100;
+                    if($to > $itemCount){
+                        $to = $itemCount;
+                    }if($itemCount == 0){
+                        $from = 0;
+                    }
+                @endphp
+                <div class="justify-self-center md:justify-self-start self-center">
+                    <span class="text-sm text-gray-400">
+                        Showing <span class="font-semibold text-gray-400">{{ $from }}</span> to <span class="font-semibold text-gray-400">{{ $to }}</span> of <span class="font-semibold text-gray-400">{{ $itemCount }}</span> Items
+                    </span>
+                </div>
+
+                <div class="justify-self-center md:justify-self-end">
+                    <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
+                        <ul class="inline-flex items-center -space-x-px">
+                            <li>
+                                <a href="{{ ($search == '') ? url('/inventory/phone-sim/'.$prev) : url('/inventory/phone-sim/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                    <i class="uil uil-arrow-left text-2xl"></i>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li>
+                                <p class="block w-20 h-9 leading-9 text-center z-10 text-gray-400 bg-gray-700">Page {{ $page }}</p>
+                            </li>
+                            <li>
+                                <a href="{{ ($search == '') ? url('/inventory/phone-sim/'.$next) : url('/inventory/phone-sim/'.$next.'/'.$search); }}" class="{{ ($to == $itemCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                    <i class="uil uil-arrow-right text-2xl"></i>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {{-- PAGINATION END --}}
+
     </div>
 
     <script>
         $(document).ready(function(){
-            $("#tableSearch").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                    $("#itemTableBody tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+            $('#searchButton').click(function(){
+                var search = $('#searchInput').val();
+                if(search != ""){
+                    $('#searchForm').prop('action', `{{ url('/inventory/phone-sim/1/${search}') }}`);
+                }else{
+                    $('#searchForm').prop('action', `{{ url('/inventory/phone-sim/1') }}`);
+                }
+                $('#searchForm').submit();
+            });
+            $('#searchInput').on('keydown', function(event) {
+                if (event.keyCode === 13) {
+                    $('#searchButton').click();
+                    event.preventDefault();
+                }
+            });
+            $('#clearButton').click(function(){
+                $('#searchInput').val('');
             });
 
             $('.editButton').click(function(e){

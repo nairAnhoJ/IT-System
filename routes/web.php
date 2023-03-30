@@ -108,6 +108,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/inventory/items/defective', [ItemController::class, 'defectiveIndex'])->name('defectiveIndex.index');
     Route::post('/inventory/items/defective/restore', [ItemController::class, 'defectiveRestore'])->name('defectiveIndex.restore');
+    Route::get('/inventory/items/defective/{page}', [ItemController::class, 'defectivePaginate']);
+    Route::get('/inventory/items/defective/{page}/{search}', [ItemController::class, 'defectiveSearch']);
 
     Route::get('/inventory/items/return', [ItemController::class, 'returnItem'])->name('return.index');
     Route::post('/inventory/items/return/print', [ItemController::class, 'returnPrint'])->name('return.print');
@@ -125,6 +127,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/items/disposed', [ItemController::class, 'disposedIndex'])->name('disposed.index');
     Route::get('/inventory/items/disposed/{page}', [ItemController::class, 'disposedPaginate']);
     Route::get('/inventory/items/disposed/{page}/{search}', [ItemController::class, 'disposedSearch']);
+
+
+    Route::get('/inventory/items/{page}', [ItemController::class, 'itemPaginate']);
+    Route::get('/inventory/items/{page}/{search}', [ItemController::class, 'itemSearch']);
+
 
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');
@@ -147,11 +154,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/phone-sim//mark-as-defective', [PhoneSimController::class, 'defective'])->name('phoneSim.defective');
     Route::get('/inventory/phone-sim/invoice-download/{id}', [PhoneSimController::class, 'download']);
 
+
     Route::get('/inventory/phone-sim/issuance-form/{id}', [PhoneSimController::class, 'issuance']);
 
     Route::get('/inventory/phone-sim/defective', [PhoneSimController::class, 'defectivePhoneIndex'])->name('defectivePhone.index');
     Route::post('/inventory/phone-sim/defective/restore', [PhoneSimController::class, 'defectivePhoneRestore'])->name('defectivePhone.restore');
 
+    Route::get('/inventory/phone-sim/{page}', [PhoneSimController::class, 'phoneSimPaginate']);
+    Route::get('/inventory/phone-sim/{page}/{search}', [PhoneSimController::class, 'phoneSimSearch']);
     // Phone SIM Request
     Route::get('/request/phone-sim', [PhoneSimRequestController::class, 'index'])->name('reqPhoneSim.index');
     Route::get('/request/phone-sim/add', [PhoneSimRequestController::class, 'add'])->name('reqPhoneSim.add');
@@ -172,6 +182,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/computers/edit/{id}', [ComputerController::class, 'edit'])->name('computer.edit');
     Route::post('/inventory/computers/update', [ComputerController::class, 'update'])->name('computer.update');
     Route::post('/inventory/computers/getSpecs', [ComputerController::class, 'view'])->name('computer.view');
+    Route::get('/inventory/computers/{page}', [ComputerController::class, 'ComputerPaginate']);
+    Route::get('/inventory/computers/{page}/{search}', [ComputerController::class, 'computerSearch']);
 
 
 

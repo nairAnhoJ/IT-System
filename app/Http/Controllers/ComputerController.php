@@ -8,11 +8,59 @@ use Illuminate\Support\Facades\DB;
 
 class ComputerController extends Controller
 {
+    // public function index(){
+    //     $computers = DB::select('SELECT computers.id, computers.code, computers.user, computers.site, sites.name AS site_name, computers.ip_add, computers.type, computers.status, computers.conducted_by, computers.date_conducted FROM computers INNER JOIN sites ON computers.site = sites.id WHERE computers.id != 1 ORDER BY computers.id ASC');
+
+
+    //     return view('inventory.computer', compact('computers'));
+    // }
+
     public function index(){
-        $computers = DB::select('SELECT computers.id, computers.code, computers.user, computers.site, sites.name AS site_name, computers.ip_add, computers.type, computers.status, computers.conducted_by, computers.date_conducted FROM computers INNER JOIN sites ON computers.site = sites.id WHERE computers.id != 1 ORDER BY computers.id ASC');
+        $computers = DB::table('computers')
+            ->select('computers.id', 'computers.code', 'computers.user', 'computers.site', 'sites.name AS site_name', 'computers.ip_add', 'computers.type', 'computers.status', 'computers.conducted_by', 'computers.date_conducted')
+            ->join('sites', 'computers.site', '=', 'sites.id')
+            ->where('computers.id', '!=', '1')
+            ->orderBy('computers.id', 'asc')
+            ->paginate(100);
 
+        $computersCount = DB::table('computers')->where('computers.id', '!=', '1')->count();
+        $search = "";
+        $page = 1;
 
-        return view('inventory.computer', compact('computers'));
+        return view('inventory.computer', compact('computers', 'computersCount', 'search', 'page'));
+    }
+
+    public function ComputerPaginate($page){
+        $computers = DB::table('computers')
+            ->select('computers.id', 'computers.code', 'computers.user', 'computers.site', 'sites.name AS site_name', 'computers.ip_add', 'computers.type', 'computers.status', 'computers.conducted_by', 'computers.date_conducted')
+            ->join('sites', 'computers.site', '=', 'sites.id')
+            ->where('computers.id', '!=', '1')
+            ->orderBy('computers.id', 'asc')
+            ->paginate(100,'*','page',$page);
+
+        $computersCount = DB::table('computers')->where('computers.id', '!=', '1')->count();
+        $search = "";
+        return view('inventory.computer', compact('computers', 'computersCount', 'search', 'page'));
+    }
+
+    public function computerSearch($page, $search){
+        $computers = DB::table('computers')
+            ->select('computers.id', 'computers.code', 'computers.user', 'computers.site', 'sites.name AS site_name', 'computers.ip_add', 'computers.type', 'computers.status', 'computers.conducted_by', 'computers.date_conducted')
+            ->join('sites', 'computers.site', '=', 'sites.id')
+            ->whereRaw("CONCAT_WS(' ', computers.code, computers.user, computers.ip_add, computers.status) LIKE '%{$search}%'")
+            ->where('computers.id', '!=', '1')
+            ->orderBy('computers.id', 'asc')
+            ->paginate(100,'*','page',$page);
+
+        $computersCount = DB::table('computers')
+        ->select('computers.id', 'computers.code', 'computers.user', 'computers.site', 'sites.name AS site_name', 'computers.ip_add', 'computers.type', 'computers.status', 'computers.conducted_by', 'computers.date_conducted')
+        ->join('sites', 'computers.site', '=', 'sites.id')
+        ->whereRaw("CONCAT_WS(' ', computers.code, computers.user, computers.ip_add, computers.status) LIKE '%{$search}%'")
+        ->where('computers.id', '!=', '1')
+        ->orderBy('computers.id', 'asc')
+        ->count();
+
+        return view('inventory.computer', compact('computers', 'computersCount', 'search', 'page'));
     }
 
     public function add(){

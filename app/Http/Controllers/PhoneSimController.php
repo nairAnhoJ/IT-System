@@ -9,9 +9,57 @@ use Illuminate\Support\Facades\Storage;
 
 class PhoneSimController extends Controller
 {
+    // public function index(){
+    //     $items = DB::select('SELECT phone_sims.id, phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no, phone_sims.remarks, phone_sims.site, sites.name AS site_name, phone_sims.status, phone_sims.invoice, phone_sims.date_del, phone_sims.is_Defective FROM phone_sims INNER JOIN sites ON phone_sims.site = sites.id WHERE phone_sims.is_Defective = 0 ORDER BY phone_sims.id desc');
+    //     return view('inventory.phone-sim', compact('items'));
+    // }
+
     public function index(){
-        $items = DB::select('SELECT phone_sims.id, phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no, phone_sims.remarks, phone_sims.site, sites.name AS site_name, phone_sims.status, phone_sims.invoice, phone_sims.date_del, phone_sims.is_Defective FROM phone_sims INNER JOIN sites ON phone_sims.site = sites.id WHERE phone_sims.is_Defective = 0 ORDER BY phone_sims.id desc');
-        return view('inventory.phone-sim', compact('items'));
+        $items = DB::table('phone_sims')
+            ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
+            ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->where('phone_sims.is_Defective', '0')
+            ->orderBy('phone_sims.id', 'desc')
+            ->paginate(100);
+
+        $itemCount = DB::table('phone_sims')->where('phone_sims.is_Defective', '0')->count();
+        $search = "";
+        $page = 1;
+
+        return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page'));
+    }
+
+    public function phoneSimPaginate($page){
+        $items = DB::table('phone_sims')
+            ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
+            ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->where('phone_sims.is_Defective', '0')
+            ->orderBy('phone_sims.id', 'desc')
+            ->paginate(100,'*','page',$page);
+
+        $itemCount = DB::table('phone_sims')->where('phone_sims.is_Defective', '0')->count();
+        $search = "";
+        return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page'));
+    }
+
+    public function phoneSimSearch($page, $search){
+        $items = DB::table('phone_sims')
+            ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
+            ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no) LIKE '%{$search}%'")
+            ->where('phone_sims.is_Defective', '0')
+            ->orderBy('phone_sims.id', 'desc')
+            ->paginate(100,'*','page',$page);
+
+        $itemCount = DB::table('phone_sims')
+            ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
+            ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no) LIKE '%{$search}%'")
+            ->where('phone_sims.is_Defective', '0')
+            ->orderBy('phone_sims.id', 'desc')
+            ->count();
+
+            return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page'));
     }
 
     // public function download($id){

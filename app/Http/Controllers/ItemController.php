@@ -11,10 +11,83 @@ use Illuminate\Support\Facades\Storage;
 class ItemController extends Controller
 {
     public function index(){
-        $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.remarks, items.description, items.is_Defective, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site, items.i_user, departments.name AS dept_name, items.i_remarks, items.i_date_issued, items.prev_user, items.prev_user_dept, items.return_remarks, items.date_returned FROM ((((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) INNER JOIN departments ON items.i_department = departments.id) WHERE items.is_Defective = 0 ORDER BY items.id DESC');
-        $depts = DB::table('departments')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+        $items = DB::table('items')
+            ->select('items.id', 'item_types.name AS type', 'items.code', 'items.brand', 'items.remarks', 'items.description', 'items.is_Defective', 'items.serial_no', 'items.invoice_no', 'items.date_purchased', 'items.status', 'items.is_Defective', 'computers.code AS comp', 'sites.name AS site', 'items.i_user', 'departments.name AS dept_name', 'items.i_remarks', 'items.i_date_issued', 'items.prev_user', 'items.prev_user_dept', 'items.return_remarks', 'items.date_returned')
+            ->join('item_types', 'items.type_id', '=', 'item_types.id')
+            ->join('computers', 'items.computer_id', '=', 'computers.id')
+            ->join('sites', 'items.site_id', '=', 'sites.id')
+            ->join('departments', 'items.i_department', '=', 'departments.id')
+            ->where('items.is_Defective', '0')
+            ->where('items.for_disposal', '0')
+            ->where('items.is_disposed', '0')
+            ->orderBy('items.id', 'desc')
+            ->paginate(100);
 
-        return view('inventory.items', compact('items', 'depts'));
+
+        // $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.remarks, items.description, items.is_Defective, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site, items.i_user, departments.name AS dept_name, items.i_remarks, items.i_date_issued, items.prev_user, items.prev_user_dept, items.return_remarks, items.date_returned FROM ((((items 
+        // INNER JOIN item_types ON items.type_id = item_types.id) 
+        // INNER JOIN computers ON items.computer_id = computers.id) 
+        // INNER JOIN sites ON items.site_id = sites.id) 
+        // INNER JOIN departments ON items.i_department = departments.id) 
+        // WHERE items.is_Defective = 0 AND items.for_disposal = 0 AND items.is_disposed = 0 ORDER BY items.id DESC');
+        $depts = DB::table('departments')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+        $itemCount = DB::table('items')->where('is_Defective', '0')->where('for_disposal', '0')->where('is_disposed', '0')->count();
+        $search = "";
+        $page = 1;
+
+        return view('inventory.items', compact('items', 'depts', 'itemCount', 'search', 'page'));
+    }
+
+    public function itemPaginate($page){
+        $items = DB::table('items')
+            ->select('items.id', 'item_types.name AS type', 'items.code', 'items.brand', 'items.remarks', 'items.description', 'items.is_Defective', 'items.serial_no', 'items.invoice_no', 'items.date_purchased', 'items.status', 'items.is_Defective', 'computers.code AS comp', 'sites.name AS site', 'items.i_user', 'departments.name AS dept_name', 'items.i_remarks', 'items.i_date_issued', 'items.prev_user', 'items.prev_user_dept', 'items.return_remarks', 'items.date_returned')
+            ->join('item_types', 'items.type_id', '=', 'item_types.id')
+            ->join('computers', 'items.computer_id', '=', 'computers.id')
+            ->join('sites', 'items.site_id', '=', 'sites.id')
+            ->join('departments', 'items.i_department', '=', 'departments.id')
+            ->where('items.is_Defective', '0')
+            ->where('items.for_disposal', '0')
+            ->where('items.is_disposed', '0')
+            ->orderBy('items.id', 'desc')
+            ->paginate(100,'*','page',$page);
+
+        $depts = DB::table('departments')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+        $itemCount = DB::table('items')->where('is_Defective', '0')->where('for_disposal', '0')->where('is_disposed', '0')->count();
+        $search = "";
+        return view('inventory.items', compact('search', 'items', 'page', 'itemCount', 'depts'));
+    }
+
+    public function itemSearch($page, $search){
+        $items = DB::table('items')
+            ->select('items.id', 'item_types.name AS type', 'items.code', 'items.brand', 'items.remarks', 'items.description', 'items.is_Defective', 'items.serial_no', 'items.invoice_no', 'items.date_purchased', 'items.status', 'items.is_Defective', 'computers.code AS comp', 'sites.name AS site', 'items.i_user', 'departments.name AS dept_name', 'items.i_remarks', 'items.i_date_issued', 'items.prev_user', 'items.prev_user_dept', 'items.return_remarks', 'items.date_returned')
+            ->join('item_types', 'items.type_id', '=', 'item_types.id')
+            ->join('computers', 'items.computer_id', '=', 'computers.id')
+            ->join('sites', 'items.site_id', '=', 'sites.id')
+            ->join('departments', 'items.i_department', '=', 'departments.id')
+            ->whereRaw("CONCAT_WS(' ', items.code, items.brand, items.description, items.serial_no) LIKE '%{$search}%'")
+            ->where('items.is_Defective', '0')
+            ->where('items.for_disposal', '0')
+            ->where('items.is_disposed', '0')
+            ->orderBy('items.id', 'desc')
+            ->paginate(100,'*','page',$page);
+
+        // $items = DB::table('items')
+        //     ->select('*')
+        //     ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+        //     ->where('for_disposal', '1')
+        //     ->orderBy('brand', 'asc')
+        //     ->paginate(100,'*','page',$page);
+
+        $itemCount = DB::table('items')
+            ->select('*')
+            ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+            ->where('items.is_Defective', '0')
+            ->where('items.for_disposal', '0')
+            ->where('items.is_disposed', '0')
+            ->count();
+
+        $depts = DB::table('departments')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+        return view('inventory.items', compact('search', 'items', 'page', 'itemCount', 'depts'));
     }
 
     public function add(){
@@ -228,8 +301,66 @@ class ItemController extends Controller
     }
     
     public function defectiveIndex(){
-        $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.description, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site FROM (((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) WHERE items.is_Defective = 1 ORDER BY items.id DESC');
-        return view('inventory.defective-items', compact('items'));
+        $items = DB::table('items')
+            ->select('items.id', 'item_types.name AS type', 'items.code', 'items.brand', 'items.remarks', 'items.description', 'items.is_Defective', 'items.serial_no', 'items.invoice_no', 'items.date_purchased', 'items.status', 'items.is_Defective', 'computers.code AS comp', 'sites.name AS site')
+            ->join('item_types', 'items.type_id', '=', 'item_types.id')
+            ->join('computers', 'items.computer_id', '=', 'computers.id')
+            ->join('sites', 'items.site_id', '=', 'sites.id')
+            ->where('items.is_Defective', '1')
+            ->orderBy('items.id', 'desc')
+            ->paginate(100);
+
+        $itemCount = DB::table('items')->where('is_Defective', '1')->count();
+        $search = "";
+        $page = 1;
+
+        // $items = DB::select('SELECT	items.id, item_types.name AS type, items.code, items.brand, items.description, items.serial_no, items.invoice_no, items.date_purchased, items.status, items.is_Defective, computers.code AS comp, sites.name AS site FROM (((items INNER JOIN item_types ON items.type_id = item_types.id) INNER JOIN computers ON items.computer_id = computers.id) INNER JOIN sites ON items.site_id = sites.id) WHERE items.is_Defective = 1 ORDER BY items.id DESC');
+
+        return view('inventory.defective-items', compact('items', 'itemCount', 'search', 'page'));
+    }
+
+    public function defectivePaginate($page){
+        $items = DB::table('items')
+            ->select('items.id', 'item_types.name AS type', 'items.code', 'items.brand', 'items.remarks', 'items.description', 'items.is_Defective', 'items.serial_no', 'items.invoice_no', 'items.date_purchased', 'items.status', 'items.is_Defective', 'computers.code AS comp', 'sites.name AS site')
+            ->join('item_types', 'items.type_id', '=', 'item_types.id')
+            ->join('computers', 'items.computer_id', '=', 'computers.id')
+            ->join('sites', 'items.site_id', '=', 'sites.id')
+            ->where('items.is_Defective', '1')
+            ->orderBy('items.id', 'desc')
+            ->paginate(100,'*','page',$page);
+
+            $itemCount = DB::table('items')->where('is_Defective', '1')->count();
+            $search = "";
+            $page = 1;
+            
+        return view('inventory.defective-items', compact('items', 'itemCount', 'search', 'page'));
+    }
+
+    public function defectiveSearch($page, $search){
+        $items = DB::table('items')
+            ->select('items.id', 'item_types.name AS type', 'items.code', 'items.brand', 'items.remarks', 'items.description', 'items.is_Defective', 'items.serial_no', 'items.invoice_no', 'items.date_purchased', 'items.status', 'items.is_Defective', 'computers.code AS comp', 'sites.name AS site')
+            ->join('item_types', 'items.type_id', '=', 'item_types.id')
+            ->join('computers', 'items.computer_id', '=', 'computers.id')
+            ->join('sites', 'items.site_id', '=', 'sites.id')
+            ->whereRaw("CONCAT_WS(' ', items.code, items.brand, items.description, items.serial_no) LIKE '%{$search}%'")
+            ->where('items.is_Defective', '1')
+            ->orderBy('items.id', 'desc')
+            ->paginate(100,'*','page',$page);
+
+        // $items = DB::table('items')
+        //     ->select('*')
+        //     ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+        //     ->where('for_disposal', '1')
+        //     ->orderBy('brand', 'asc')
+        //     ->paginate(100,'*','page',$page);
+
+        $itemCount = DB::table('items')
+            ->select('*')
+            ->whereRaw("CONCAT_WS(' ', code, brand, description, serial_no) LIKE '%{$search}%'")
+            ->where('items.is_Defective', '1')
+            ->count();
+
+        return view('inventory.defective-items', compact('items', 'itemCount', 'search', 'page'));
     }
 
     public function defectiveRestore(Request $request){
