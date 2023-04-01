@@ -382,17 +382,17 @@
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE CREATED
                         </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            STATUS
+                        </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             NATURE OF PROBLEM
                         </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center">
+                        <th scope="col" class="sticky top-0 py-2 text-center max-w-xs">
                             SUBJECT
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             ASSIGNED TO
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            STATUS
                         </th>
                     </tr>
                 </thead>
@@ -414,15 +414,6 @@
                             {{ date("M d, Y", strtotime($ticket->created_at)) }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
-                            {{ $ticket->nature_of_problem }}
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            {{ $ticket->subject }}
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
-                            {{ $ticket->assigned_to }}
-                        </td>
-                        <td class="py-3 px-6 text-center whitespace-nowrap">
                             <span class="
                                 @php
                                     $status = $ticket->status;
@@ -441,6 +432,15 @@
                                     echo $status;
                                 @endphp
                             </span>
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->nature_of_problem }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap max-w-xs overflow-hidden">
+                            {{ $ticket->subject }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $ticket->assigned_to }}
                         </td>
                     </tr>
                 @endforeach
