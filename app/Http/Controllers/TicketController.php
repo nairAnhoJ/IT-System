@@ -22,9 +22,9 @@ class TicketController extends Controller
         $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
 
         if($userDeptID != $deptInCharge){
-            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.department = ? ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200", [$userDeptID]);
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.update, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.department = ? ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200", [$userDeptID]);
         }else{
-            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200");
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.update, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200");
         }
 
         return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge'));
@@ -214,6 +214,7 @@ class TicketController extends Controller
     public function update(Request $request){
         $id = $request->ticketID;
         $status = $request->ticketStatus;
+        $ticketUpdate = $request->ticketUpdate;
         $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
         
         $smtp = DB::table('settings')->where('id', 1)->first();
@@ -223,7 +224,6 @@ class TicketController extends Controller
         if($status == 'PENDING'){
             if($request->isCancel == '1'){
                 DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
-                
                 return redirect()->route('ticket.index');
             }else{
                 DB::update('update tickets set status = "ONGOING", start_date_time = NOW()  where id = ?', [$id]);
@@ -278,7 +278,9 @@ class TicketController extends Controller
         }else if($status == 'ONGOING'){
             if($request->isCancel == '1'){
                 DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
-                
+                return redirect()->route('ticket.index');
+            }else if($request->isUpdate == '1'){
+                DB::update('update tickets set tickets.update = ? where id = ?', [$ticketUpdate, $id]);
                 return redirect()->route('ticket.index');
             }else{
                 $request->validate([

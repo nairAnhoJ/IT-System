@@ -1,6 +1,6 @@
 <x-app-layout>
     @section('meta')
-    <meta http-equiv="Refresh" content="60">
+    <meta name="refresh_timer" http-equiv="Refresh" content="300">
     @endsection
     @section('title')
     HII - Ticketing System
@@ -101,6 +101,7 @@
                             <input type="hidden" id="ticketID" name="ticketID">
                             <input type="hidden" id="ticketStatus" name="ticketStatus">
                             <input type="hidden" id="isCancel" name="isCancel" value="0">
+                            <input type="hidden" id="isUpdate" name="isUpdate" value="0">
                             <span id="ticketNumber"></span>
                             <br>
                             <span id="ticketRequester" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDepartment" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDate" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketStatus2" class="text-sm"></span>
@@ -118,22 +119,25 @@
                             <button id="SAPButton" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View SAP Business Partner</button>
                         </div>
                         @if (auth()->user()->dept_id == $deptInCharge)
-                            <div id="ticketResolutionInput">
-                                
-                            </div>
+                            <div id="ticketUpdateInput"></div>
+                            <div id="ticketResolutionInput"></div>
+                        @else
+                            <div id="ticketUpdate"></div>
                         @endif
-                        <div id="ticketResolutionDiv">
-                            
-                        </div>
+
+                        @if (auth()->user()->dept_id != $deptInCharge)
+                            <div id="ticketUpdateDiv"></div>
+                        @endif
+
+                        <div id="ticketResolutionDiv"></div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 border-t rounded-b border-gray-600">
                         @if (auth()->user()->dept_id == $deptInCharge)
+                            <div id="updateButtonDiv"></div>
                             <button data-modal-toggle="ticketModal" type="submit" id="ticketButton" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 mr-3 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"></button>
                         @endif
-                        <div id="cancelButtonDiv">
-                            
-                        </div>
+                        <div id="cancelButtonDiv"></div>
                         <button data-modal-toggle="ticketModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </form>
@@ -400,7 +404,7 @@
                 @foreach ($tickets as $ticket)
                     <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                         <th scope="row" class="py-3 px-6 font-medium text-white text-center">
-                            <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-is_SAP="{{ $ticket->is_SAP }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
+                            <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-is_SAP="{{ $ticket->is_SAP }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}" data-update="{{ $ticket->update }}">
                                 {{ $ticket->ticket_no }}
                             </span>
                         </th>
@@ -502,6 +506,7 @@
             }
             
             var status = $(this).find("span").data('status');
+            var update = $(this).find("span").data('update');
             $('#ticketStatus').val(status);
             $('#ticketStatus2').html(status);
             if(status == 'PENDING'){
@@ -509,8 +514,11 @@
                     $('#ticketButton').removeClass('hidden');
                     $('#ticketButton').html('Mark as ONGOING');
                 }
+                $('#updateButtonDiv').html('');
                 $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
+                $('#ticketUpdateInput').html('');
                 $('#ticketResolutionInput').html('');
+                $('#ticketUpdateDiv').html('');
                 $('#ticketResolutionDiv').html('');
                 $('#ticketStatus2').removeClass('text-amber-300');
                 $('#ticketStatus2').removeClass('text-teal-500');
@@ -521,10 +529,21 @@
                     $('#ticketButton').removeClass('hidden');
                     $('#ticketButton').html('Mark as DONE');
                 }
+                if(update == ''){
+                    $('#ticketUpdateDiv').html('');
+                }else{
+                    $('#ticketUpdateDiv').html(`<hr class="my-5">
+                                                <label for="ticketResolution" class="block text-base font-medium text-white">Update</label>
+                                                <textarea disabled style="resize: none;" rows=10 cols=50 maxlength=1000 class="block p-2.5 w-full max-h- text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>`);
+                }
                 $('#ticketResolutionDiv').html('');
-                $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
-                $('#ticketResolutionInput').html(`<hr class="my-5">
-                                                <label for="ticketResolution" class="block mb-2 text-sm font-medium text-white">Resolution</label>
+                $('#updateButtonDiv').html(`<button id="updateButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-neutral-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-yellow-500 bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-900">Update Ticket</button>`);
+                $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button"               class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
+                $('#ticketUpdateInput').html(`<hr class="my-5">
+                                                <label for="ticketUpdate" class="block mb-2 text-sm font-medium text-white">Update</label>
+                                                <textarea required style="resize: none;" id="ticketUpdate" name="ticketUpdate" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">${update}</textarea>`);
+                $('#ticketResolutionInput').html(`
+                                                <label for="ticketResolution" class="block mt-5 mb-2 text-sm font-medium text-white">Resolution</label>
                                                 <textarea required style="resize: none;" id="ticketResolution" name="ticketResolution" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
                 $('#ticketStatus2').removeClass('text-red-500');
                 $('#ticketStatus2').removeClass('text-teal-500');
@@ -535,8 +554,17 @@
                 if($('#ticketButton').length){
                     $('#ticketButton').addClass('hidden');
                 }
+                $('#ticketUpdateInput').html('');
                 $('#ticketResolutionInput').html('');
+                $('#updateButtonDiv').html('');
                 $('#cancelButtonDiv').html('');
+                if(update == ''){
+                    $('#ticketUpdateDiv').html('');
+                }else{
+                    $('#ticketUpdateDiv').html(`<hr class="my-5">
+                                                <label for="ticketResolution" class="block text-base font-medium text-white">Update</label>
+                                                <textarea disabled style="resize: none;" cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>`);
+                }
                 $('#ticketResolutionDiv').html(`<hr class="my-5">
                                                 <label for="ticketResolution" class="block mb-2 text-base font-medium text-white">Resolution</label>
                                                 <h2 id="ticketResolution" class="text-base leading-relaxed text-gray-300">${reso}</h2>`);
@@ -548,8 +576,17 @@
                 if($('#ticketButton').length){
                     $('#ticketButton').addClass('hidden');
                 }
+                $('#ticketUpdateInput').html('');
+                $('#updateButtonDiv').html('');
                 $('#ticketResolutionInput').html('');
                 $('#cancelButtonDiv').html('');
+                if(update == ''){
+                    $('#ticketUpdateDiv').html('');
+                }else{
+                    $('#ticketUpdateDiv').html(`<hr class="my-5">
+                                                <label for="ticketResolution" class="block text-base font-medium text-white">Update</label>
+                                                <textarea disabled style="resize: none;" cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>`);
+                }
                 $('#ticketResolutionDiv').html('');
                 $('#ticketStatus2').removeClass('text-red-500');
                 $('#ticketStatus2').removeClass('text-amber-300');
@@ -565,6 +602,8 @@
                 $('#SAPButton').addClass('hidden');
             }
 
+            // $("meta[name='refresh_timer']").remove();
+            $('meta[http-equiv="refresh"]').attr('content', '');
             $('#viewTicket').click();
         });
 
@@ -613,6 +652,13 @@
 
         jQuery(document).on( "click", "#cancelButton", function(){
             $('#isCancel').val('1');
+            $('#isUpdate').val('0');
+            $('#statusUpdateForm').submit();
+        });
+
+        jQuery(document).on( "click", "#updateButton", function(){
+            $('#isUpdate').val('1');
+            $('#isCancel').val('0');
             $('#statusUpdateForm').submit();
         });
     });
