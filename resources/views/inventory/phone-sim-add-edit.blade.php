@@ -60,7 +60,7 @@
             <input type="hidden" name="itemID" value="{{ $ItemID }}">
 
             <label for="item" class="mt-5 block text-sm font-medium text-white">Select Item Type</label>
-            <select {{ $Action == 'edit' ? 'disabled' : ''; }} id="item" name="item" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+            <select id="item" name="item" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                 <option {{ $Item == 'PHONE' ? 'selected' : ''; }} value="PHONE">Phone</option>
                 <option {{ $Item == 'SIM CARD' ? 'selected' : ''; }} value="SIM CARD">SIM Card</option>
             </select>
