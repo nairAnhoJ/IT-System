@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->text('update')->after('description')->nullable();
+            $table->binary('update')->after('description')->nullable();
         });
     }
 

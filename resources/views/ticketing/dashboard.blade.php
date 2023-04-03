@@ -1,6 +1,6 @@
 <x-app-layout>
     @section('meta')
-    <meta name="refresh_timer" http-equiv="Refresh" content="300">
+    {{-- <meta name="refresh_timer" http-equiv="Refresh" content="300"> --}}
     @endsection
     @section('title')
     HII - Ticketing System
@@ -455,6 +455,22 @@
 
   <script>
     $(document).ready(function(){
+
+        
+        var delayTime = 90000;
+        var timeoutID;
+        function refreshPage() {
+            location.reload();
+        }
+        function resetTimeout() {
+            clearTimeout(timeoutID);
+            timeoutID = setTimeout(refreshPage, delayTime);
+        }
+        $(document).on('mousemove keydown', resetTimeout);
+        resetTimeout();
+
+
+
         $("#tableSearch").on("keyup", function() {
             var value = $(this).val().toLowerCase();
             $("#ticketTableBody tr").filter(function() {

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('assigned_to');
             $table->string('subject');
             $table->string('description');
-            $table->string('resolution')->nullable();
+            $table->binary('resolution')->nullable();
             $table->string('attachment')->nullable();
             $table->string('status')->default('PENDING');
             $table->dateTime('start_date_time')->nullable();
