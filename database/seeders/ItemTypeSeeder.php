@@ -29,5 +29,6 @@ class ItemTypeSeeder extends Seeder
         ItemType::create(['name' => 'PRINTER']);
         ItemType::create(['name' => 'LAPTOP']);
         ItemType::create(['name' => 'OPERATING SYSTEM']);
+        ItemType::create(['name' => 'AVR/UPS']);
     }
 }

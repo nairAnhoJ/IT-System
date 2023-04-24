@@ -16,7 +16,7 @@ class DeptInChargeSeeder extends Seeder
     public function run()
     {
         $deptInCharge = [
-            'dept_id' => '1',
+            'dept_id' => '11',
         ];
         DeptInCharge::create($deptInCharge);
     }
