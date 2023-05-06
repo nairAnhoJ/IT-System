@@ -71,7 +71,7 @@
 
             <label for="type" class="mt-3 block text-sm font-medium text-white">Type</label>
             <select id="type" name="type" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
-                @if ($type == 'DESKTOP' || $Action != 'add')
+                @if ($type == 'DESKTOP' || $Action != 'edit')
                     <option value="DESKTOP">DESKTOP</option>
                 @else
                     <option value="LAPTOP">LAPTOP</option>
