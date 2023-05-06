@@ -153,8 +153,6 @@ class ComputerController extends Controller
 
         $comID = (DB::table('computers')->orderBy('id', 'desc')->first())->id;
 
-        dd($stor3);
-
         if($laptop != null){
             DB::update("UPDATE items SET status=?, computer_id=?, site_id=?, edited_by=? WHERE id=?", ['USED', $comID, $site, auth()->user()->name, $laptop]);
         }
