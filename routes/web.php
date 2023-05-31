@@ -56,13 +56,48 @@ Route::get('/dashboard', function () {
     $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
 
     if($userDeptID != $deptInCharge){
-        $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.status = 'PENDING' || tickets.status = 'ONGOING' AND department = ? ORDER BY tickets.id DESC", [$userDeptID]);
+        $tickets = DB::table('tickets')
+            ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
+            ->join('users AS u', 'tickets.user_id', '=', 'u.id')
+            ->join('departments', 'tickets.department', '=', 'departments.id')
+            ->join('users AS a', 'tickets.assigned_to', '=', 'a.id')
+            ->join('ticket_categories', 'tickets.nature_of_problem', '=', 'ticket_categories.id')
+            ->where(function ($query) use ($userDeptID) {
+                $query->where('tickets.department', $userDeptID)
+                    ->where(function ($query) {
+                        $query->where('tickets.status', 'PENDING')
+                            ->orWhere('tickets.status', 'ONGOING');
+                    });
+            })
+            ->orderBy('tickets.id', 'desc')
+            ->get();
+
+        // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution 
+        // FROM tickets 
+        // INNER JOIN users AS u ON tickets.user_id = u.id 
+        // INNER JOIN departments ON tickets.department = departments.id 
+        // INNER JOIN users AS a ON tickets.assigned_to = a.id 
+        // INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id 
+        // WHERE tickets.status = 'PENDING' || tickets.status = 'ONGOING' 
+        // AND department = ? 
+        // ORDER BY tickets.id DESC", [$userDeptID]);
 
         $ticketReq = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status != 'CANCELLED' AND status != 'DONE'", [auth()->user()->id]);
         $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'PENDING'", [auth()->user()->id]);
         $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'ONGOING'", [auth()->user()->id]);
     }else{
-        $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.status = 'PENDING' || tickets.status = 'ONGOING' ORDER BY tickets.id DESC");
+        $tickets = DB::table('tickets')
+            ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
+            ->join('users AS u', 'tickets.user_id', '=', 'u.id')
+            ->join('departments', 'tickets.department', '=', 'departments.id')
+            ->join('users AS a', 'tickets.assigned_to', '=', 'a.id')
+            ->join('ticket_categories', 'tickets.nature_of_problem', '=', 'ticket_categories.id')
+            ->where('tickets.status', 'PENDING')
+            ->orWhere('tickets.status', 'ONGOING')
+            ->orderBy('tickets.id', 'desc')
+            ->get();
+
+        // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.status = 'PENDING' || tickets.status = 'ONGOING' ORDER BY tickets.id DESC");
 
         $ticketReq = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE assigned_to = ? AND status != 'CANCELLED' AND status != 'DONE'", [auth()->user()->id]);
         $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'PENDING'");
