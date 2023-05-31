@@ -21,6 +21,7 @@ use App\Models\DeptInCharge;
 use App\Models\Issuance;
 use App\Models\PhoneSim;
 use App\Models\TicketCategory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -82,9 +83,30 @@ Route::get('/dashboard', function () {
         // AND department = ? 
         // ORDER BY tickets.id DESC", [$userDeptID]);
 
-        $ticketReq = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status != 'CANCELLED' AND status != 'DONE'", [auth()->user()->id]);
-        $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'PENDING'", [auth()->user()->id]);
-        $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'ONGOING'", [auth()->user()->id]);
+        $userID = Auth::user()->id;
+        $ticketReq = DB::table('tickets')
+            ->where(function ($query) use ($userID) {
+                $query->where('user_id', $userID)
+                    ->where(function ($query) {
+                        $query->where('status', 'PENDING')
+                            ->orWhere('status', 'ONGOING');
+                    });
+            })
+            ->count();
+            
+        $pending = DB::table('tickets')
+            ->where('department', $userDeptID)
+            ->where('status', 'PENDING')
+            ->count();
+
+        $ongoing = DB::table('tickets')
+            ->where('department', $userDeptID)
+            ->where('status', 'ONGOING')
+            ->count();
+
+        // $ticketReq = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status != 'CANCELLED' AND status != 'DONE'", [auth()->user()->id]);
+        // $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'PENDING'", [auth()->user()->id]);
+        // $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'ONGOING'", [auth()->user()->id]);
     }else{
         $tickets = DB::table('tickets')
             ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
@@ -99,9 +121,29 @@ Route::get('/dashboard', function () {
 
         // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.status = 'PENDING' || tickets.status = 'ONGOING' ORDER BY tickets.id DESC");
 
-        $ticketReq = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE assigned_to = ? AND status != 'CANCELLED' AND status != 'DONE'", [auth()->user()->id]);
-        $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'PENDING'");
-        $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'ONGOING'");
+
+        $userID = Auth::user()->id;
+        $ticketReq = DB::table('tickets')
+            ->where(function ($query) use ($userID) {
+                $query->where('assigned_to', $userID)
+                    ->where(function ($query) {
+                        $query->where('status', 'PENDING')
+                            ->orWhere('status', 'ONGOING');
+                    });
+            })
+            ->count();
+            
+        $pending = DB::table('tickets')
+            ->where('status', 'PENDING')
+            ->count();
+
+        $ongoing = DB::table('tickets')
+            ->where('status', 'ONGOING')
+            ->count();
+
+        // $ticketReq = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE assigned_to = ? AND status != 'CANCELLED' AND status != 'DONE'", [auth()->user()->id]);
+        // $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'PENDING'");
+        // $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'ONGOING'");
     }
     return view('dashboard', compact('userDept', 'tickets', 'deptInCharge', 'userDeptID', 'ticketReq', 'pending', 'ongoing'));
 })->middleware(['auth', 'verified'])->name('dashboard');

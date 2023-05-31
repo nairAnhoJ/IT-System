@@ -179,28 +179,28 @@
         <div class="grid grid-cols-3 mb-3 h-20 gap-x-3">
             @if ($userDeptID == $deptInCharge)
                 <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-blue-500">{{ $ticketReq[0]->count }}</h1> 
+                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-blue-500">{{ $ticketReq }}</h1> 
                     <h1 class="ml-5 font-semibold tracking-wider">ASSIGNED TICKETS</h1> 
                 </div>
                 <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-red-500">{{ $pending[0]->count }}</h1>
+                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-red-500">{{ $pending }}</h1>
                     <h1 class="ml-5 font-semibold tracking-wider">TOTAL PENDING</h1> 
                 </div>
                 <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-amber-300">{{ $ongoing[0]->count }}</h1> 
+                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-amber-300">{{ $ongoing }}</h1> 
                     <h1 class="ml-5 font-semibold tracking-wider">TOTAL ONGOING</h1> 
                 </div>
             @else
                 <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-blue-500">{{ $ticketReq[0]->count }}</h1>
+                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-blue-500">{{ $ticketReq }}</h1>
                     <h1 class="ml-5 font-semibold tracking-wider">TICKETS REQUESTED</h1> 
                 </div>
                 <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-red-500">{{ $pending[0]->count }}</h1> 
+                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-red-500">{{ $pending }}</h1> 
                     <h1 class="ml-5 font-semibold tracking-wider">TOTAL PENDING</h1> 
                 </div>
                 <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-amber-300">{{ $ongoing[0]->count }}</h1> 
+                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-amber-300">{{ $ongoing }}</h1> 
                     <h1 class="ml-5 font-semibold tracking-wider">TOTAL ONGOING</h1> 
                 </div>
             @endif
