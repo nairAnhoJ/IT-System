@@ -398,7 +398,7 @@
                     <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
                         <ul class="inline-flex items-center -space-x-px">
                             <li>
-                                <a href="{{ ($search == '') ? url('/inventory/items/'.$prev) : url('/inventory/items/for-dispose/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                <a href="{{ ($search == '') ? url('/inventory/items/'.$prev) : url('/inventory/items/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
                                     <i class="uil uil-arrow-left text-2xl"></i>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -407,7 +407,7 @@
                                 <p class="block w-20 h-9 leading-9 text-center z-10 text-gray-400 bg-gray-700">Page {{ $page }}</p>
                             </li>
                             <li>
-                                <a href="{{ ($search == '') ? url('/inventory/items/'.$next) : url('/inventory/items/for-dispose/'.$next.'/'.$search); }}" class="{{ ($to == $itemCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                <a href="{{ ($search == '') ? url('/inventory/items/'.$next) : url('/inventory/items/'.$next.'/'.$search); }}" class="{{ ($to == $itemCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 pt-0.5 text-center text-gray-400 bg-gray-700 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                                     <i class="uil uil-arrow-right text-2xl"></i>
                                     <span class="sr-only">Next</span>
                                 </a>
