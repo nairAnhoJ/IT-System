@@ -254,6 +254,9 @@
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             USER
                         </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            DEPARTMENT
+                        </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DESCRIPTION
                         </th>
@@ -291,6 +294,9 @@
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->user }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->dept }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->desc }}
