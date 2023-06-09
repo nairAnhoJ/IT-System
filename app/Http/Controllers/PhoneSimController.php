@@ -34,6 +34,7 @@ class PhoneSimController extends Controller
         $items = DB::table('phone_sims')
             ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'departments.name as dept', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
             ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->join('departments', 'phone_sims.department', '=', 'departments.id')
             ->where('phone_sims.is_Defective', '0')
             ->orderBy('phone_sims.id', 'desc')
             ->paginate(100,'*','page',$page);
@@ -47,6 +48,7 @@ class PhoneSimController extends Controller
         $items = DB::table('phone_sims')
             ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'departments.name as dept', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
             ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->join('departments', 'phone_sims.department', '=', 'departments.id')
             ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no) LIKE '%{$search}%'")
             ->where('phone_sims.is_Defective', '0')
             ->orderBy('phone_sims.id', 'desc')
@@ -55,6 +57,7 @@ class PhoneSimController extends Controller
         $itemCount = DB::table('phone_sims')
             ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.is_Defective')
             ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->join('departments', 'phone_sims.department', '=', 'departments.id')
             ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no) LIKE '%{$search}%'")
             ->where('phone_sims.is_Defective', '0')
             ->orderBy('phone_sims.id', 'desc')
