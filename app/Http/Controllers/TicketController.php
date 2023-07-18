@@ -137,7 +137,7 @@ class TicketController extends Controller
     public function createForIT(){
         $cats = DB::select('SELECT * FROM ticket_categories ORDER BY ticket_categories.name ASC');
         $dic = (DB::table('dept_in_charges')->first())->dept_id;
-        $users = DB::table('users')->where('dept_id', '!=', $dic)->orderBy('name', 'asc')->get();
+        $users = DB::table('users')->orderBy('name', 'asc')->get();
 
         return view('ticketing.create-ticket', compact('cats', 'users'));
     }
