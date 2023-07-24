@@ -113,7 +113,7 @@
                     <!-- Modal body -->
                     <div class="p-3">
                         <p id="ticketSubject" class="mb-2 text-xl leading-relaxed font-semibold text-gray-300"></p>
-                        <p id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300"></p>
+                        <div id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300 whitespace-pre-line"></div>
                         <div>
                             <button id="AttachedFileButton" data-modal-toggle="AttachedFileModal" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View Attached File</button>
                             <button id="SAPButton" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View SAP Business Partner</button>
