@@ -79,7 +79,7 @@
         </button>
         
         <!-- ========================================================= Main modal ========================================================= -->
-        <div id="ticketModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+        {{-- <div id="ticketModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-4xl md:h-auto">
                 <!-- Modal content -->
                 <form enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
@@ -115,6 +115,60 @@
                     </div>
                 </form>
             </div>
+        </div> --}}
+
+        <div id="ticketModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+            <div class="relative w-full h-full max-w-4xl md:h-auto">
+                <!-- Modal content -->
+                <form id="statusUpdateForm" enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
+                        <h3 class="text-2xl font-semibold text-white leading-5 tracking-wide">
+                            @csrf
+                            <input type="hidden" id="ticketID" name="ticketID">
+                            <input type="hidden" id="ticketStatus" name="ticketStatus">
+                            <input type="hidden" id="isCancel" name="isCancel" value="0">
+                            <input type="hidden" id="isUpdate" name="isUpdate" value="0">
+                            <span id="ticketNumber"></span>
+                            <br>
+                            <span id="ticketRequester" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDepartment" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDate" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketStatus2" class="text-sm"></span>
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="ticketModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-3">
+                        <p id="ticketSubject" class="mb-2 text-xl leading-relaxed font-semibold text-gray-300"></p>
+                        <div id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300 whitespace-pre-line"></div>
+                        <div>
+                            <button id="AttachedFileButton" data-modal-toggle="AttachedFileModal" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View Attached File</button>
+                            <button id="SAPButton" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View SAP Business Partner</button>
+                        </div>
+                        {{-- @if (auth()->user()->dept_id == $deptInCharge)
+                            <div id="ticketUpdateInput"></div>
+                            <div id="ticketResolutionInput"></div>
+                        @else
+                            <div id="ticketUpdate"></div>
+                        @endif
+
+                        @if (auth()->user()->dept_id != $deptInCharge)
+                            <div id="ticketUpdateDiv"></div>
+                        @endif --}}
+
+                        <div id="ticketResolutionDiv"></div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-3 border-t rounded-b border-gray-600">
+                        {{-- @if (auth()->user()->dept_id == $deptInCharge)
+                            <div id="updateButtonDiv"></div>
+                            <button data-modal-toggle="ticketModal" type="submit" id="ticketButton" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 mr-3 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"></button>
+                        @endif --}}
+                        <div id="cancelButtonDiv"></div>
+                        <button data-modal-toggle="ticketModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
+                    </div>
+                </form>
+            </div>
         </div>
         
         <!-- ========================================================= Attached File modal ========================================================= -->
@@ -140,6 +194,168 @@
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 space-x-3 border-t rounded-b border-gray-600">
                         <button data-modal-toggle="AttachedFileModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========================================================= SAP modal ========================================================= -->
+        <button id="viewSAP" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="SAPModal">
+        </button>
+
+        <div id="SAPModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+            <div class="relative w-full h-full max-w-6xl md:h-auto">
+                <!-- Modal content -->
+                <div class="relative rounded-lg shadow bg-gray-700 text-sm">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
+                        <h3 class="text-2xl font-semibold text-white tracking-wide">
+                            <span id="sticketNumber"></span>
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="SAPModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6">
+                        <div>
+                            <h1 class="mb-8 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">SAP BUSINESS PARTNER</h1>
+                            
+                            <div class="w-full grid grid-cols-9 gap-2 content-center">
+                                <div class="leading-7 py-px text-sm">Type of Request</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="request" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Remarks</div>
+                                <div class="col-span-5">
+                                    <input type="text" id="remarks" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+
+
+
+                
+                                <div class="col-span-9 my-1">
+                                    <div class="w-full h-px border-b border-b-gray-500"></div>
+                                </div>
+                                
+                                <div class="leading-7 py-px text-sm">BP Code</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="code" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">WTax Code</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="wtax_code" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">AR In-Charge</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="AR_inCharge" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                
+                
+
+
+                
+                                <div class="leading-7 py-px text-sm">BP Type</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="type" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">On Hold</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="isOnHold" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">AR Email</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="AR_email" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                
+                
+                
+                                <div class="leading-7 py-px text-sm">Customer Name</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="name" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">SOA Auto Email</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="isAutoEmail" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Payment Terms</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="payment_terms" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                
+                
+                
+                                <div class="leading-7 py-px text-sm">Billing Address</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="billing_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Business Style</div>
+                                <div class="col-span-5">
+                                    <input type="text" id="style" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
+                                </div>
+                
+                
+                
+                                <div class="leading-7 py-px text-sm">Shipping Address</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="shipping_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact Name</div>
+                                <div class="">
+                                    <input type="text" id="contact_name1" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact No</div>
+                                <div class="">
+                                    <input type="text" id="contact_no1" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact Email</div>
+                                <div class="">
+                                    <input type="text" id="contact_email1" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                
+                
+                
+                                <div class="leading-7 py-px text-sm">TIN</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="tin" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact Name</div>
+                                <div class="">
+                                    <input type="text" id="contact_name2" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact No</div>
+                                <div class="">
+                                    <input type="text" id="contact_no2" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact Email</div>
+                                <div class="">
+                                    <input type="text" id="contact_email2" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                
+                
+                
+                                <div class="leading-7 py-px text-sm">Sales Employee</div>
+                                <div class="col-span-2">
+                                    <input type="text" id="sales_employee" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact Name</div>
+                                <div class="">
+                                    <input type="text" id="contact_name3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact No</div>
+                                <div class="">
+                                    <input type="text" id="contact_no3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                                <div class="leading-7 py-px justify-self-end text-sm">Contact Email</div>
+                                <div class="">
+                                    <input type="text" id="contact_email3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-3 space-x-3 border-t rounded-b border-gray-600">
+                        <button data-modal-toggle="SAPModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </div>
             </div>
@@ -333,6 +549,7 @@
                 var ticket_no = $(this).find("span").data('ticket_no');
                 $('#ticketNumber').html(ticket_no);
                 $('#aticketNumber').html(ticket_no);
+                $('#sticketNumber').html(ticket_no);
 
                 var req = $(this).find("span").data('user');
                 $('#ticketRequester').html(req);
@@ -359,6 +576,7 @@
                 }
                 
                 var status = $(this).find("span").data('status');
+                var update = $(this).find("span").data('update');
                 $('#ticketStatus').val(status);
                 $('#ticketStatus2').html(status);
                 if(status == 'PENDING'){
@@ -366,38 +584,214 @@
                         $('#ticketButton').removeClass('hidden');
                         $('#ticketButton').html('Mark as ONGOING');
                     }
+                    $('#updateButtonDiv').html('');
+                    $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
+                    $('#ticketUpdateInput').html('');
                     $('#ticketResolutionInput').html('');
+                    $('#ticketUpdateDiv').html('');
                     $('#ticketResolutionDiv').html('');
                     $('#ticketStatus2').removeClass('text-amber-300');
                     $('#ticketStatus2').removeClass('text-teal-500');
                     $('#ticketStatus2').addClass('text-red-500');
+                    $('#ticketStatus2').removeClass('text-neutral-300');
                 }else if(status == 'ONGOING'){
                     if($('#ticketButton').length){
                         $('#ticketButton').removeClass('hidden');
                         $('#ticketButton').html('Mark as DONE');
                     }
+                    if(update == ''){
+                        $('#ticketUpdateDiv').html('');
+                    }else{
+                        $('#ticketUpdateDiv').html(`<hr class="my-5">
+                                                    <label for="ticketResolution" class="block text-base font-medium text-white">Update</label>
+                                                    <textarea disabled style="resize: none;" rows=10 cols=50 maxlength=1000 class="block p-2.5 w-full max-h- text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>`);
+                    }
                     $('#ticketResolutionDiv').html('');
-                    $('#ticketResolutionInput').html(`<hr class="my-5">
-                                                    <label for="ticketResolution" class="block mb-2 text-sm font-medium text-white">Resolution</label>
-                                                    <textarea style="resize: none;" id="ticketResolution" name="ticketResolution" rows="4" class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
+                    $('#updateButtonDiv').html(`<button id="updateButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-neutral-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-yellow-500 bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-900">Update Ticket</button>`);
+                    $('#cancelButtonDiv').html(`<button id="cancelButton" type="button" data-modal-toggle="ticketModal" type="button"               class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-red-600 bg-red-600 hover:bg-red-700 focus:ring-red-900">Cancel Ticket</button>`);
+                    $('#ticketUpdateInput').html(`<hr class="my-5">
+                                                    <label for="ticketUpdate" class="block mb-2 text-sm font-medium text-white">Update</label>
+                                                    <textarea style="resize: none;" id="ticketUpdate" name="ticketUpdate" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">${update}</textarea>`);
+                    $('#ticketResolutionInput').html(`
+                                                    <label for="ticketResolution" class="block mt-5 mb-2 text-sm font-medium text-white">Resolution</label>
+                                                    <textarea required style="resize: none;" id="ticketResolution" name="ticketResolution" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
                     $('#ticketStatus2').removeClass('text-red-500');
                     $('#ticketStatus2').removeClass('text-teal-500');
                     $('#ticketStatus2').addClass('text-amber-300');
+                    $('#ticketStatus2').removeClass('text-neutral-300');
                 }else if(status == 'DONE'){
                     var reso = $(this).find("span").data('reso');
                     if($('#ticketButton').length){
                         $('#ticketButton').addClass('hidden');
                     }
+                    $('#ticketUpdateInput').html('');
                     $('#ticketResolutionInput').html('');
+                    $('#updateButtonDiv').html('');
+                    $('#cancelButtonDiv').html('');
+                    if(update == ''){
+                        $('#ticketUpdateDiv').html('');
+                    }else{
+                        $('#ticketUpdateDiv').html(`<hr class="my-5">
+                                                    <label for="ticketResolution" class="block text-base font-medium text-white">Update</label>
+                                                    <textarea disabled style="resize: none;" cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>`);
+                    }
                     $('#ticketResolutionDiv').html(`<hr class="my-5">
                                                     <label for="ticketResolution" class="block mb-2 text-base font-medium text-white">Resolution</label>
                                                     <h2 id="ticketResolution" class="text-base leading-relaxed text-gray-300">${reso}</h2>`);
                     $('#ticketStatus2').removeClass('text-red-500');
                     $('#ticketStatus2').removeClass('text-amber-300');
                     $('#ticketStatus2').addClass('text-teal-500');
+                    $('#ticketStatus2').removeClass('text-neutral-300');
+                }else if(status == 'CANCELLED'){
+                    if($('#ticketButton').length){
+                        $('#ticketButton').addClass('hidden');
+                    }
+                    $('#ticketUpdateInput').html('');
+                    $('#updateButtonDiv').html('');
+                    $('#ticketResolutionInput').html('');
+                    $('#cancelButtonDiv').html('');
+                    if(update == ''){
+                        $('#ticketUpdateDiv').html('');
+                    }else{
+                        $('#ticketUpdateDiv').html(`<hr class="my-5">
+                                                    <label for="ticketResolution" class="block text-base font-medium text-white">Update</label>
+                                                    <textarea disabled style="resize: none;" cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>`);
+                    }
+                    $('#ticketResolutionDiv').html('');
+                    $('#ticketStatus2').removeClass('text-red-500');
+                    $('#ticketStatus2').removeClass('text-amber-300');
+                    $('#ticketStatus2').removeClass('text-teal-500');
+                    $('#ticketStatus2').addClass('text-neutral-300');
+                }
+                
+                var is_SAP = $(this).find("span").data('is_sap');
+                
+                if(is_SAP != "0"){
+                    $('#SAPButton').removeClass('hidden');
+                }else{
+                    $('#SAPButton').addClass('hidden');
                 }
 
+                // $("meta[name='refresh_timer']").remove();
+                $('meta[http-equiv="refresh"]').attr('content', '');
                 $('#viewTicket').click();
+            });
+
+            // $('#ticketTableBody tr').click(function() {
+            //     var id = $(this).find("span").data('id');
+            //     $('#ticketID').val(id);
+
+            //     var ticket_no = $(this).find("span").data('ticket_no');
+            //     $('#ticketNumber').html(ticket_no);
+            //     $('#aticketNumber').html(ticket_no);
+
+            //     var req = $(this).find("span").data('user');
+            //     $('#ticketRequester').html(req);
+
+            //     var dept = $(this).find("span").data('dept');
+            //     $('#ticketDepartment').html(dept);
+                
+            //     var date = $(this).find("span").data('date');
+            //     $('#ticketDate').html(date);
+                
+            //     var subject = $(this).find("span").data('subject');
+            //     $('#ticketSubject').html(subject);
+                
+            //     var desc = $(this).find("span").data('desc');
+            //     $('#ticketDesc').html(desc);
+                
+            //     var src = $(this).find("span").data('src');
+            //     if(src != ""){
+            //         var nsrc = `{{ asset('storage/${src}') }}`;
+            //         $('#ticketAttachment').prop('src', nsrc);
+            //         $('#AttachedFileButton').removeClass('hidden');
+            //     }else{
+            //         $('#AttachedFileButton').addClass('hidden');
+            //     }
+                
+            //     var status = $(this).find("span").data('status');
+            //     $('#ticketStatus').val(status);
+            //     $('#ticketStatus2').html(status);
+            //     if(status == 'PENDING'){
+            //         if($('#ticketButton').length){
+            //             $('#ticketButton').removeClass('hidden');
+            //             $('#ticketButton').html('Mark as ONGOING');
+            //         }
+            //         $('#ticketResolutionInput').html('');
+            //         $('#ticketResolutionDiv').html('');
+            //         $('#ticketStatus2').removeClass('text-amber-300');
+            //         $('#ticketStatus2').removeClass('text-teal-500');
+            //         $('#ticketStatus2').addClass('text-red-500');
+            //     }else if(status == 'ONGOING'){
+            //         if($('#ticketButton').length){
+            //             $('#ticketButton').removeClass('hidden');
+            //             $('#ticketButton').html('Mark as DONE');
+            //         }
+            //         $('#ticketResolutionDiv').html('');
+            //         $('#ticketResolutionInput').html(`<hr class="my-5">
+            //                                         <label for="ticketResolution" class="block mb-2 text-sm font-medium text-white">Resolution</label>
+            //                                         <textarea style="resize: none;" id="ticketResolution" name="ticketResolution" rows="4" class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>`);
+            //         $('#ticketStatus2').removeClass('text-red-500');
+            //         $('#ticketStatus2').removeClass('text-teal-500');
+            //         $('#ticketStatus2').addClass('text-amber-300');
+            //     }else if(status == 'DONE'){
+            //         var reso = $(this).find("span").data('reso');
+            //         if($('#ticketButton').length){
+            //             $('#ticketButton').addClass('hidden');
+            //         }
+            //         $('#ticketResolutionInput').html('');
+            //         $('#ticketResolutionDiv').html(`<hr class="my-5">
+            //                                         <label for="ticketResolution" class="block mb-2 text-base font-medium text-white">Resolution</label>
+            //                                         <h2 id="ticketResolution" class="text-base leading-relaxed text-gray-300">${reso}</h2>`);
+            //         $('#ticketStatus2').removeClass('text-red-500');
+            //         $('#ticketStatus2').removeClass('text-amber-300');
+            //         $('#ticketStatus2').addClass('text-teal-500');
+            //     }
+
+            //     $('#viewTicket').click();
+            // });
+
+            $('#SAPButton').click(function(){
+                var ticketID = $('#ticketID').val();
+                var _token = $('input[name="_token"]').val();
+                
+                $.ajax({
+                    url: "{{ route('sap.details') }}",
+                    method: "POST",
+                    dataType: 'json',
+                    data: {
+                        ticketID: ticketID,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#request').val(result.request);
+                        $('#remarks').val(result.description);
+                        $('#type').val(result.type);
+                        $('#code').val(result.code);
+                        $('#wtax_code').val(result.wtax_code);
+                        $('#AR_inCharge').val(result.AR_inCharge);
+                        $('#isOnHold').val(result.isOnHold);
+                        $('#AR_email').val(result.AR_email);
+                        $('#name').val(result.name);
+                        $('#isAutoEmail').val(result.isAutoEmail);
+                        $('#payment_terms').val(result.payment_terms);
+                        $('#billing_address').val(result.billing_address);
+                        $('#style').val(result.style);
+                        $('#shipping_address').val(result.shipping_address);
+                        $('#contact_name1').val(result.contact_name1);
+                        $('#contact_no1').val(result.contact_no1);
+                        $('#contact_email1').val(result.contact_email1);
+                        $('#tin').val(result.tin);
+                        $('#contact_name2').val(result.contact_name2);
+                        $('#contact_no2').val(result.contact_no2);
+                        $('#contact_email2').val(result.contact_email2);
+                        $('#sales_employee').val(result.sales_employee);
+                        $('#contact_name3').val(result.contact_name3);
+                        $('#contact_no3').val(result.contact_no3);
+                        $('#contact_email3').val(result.contact_email3);
+                        $('#viewSAP').click();
+                    }
+                })
             });
         });
     </script>
