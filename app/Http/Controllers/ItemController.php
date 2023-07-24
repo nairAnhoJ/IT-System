@@ -470,13 +470,19 @@ class ItemController extends Controller
         return redirect()->route('item.index');
     }
 
+
+
+
+
+
     public function returnItem(){
         $sites = DB::table('sites')->orderBy('name', 'asc')->get();
         $depts = DB::table('departments')->where('id', '!=', '1')->orderBy('name', 'asc')->get();
-        $items = DB::table('items')->where('status', 'USED')->orderBy('id', 'asc')->get();
-        $itemCount = $items->count();
+        $items = DB::table('items')->where('status', 'USED')->where('is_defective', 0)->orderBy('id', 'asc')->get();
+        $phones = DB::table('phone_sims')->where('item', 'PHONE')->where('is_Defective', 0)->orderBy('id', 'asc')->get();
+        $itemCount = $items->count() + $phones->count();
 
-        return view('inventory.return-items', compact('sites', 'items', 'itemCount', 'depts'));
+        return view('inventory.return-items', compact('sites', 'items', 'phones', 'itemCount', 'depts'));
     }
 
     public function returnUpdate(Request $request){
@@ -492,30 +498,38 @@ class ItemController extends Controller
             $itemRemarksName = 'remarks'.$x;
             $itemRemarks = $request->$itemRemarksName;
 
-            $thisItem = DB::table('items')->where('id', $itemID)->first();
-            $thisDept = (DB::table('departments')->where('id', $dept)->first())->name;
-            if($thisItem->type_id == '13'){
-                $com_id = $thisItem->computer_id;
-                DB::table('computers')->where('id', $com_id)->delete();
-            }
-            DB::table('items')
-                ->where('id', $itemID)
-                ->update([
-                    'prev_user' => strtoupper($name),
-                    'prev_user_dept' => $thisDept,
-                    'return_remarks' => $itemRemarks,
-                    'date_returned' => $date_returned,
-                    'i_user' => null,
-                    'i_department' => 1,
-                    'i_cost' => null,
-                    'i_color' => null,
-                    'i_status' => null,
-                    'i_remarks' => null,
-                    'i_date_issued' => null,
-                    'computer_id' => 1,
-                    'status' => 'SPARE',
-                    'edited_by' => auth()->user()->name
+            if (substr($itemID, 0, 5) === 'PHONE') {
+                $itemID = str_replace('PHONE', '', $itemID);
+
+                DB::table('phone_sims')->where('id', $itemID)->update([
+                    'status' => 'RETURNED'
                 ]);
+            }else{
+                $thisItem = DB::table('items')->where('id', $itemID)->first();
+                $thisDept = (DB::table('departments')->where('id', $dept)->first())->name;
+                if($thisItem->type_id == '13'){
+                    $com_id = $thisItem->computer_id;
+                    DB::table('computers')->where('id', $com_id)->delete();
+                }
+                DB::table('items')
+                    ->where('id', $itemID)
+                    ->update([
+                        'prev_user' => strtoupper($name),
+                        'prev_user_dept' => $thisDept,
+                        'return_remarks' => $itemRemarks,
+                        'date_returned' => $date_returned,
+                        'i_user' => null,
+                        'i_department' => 1,
+                        'i_cost' => null,
+                        'i_color' => null,
+                        'i_status' => null,
+                        'i_remarks' => null,
+                        'i_date_issued' => null,
+                        'computer_id' => 1,
+                        'status' => 'SPARE',
+                        'edited_by' => auth()->user()->name
+                    ]);
+            }
         }
 
         return redirect()->route('item.index');
@@ -528,8 +542,6 @@ class ItemController extends Controller
         $count = $request->count;
         $date_returned = $request->date_returned;
 
-        
-
         $dept = (DB::table('departments')->where('id', $dept_id)->first())->name;
         $site = (DB::table('sites')->where('id', $site_id)->first())->name;
 
@@ -541,17 +553,30 @@ class ItemController extends Controller
             $itemRemarksName = 'remarks'.$x;
             $itemRemarks = $request->$itemRemarksName;
 
-            $thisItem = DB::table('items')
-                ->select('items.id', 'items.code', 'item_types.name', 'items.brand', 'items.description', 'items.serial_no')
-                ->join('item_types', 'items.type_id', '=', 'item_types.id')
-                ->where('items.id', $itemID)->first();
-            $itemObject = (object)[
-                'code' => $thisItem->code,
-                'type' => $thisItem->name,
-                'desc' => $thisItem->brand.' '.$thisItem->description,
-                'serial_no' => $thisItem->serial_no,
-                'remarks' => $itemRemarks,
-            ];
+            if (substr($itemID, 0, 5) === 'PHONE') {
+                $itemID = str_replace('PHONE', '', $itemID);
+
+                $thisItem = DB::table('phone_sims')->where('id', $itemID)->first();
+                $itemObject = (object)[
+                    'code' => 'N/A',
+                    'type' => 'PHONE',
+                    'desc' => $thisItem->desc,
+                    'serial_no' => $thisItem->serial_no,
+                    'remarks' => $itemRemarks,
+                ];
+            }else{
+                $thisItem = DB::table('items')
+                    ->select('items.id', 'items.code', 'item_types.name', 'items.brand', 'items.description', 'items.serial_no')
+                    ->join('item_types', 'items.type_id', '=', 'item_types.id')
+                    ->where('items.id', $itemID)->first();
+                $itemObject = (object)[
+                    'code' => $thisItem->code,
+                    'type' => $thisItem->name,
+                    'desc' => $thisItem->brand.' '.$thisItem->description,
+                    'serial_no' => $thisItem->serial_no,
+                    'remarks' => $itemRemarks,
+                ];
+            }
 
             array_push($items, $itemObject);
         }

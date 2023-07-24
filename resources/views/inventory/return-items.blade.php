@@ -108,6 +108,9 @@
                         @foreach ($items as $item)
                             <option value="{{ $item->id }}">{{ $item->code.' - '.$item->brand.' '.$item->description }}</option>
                         @endforeach
+                        @foreach ($phones as $phone)
+                            <option value="PHONE{{ $phone->id }}">{{ $phone->serial_no }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="mt-3 col-span-2">
@@ -135,6 +138,9 @@
                             <select id="item${counter}" name="item${counter}" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                                 @foreach ($items as $item)
                                     <option value="{{ $item->id }}">{{ $item->code.' - '.$item->brand.' '.$item->description }}</option>
+                                @endforeach
+                                @foreach ($phones as $phone)
+                                    <option value="PHONE{{ $phone->id }}">{{ $phone->serial_no }}</option>
                                 @endforeach
                             </select>
                         </div>
