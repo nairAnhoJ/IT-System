@@ -466,6 +466,9 @@
                             ASSIGNED TO
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            DONE BY
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             STATUS
                         </th>
                     </tr>
@@ -495,6 +498,9 @@
                           </td>
                           <td class="py-3 px-6 text-center whitespace-nowrap">
                               {{ $ticket->assigned_to }}
+                          </td>
+                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                              {{ $ticket->done_by }}
                           </td>
                           <td class="py-3 px-6 text-center whitespace-nowrap">
                               <span class="
