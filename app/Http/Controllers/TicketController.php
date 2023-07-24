@@ -370,6 +370,7 @@ class TicketController extends Controller
                 'tickets.subject',
                 'tickets.description',
                 'tickets.status',
+                'tickets.is_SAP',
                 'tickets.created_at',
                 'tickets.attachment',
                 'tickets.resolution'
@@ -440,6 +441,7 @@ class TicketController extends Controller
                 'tickets.subject',
                 'tickets.description',
                 'tickets.status',
+                'tickets.is_SAP',
                 'tickets.created_at',
                 'tickets.attachment',
                 'tickets.resolution'

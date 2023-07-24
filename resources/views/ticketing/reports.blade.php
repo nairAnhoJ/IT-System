@@ -477,7 +477,7 @@
                   @foreach ($tickets as $ticket)
                       <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                           <th scope="row" class="py-3 px-6 font-medium text-white text-center">
-                              <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
+                              <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-is_SAP="{{ $ticket->is_SAP }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
                                   {{ $ticket->ticket_no }}
                               </span>
                           </th>
