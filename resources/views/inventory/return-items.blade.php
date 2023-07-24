@@ -101,8 +101,28 @@
                 </div>
             </div>
 
-            <div style="max-height: calc(100vh - 370px);" id="itemDiv" class="overflow-y-auto px-5 grid grid-cols-3 gap-x-5">
-                <div class="mt-3">
+            <div id="itemDiv" class="px-5 grid grid-cols-3 gap-x-5">
+                <div class="flex flex-col relative optionDiv my-3">
+                    <label for="item1" class="block text-sm font-semibold text-white">ITEM 1 <span class="text-red-500">*</span></label>
+                    <input type="text" id="item1" class="inputOption block w-full p-2.5 text-white border border-gray-600 rounded-lg bg-gray-700 sm:text-sm" required autocomplete="off">
+                    <input type="hidden" id="inputitem1" name="item1" class="inputitem">
+                    <div class="listOption hidden absolute top-[62px] w-full rounded-lg border-x border-b border-gray-600 overflow-y-auto max-h-[30vh] bg-gray-700 text-white z-[99] shadow-xl">
+                        <ul>
+                            @foreach ($items as $item)
+                                <li data-id="{{ $item->id }}" class="p-2 first:border-0 border-t border-gray-600 hover:bg-gray-600 cursor-pointer">{{ $item->code.' - '.$item->brand.' '.$item->description }}</li>
+                            @endforeach
+                            @foreach ($phones as $phone)
+                                <li data-id="PHONE{{ $phone->id }}" class="p-2 first:border-0 border-t border-gray-600 hover:bg-gray-600 cursor-pointer">{{ $phone->serial_no }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+
+
+
+
+                {{-- <div class="mt-3">
                     <label for="item1" class="block text-sm font-medium text-white">ITEM 1</label>
                     <select id="item1" name="item1" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                         @foreach ($items as $item)
@@ -112,7 +132,8 @@
                             <option value="PHONE{{ $phone->id }}">{{ $phone->serial_no }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
+
                 <div class="mt-3 col-span-2">
                     <label for="remarks1" class="block text-sm font-medium text-white">Remarks</label>
                     <input type="text" id="remarks1" name="remarks1" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
@@ -133,16 +154,21 @@
                 var max = $(this).data('max');
                 if(counter <= max){
                     $('#itemDiv').append(`
-                        <div class="mt-3">
-                            <label for="item${counter}" class="block text-sm font-medium text-white">ITEM ${counter}</label>
-                            <select id="item${counter}" name="item${counter}" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
-                                @foreach ($items as $item)
-                                    <option value="{{ $item->id }}">{{ $item->code.' - '.$item->brand.' '.$item->description }}</option>
-                                @endforeach
-                                @foreach ($phones as $phone)
-                                    <option value="PHONE{{ $phone->id }}">{{ $phone->serial_no }}</option>
-                                @endforeach
-                            </select>
+
+                        <div class="flex flex-col relative optionDiv my-3">
+                            <label for="item${counter}" class="block text-sm font-semibold text-white">ITEM ${counter}</label>
+                            <input type="text" id="item${counter}" class="inputOption block w-full p-2.5 text-white border border-gray-600 rounded-lg bg-gray-700 sm:text-sm" required autocomplete="off">
+                            <input type="hidden" id="inputitem${counter}" name="item${counter}" class="inputitem">
+                            <div class="listOption hidden absolute top-[62px] w-full rounded-lg border-x border-b border-gray-600 overflow-y-auto max-h-[30vh] bg-gray-700 text-white z-[99] shadow-xl">
+                                <ul>
+                                    @foreach ($items as $item)
+                                        <li data-id="{{ $item->id }}" class="p-2 first:border-0 border-t border-gray-600 hover:bg-gray-600 cursor-pointer">{{ $item->code.' - '.$item->brand.' '.$item->description }}</li>
+                                    @endforeach
+                                    @foreach ($phones as $phone)
+                                        <li data-id="PHONE{{ $phone->id }}" class="p-2 first:border-0 border-t border-gray-600 hover:bg-gray-600 cursor-pointer">{{ $phone->serial_no }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                         <div class="mt-3 col-span-2">
                             <label for="remarks${counter}" class="block text-sm font-medium text-white">Remarks</label>
@@ -152,6 +178,65 @@
                     $('#count').val(counter++);
                 }
             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+            jQuery(document).on( "click", ".inputOption", function(e){
+                $('.content').not($(this).closest('.optionDiv').find('.listOption')).addClass('hidden');
+                $(this).closest('.optionDiv').find('.listOption').toggleClass('hidden');
+                var value = $(this).val().toLowerCase();
+                searchFilter(value);
+                e.stopPropagation();
+            });
+
+            function searchFilter(searchInput){
+                $(".listOption li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(searchInput) > -1)
+                });
+            }
+            
+            jQuery(document).on( "keydown", ".inputOption", function(e){
+                var value = $(this).val().toLowerCase();
+                searchFilter(value);
+
+                if (event.keyCode === 9) {
+                    $('.listOption').addClass('hidden');
+                }
+            });
+
+            jQuery(document).on( "click", ".listOption li", function(){
+                var name = $(this).html();
+                var id = $(this).data('id');
+                var _token = $('input[name="_token"]').val();
+
+                $(this).closest('.optionDiv').find('.inputOption').val(name);
+                $(this).closest('.optionDiv').find('.inputitem').val(id);
+                // $(this).closest('.inputitem').val(id);
+                $('.listOption').addClass('hidden');
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             $('#printButton').click(function(){
                 $('#returnForm').prop('action', `{{ route('return.print') }}`);
