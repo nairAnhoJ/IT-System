@@ -479,7 +479,7 @@ class ItemController extends Controller
         $sites = DB::table('sites')->orderBy('name', 'asc')->get();
         $depts = DB::table('departments')->where('id', '!=', '1')->orderBy('name', 'asc')->get();
         $items = DB::table('items')->where('status', 'USED')->where('is_defective', 0)->orderBy('id', 'asc')->get();
-        $phones = DB::table('phone_sims')->where('item', 'PHONE')->where('is_Defective', 0)->orderBy('id', 'asc')->get();
+        $phones = DB::table('phone_sims')->where('is_Defective', 0)->orderBy('id', 'asc')->get();
         $itemCount = $items->count() + $phones->count();
 
         return view('inventory.return-items', compact('sites', 'items', 'phones', 'itemCount', 'depts'));
@@ -559,7 +559,7 @@ class ItemController extends Controller
                 $thisItem = DB::table('phone_sims')->where('id', $itemID)->first();
                 $itemObject = (object)[
                     'code' => 'N/A',
-                    'type' => 'PHONE',
+                    'type' => 'PHONE/SIM',
                     'desc' => $thisItem->desc,
                     'serial_no' => $thisItem->serial_no,
                     'remarks' => $itemRemarks,
