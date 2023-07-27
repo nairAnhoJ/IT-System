@@ -156,6 +156,8 @@
                             <div id="status" class="col-span-4 font-semibold"></div>
                             <div>Site: </div>
                             <div id="site" class="col-span-4 font-semibold"></div>
+                            <div>Date Issued: </div>
+                            <div id="date_issued" class="col-span-4 font-semibold"></div>
                             <div>Date Delivered: </div>
                             <div id="date_del" class="col-span-4 font-semibold"></div>
                             {{-- <div id="invoiceLabel" class="self-center">Invoice</div>
@@ -273,6 +275,9 @@
                             STATUS
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
+                            DATE ISSUED
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE DELIVERED
                         </th>
                     </tr>
@@ -288,7 +293,7 @@
                                 <a type="button" data-id="{{ $item->id }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" class="deleteButton font-medium text-red-500 hover:underline">Delete</a>
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-item="{{ $item->item }}" data-user="{{ $item->user }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" data-remarks="{{ $item->remarks }}" data-site="{{ $item->site_name }}" data-status="{{ $item->status }}" data-date_del="{{ $item->date_del }}">
+                                <span data-id="{{ $item->id }}" data-item="{{ $item->item }}" data-user="{{ $item->user }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" data-remarks="{{ $item->remarks }}" data-site="{{ $item->site_name }}" data-status="{{ $item->status }}" data-date_del="{{ $item->date_del }}" data-date_issued="{{ $item->date_issued }}">
                                     {{ $item->item }}
                                 </span>
                             </td>
@@ -312,6 +317,9 @@
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->status }}
+                            </td>
+                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                                {{ $item->date_issued }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ $item->date_del }}
@@ -426,6 +434,9 @@
 
                 var date_del = $(this).find("span").data('date_del');
                 $('#date_del').html(date_del);
+
+                var date_issued = $(this).find("span").data('date_issued');
+                $('#date_issued').html(date_issued);
 
                 // var invoice = $(this).find("span").data('invoice');
                 // var path = `{{ asset('storage/${invoice}') }}`;
