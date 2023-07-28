@@ -71,4 +71,15 @@ class UserController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+    public function reset(Request $request){
+        DB::table('users')
+            ->where('id', $request->id)
+            ->update([
+                'password' => '$2y$10$EPxPbc./USkzSuIDCIvQl.4i43hoH1GPjE62Oxv3GpDrjon4Laj2O',
+                'first_time_login' => 1
+            ]);
+
+        return redirect()->route('user.index')->with('success', 'Password Reset Successful!');
+    }
 }

@@ -278,6 +278,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/system-management/user/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::post('/system-management/user/update', [UserController::class, 'update'])->name('user.update');
         Route::post('/system-management/user/delete', [UserController::class, 'delete'])->name('user.delete');
+        Route::post('/system-management/user/reset', [UserController::class, 'reset'])->name('user.reset');
 
         Route::post('/update-pass', [UserController::class, 'updatePass'])->name('updatePass');
 
