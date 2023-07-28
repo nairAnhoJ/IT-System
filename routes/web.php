@@ -236,6 +236,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/phone-sim/defective/restore', [PhoneSimController::class, 'defectivePhoneRestore'])->name('defectivePhone.restore');
 
     Route::get('/inventory/phone-sim/report', [PhoneSimReportController::class, 'index'])->name('phoneSim.report.index');
+    Route::post('/inventory/phone-sim/report/generate', [PhoneSimReportController::class, 'generate'])->name('phoneSim.report.generate');
 
     Route::get('/inventory/phone-sim/{page}', [PhoneSimController::class, 'phoneSimPaginate']);
     Route::get('/inventory/phone-sim/{page}/{search}', [PhoneSimController::class, 'phoneSimSearch']);
