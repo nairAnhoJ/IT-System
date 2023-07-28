@@ -10,8 +10,8 @@ use Maatwebsite\Excel\Facades\Excel;
 class PhoneSimReportController extends Controller
 {
     public function index(){
-        $sites = DB::table('sites')->get();
-        $departments = DB::table('departments')->where('id', '!=', 1)->get();
+        $sites = DB::table('sites')->orderBy('name'. 'asc')->get();
+        $departments = DB::table('departments')->where('id', '!=', 1)->orderBy('name'. 'asc')->get();
 
         return view('inventory.phone-sim-report', compact('sites', 'departments'));
     }
