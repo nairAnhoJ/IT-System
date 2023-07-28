@@ -213,6 +213,7 @@
             </div>
             <div class="justify-self-end">
                 <a href="{{ route('defectivePhone.index') }}" class="h-full text-white focus:ring-4 font-medium rounded-lg text-sm px-10 py-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Defective Phone / SIM Card</a>
+                <a href="{{ route('phoneSim.report.index') }}" class="h-full text-white focus:ring-4 font-medium rounded-lg text-sm px-10 py-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Report</a>
             </div>
         </div>
 

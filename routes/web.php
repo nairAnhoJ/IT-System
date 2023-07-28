@@ -9,6 +9,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemRequestController;
 use App\Http\Controllers\ItemTypeController;
 use App\Http\Controllers\PhoneSimController;
+use App\Http\Controllers\PhoneSimReportController;
 use App\Http\Controllers\PhoneSimRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SAPController;
@@ -230,15 +231,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventory/phone-sim/delete', [PhoneSimController::class, 'delete'])->name('phoneSim.delete');
     Route::post('/inventory/phone-sim//mark-as-defective', [PhoneSimController::class, 'defective'])->name('phoneSim.defective');
     Route::get('/inventory/phone-sim/invoice-download/{id}', [PhoneSimController::class, 'download']);
-
-
     Route::get('/inventory/phone-sim/issuance-form/{id}', [PhoneSimController::class, 'issuance']);
-
     Route::get('/inventory/phone-sim/defective', [PhoneSimController::class, 'defectivePhoneIndex'])->name('defectivePhone.index');
     Route::post('/inventory/phone-sim/defective/restore', [PhoneSimController::class, 'defectivePhoneRestore'])->name('defectivePhone.restore');
 
+    Route::get('/inventory/phone-sim/report', [PhoneSimReportController::class, 'index'])->name('phoneSim.report.index');
+
     Route::get('/inventory/phone-sim/{page}', [PhoneSimController::class, 'phoneSimPaginate']);
     Route::get('/inventory/phone-sim/{page}/{search}', [PhoneSimController::class, 'phoneSimSearch']);
+
+
+
+
+    
     // Phone SIM Request
     Route::get('/request/phone-sim', [PhoneSimRequestController::class, 'index'])->name('reqPhoneSim.index');
     Route::get('/request/phone-sim/add', [PhoneSimRequestController::class, 'add'])->name('reqPhoneSim.add');
