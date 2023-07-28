@@ -21,8 +21,9 @@ class PhoneSimReport implements FromCollection, WithHeadings
     {
         $item = $this->formInput['item'];
 
-        return PhoneSim::select('phone_sims.item', 'phone_sims.user', 'departments.name', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.status', 'phone_sims.date_issued', 'phone_sims.date_del')
+        return PhoneSim::select('phone_sims.item', 'phone_sims.user', 'departments.name', 'sites.name', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.status', 'phone_sims.date_issued', 'phone_sims.date_del')
             ->join('departments', 'phone_sims.department', '=', 'departments.id')
+            ->join('sites', 'phone_sims.site', '=', 'sites.id')
             ->where('item', 'LIKE', '%'.$item.'%')->get();
     }
 
@@ -36,6 +37,7 @@ class PhoneSimReport implements FromCollection, WithHeadings
             'ITEM',
             'USER',
             'DEPARTMENT',
+            'SITE',
             'DESCRIPTION',
             'SERIAL NUMBER',
             'STATUS',
