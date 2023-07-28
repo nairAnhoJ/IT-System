@@ -20,6 +20,8 @@ class PhoneSimReport implements FromCollection, WithHeadings
     public function collection()
     {
         $item = $this->formInput['item'];
+        $sites = $this->formInput['sites'];
+        $departments = $this->formInput['departments'];
 
         return PhoneSim::select(
             'phone_sims.item',
@@ -33,6 +35,8 @@ class PhoneSimReport implements FromCollection, WithHeadings
             'phone_sims.date_del')
             ->join('departments', 'phone_sims.department', '=', 'departments.id')
             ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->whereIn('site', $sites)
+            ->whereIn('department', $departments)
             ->where('item', 'LIKE', '%'.$item.'%')->get();
     }
 
