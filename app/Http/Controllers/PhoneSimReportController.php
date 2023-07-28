@@ -19,7 +19,9 @@ class PhoneSimReportController extends Controller
     public function generate(Request $request){
         $formInput = $request->only(['item', 'sites', 'departments']);
 
-        return Excel::download(new PhoneSimReport($formInput), 'filename.xlsx');
+        $filename = date('m_hi_s').'_PHONE_SIM_REPORT';
+
+        return Excel::download(new PhoneSimReport($formInput), $filename.'.xlsx');
 
     }
 }
