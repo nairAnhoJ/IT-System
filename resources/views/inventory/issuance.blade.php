@@ -83,7 +83,7 @@
 
         <div style="width: 856px" class="px-10 mx-auto">
             <h1 style="box-shadow: inset 0 0 0 1000px red;" class="border inline border-neutral-900 px-2 py-px text-white font-semibold tracking-wide">USER AGREEMENT</h1>
-            <textarea readonly style="font-size: 11px;" id="userAgreement" class="w-full leading-3 resize-none border-neutral-900 border">{{ $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device }}</textarea>
+            <div id="quserAgreement" style="font-size: 11px;" class="w-full px-2.5 py-1.5 leading-3 resize-none border-neutral-900 border">{!! $item->item == 'SIM CARD' || $item->item == 'PHONE' ? $settings->user_agreement_phonesim : $settings->user_agreement_device !!}</div>
             <p style="font-size: 10px;" class="mt-32 text-xs text-center">I hereby certify that I agreed and understand the terms and condition mention and received the listed items in good condition with proper orientation.</p>
             <div class="grid grid-cols-3 mt-3">
                 <div class="text-xs">

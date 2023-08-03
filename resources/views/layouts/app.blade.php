@@ -17,6 +17,7 @@
 
         <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
         <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
         <script src="https://unpkg.com/flowbite@1.5.3/dist/datepicker.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])

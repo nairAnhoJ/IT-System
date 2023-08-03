@@ -49,6 +49,12 @@
         .inset-0{
             opacity: 0.5;
         }
+
+        .ck.ck-content{
+            color: #4b525c;
+            max-height: calc(100vh - 290px);
+            background-color: #4b525c;
+        }
     </style>
 
     <div id="notifMessage" class="absolute top-20 w-full mx-auto"></div>
@@ -64,8 +70,8 @@
         </div>
         <form action="" id="frmAUD" method="post">
             @csrf
-            <div class="mt-10 mb-5">
-                <textarea id="uad" style="height: 34px;" name="aups" class="block p-2.5 w-full rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 resize-none leading-4 text-sm">{{ $settings->user_agreement_phonesim }}</textarea>
+            <div class="mt-5 mb-5 rounded-lg overflow-hidden">
+                <textarea id="uad" name="aups" class="block p-2.5 w-full bg-gray-700 resize-none leading-4 text-sm">{{ $settings->user_agreement_phonesim }}</textarea>
             </div>
             <button id="btnTestPrint" class="inline-block text-center w-28 text-white focus:outline-none focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-blue-800 hover:bg-blue-700 focus:ring-blue-700 border-blue-700">Test Print</button>
             <button id="btnSave" class="inline-block text-center w-28 text-white focus:outline-none focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-blue-800 hover:bg-blue-700 focus:ring-blue-700 border-blue-700">Save & Exit</button>
@@ -74,13 +80,12 @@
 
     <script>
         $(document).ready(function(){
-            var sh = $('#uad').prop('scrollHeight');
-            $('#uad').height((sh+5)+'px');
-
-            $('#uad').keyup(function(){
-                $(this).height('5px');
-                var sh = $(this).prop('scrollHeight');
-                $(this).height((sh+5)+'px');
+            ClassicEditor
+            .create(document.querySelector('#uad'), {
+                toolbar: ['bold', 'italic', '|', 'undo', 'redo']
+            })
+            .catch(error => {
+                console.error(error);
             });
 
             $('#btnTestPrint').click(function(){
