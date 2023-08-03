@@ -55,6 +55,9 @@
             max-height: calc(100vh - 290px);
             background-color: #4b525c;
         }
+        .ck.ck-content a{
+            text-decoration: underline;
+        }
     </style>
 
     <div id="notifMessage" class="absolute top-20 w-full mx-auto"></div>
@@ -82,7 +85,7 @@
         $(document).ready(function(){
             ClassicEditor
             .create(document.querySelector('#uad'), {
-                toolbar: ['bold', 'italic', '|', 'undo', 'redo']
+                toolbar: ['bold', 'italic', '|', 'undo', 'redo', '|', 'link']
             })
             .catch(error => {
                 console.error(error);

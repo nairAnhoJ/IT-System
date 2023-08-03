@@ -24,6 +24,10 @@
             size: auto;   /* auto is the initial value */
             margin: 0mm;  /* this affects the margin in the printer settings */
         }
+
+        #quserAgreement a{
+            text-decoration: underline;
+        }
     </style>
 
     <body class="font-sans antialiased w-screen">
