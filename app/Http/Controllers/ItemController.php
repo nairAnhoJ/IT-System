@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Computer;
 use App\Models\Item;
+use App\Models\PhoneSim;
+use App\Models\PhoneSimHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -498,12 +501,29 @@ class ItemController extends Controller
             $itemRemarksName = 'remarks'.$x;
             $itemRemarks = $request->$itemRemarksName;
 
-            if (substr($itemID, 0, 5) === 'PHONE') {
+            if (substr($itemID, 0, 5) == 'PHONE') {
                 $itemID = str_replace('PHONE', '', $itemID);
+                $thisItem = DB::table('phone_sims')->where('id', $itemID)->first();
 
-                DB::table('phone_sims')->where('id', $itemID)->update([
-                    'status' => 'RETURNED'
-                ]);
+                $psh = new PhoneSimHistory;
+                $psh->ps_id = $thisItem->id;
+                $psh->user = $thisItem->user;
+                $psh->department = $thisItem->department;
+                $psh->site = $thisItem->site;
+                $psh->date_issued = $thisItem->date_issued;
+                $psh->remarks = $thisItem->remarks;
+                $psh->to = Auth::user()->id;
+                $psh->save();
+
+                $ps = PhoneSim::where('id', $itemID)->first();
+                $ps->user = 'N/A';
+                $ps->department = 1;
+                $ps->site = 1;
+                $ps->date_issued = 'N/A';
+                $ps->remarks = 'N/A';
+                $ps->status = 'RETURNED';
+                $ps->save();
+
             }else{
                 $thisItem = DB::table('items')->where('id', $itemID)->first();
                 $thisDept = (DB::table('departments')->where('id', $dept)->first())->name;

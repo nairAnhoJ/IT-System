@@ -224,10 +224,12 @@ Route::middleware('auth')->group(function () {
     
     // Phone SIM
     Route::get('/inventory/phone-sim', [PhoneSimController::class, 'index'])->name('phoneSim.index');
+    Route::post('/inventory/phone-sim/view', [PhoneSimController::class, 'view'])->name('phoneSim.view');
     Route::get('/inventory/phone-sim/add', [PhoneSimController::class, 'add'])->name('phoneSim.add');
     Route::post('/inventory/phone-sim/store', [PhoneSimController::class, 'store'])->name('phoneSim.store');
     Route::get('/inventory/phone-sim/edit/{id}', [PhoneSimController::class, 'edit'])->name('phoneSim.edit');
     Route::post('/inventory/phone-sim/update', [PhoneSimController::class, 'update'])->name('phoneSim.update');
+    Route::post('/inventory/phone-sim/reissue', [PhoneSimController::class, 'reissue'])->name('phoneSim.reissue');
     Route::post('/inventory/phone-sim/delete', [PhoneSimController::class, 'delete'])->name('phoneSim.delete');
     Route::post('/inventory/phone-sim//mark-as-defective', [PhoneSimController::class, 'defective'])->name('phoneSim.defective');
     Route::get('/inventory/phone-sim/invoice-download/{id}', [PhoneSimController::class, 'download']);
@@ -251,7 +253,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/request/phone-sim/store', [PhoneSimRequestController::class, 'store'])->name('reqPhoneSim.store');
     Route::get('/request/phone-sim/edit/{id}', [PhoneSimRequestController::class, 'edit'])->name('reqPhoneSim.edit');
     Route::post('/request/phone-sim/update', [PhoneSimRequestController::class, 'update'])->name('reqPhoneSim.update');
-    Route::get('/request/phone-sim/delivered/{id}', [PhoneSimRequestController::class, 'statusD'])->name('reqPhoneSim.del');;
+    Route::get('/request/phone-sim/delivered/{id}', [PhoneSimRequestController::class, 'statusD'])->name('reqPhoneSim.del');
     Route::post('/request/phone-sim/delete', [PhoneSimRequestController::class, 'delete'])->name('reqPhoneSim.delete');
     Route::post('/request/phone-sim/status-update', [PhoneSimRequestController::class, 'statusUpdate'])->name('reqPhoneSim.statusUpdate');
     Route::post('/request/phone-sim/status-delivered', [PhoneSimRequestController::class, 'statusDelivered'])->name('reqPhoneSim.statusDelivered');

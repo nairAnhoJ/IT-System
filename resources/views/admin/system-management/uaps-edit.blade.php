@@ -99,7 +99,7 @@
 
             $('#btnSave').click(function(){
                 $('#frmAUD').prop('action', `{{ route('settings.uapsupdate') }}`);
-                $('#frmAUD').submit();
+                $('#frmAUD').submit(); 
             });
         });
     </script>

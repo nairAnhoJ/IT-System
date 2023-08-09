@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PhoneSim;
+use App\Models\PhoneSimHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -23,11 +24,14 @@ class PhoneSimController extends Controller
             ->orderBy('phone_sims.id', 'desc')
             ->paginate(100);
 
+        $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->where('id','!=','1')->get();
+
         $itemCount = DB::table('phone_sims')->where('phone_sims.is_Defective', '0')->count();
         $search = "";
         $page = 1;
 
-        return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page'));
+        return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page', 'departments', 'sites'));
     }
 
     public function phoneSimPaginate($page){
@@ -39,9 +43,12 @@ class PhoneSimController extends Controller
             ->orderBy('phone_sims.id', 'desc')
             ->paginate(100,'*','page',$page);
 
+        $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->where('id','!=','1')->get();
+
         $itemCount = DB::table('phone_sims')->where('phone_sims.is_Defective', '0')->count();
         $search = "";
-        return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page'));
+        return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page', 'departments', 'sites'));
     }
 
     public function phoneSimSearch($page, $search){
@@ -49,7 +56,7 @@ class PhoneSimController extends Controller
             ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'departments.name as dept', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.date_issued', 'phone_sims.is_Defective')
             ->join('sites', 'phone_sims.site', '=', 'sites.id')
             ->join('departments', 'phone_sims.department', '=', 'departments.id')
-            ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no) LIKE '%{$search}%'")
+            ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no, phone_sims.status, departments.name) LIKE '%{$search}%'")
             ->where('phone_sims.is_Defective', '0')
             ->orderBy('phone_sims.id', 'desc')
             ->paginate(100,'*','page',$page);
@@ -58,19 +65,92 @@ class PhoneSimController extends Controller
             ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'phone_sims.site', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.date_issued', 'phone_sims.is_Defective')
             ->join('sites', 'phone_sims.site', '=', 'sites.id')
             ->join('departments', 'phone_sims.department', '=', 'departments.id')
-            ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no) LIKE '%{$search}%'")
+            ->whereRaw("CONCAT_WS(' ', phone_sims.item, phone_sims.user, phone_sims.desc, phone_sims.serial_no, phone_sims.status, departments.name) LIKE '%{$search}%'")
             ->where('phone_sims.is_Defective', '0')
             ->orderBy('phone_sims.id', 'desc')
             ->count();
 
-            return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page'));
+
+        $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
+        $departments = DB::table('departments')->orderBy('name', 'ASC')->where('id','!=','1')->get();
+
+            return view('inventory.phone-sim', compact('items', 'itemCount', 'search', 'page', 'departments', 'sites'));
     }
 
-    // public function download($id){
-    //     $invoice = DB::table('phone_sims')->where('id', $id)->first();
-    //     $inv_path = $invoice->invoice;
-    //     return Storage::download("public/{$inv_path}");
-    // }
+    public function view(Request $request){
+        $thisSP = DB::table('phone_sims')
+            ->select('phone_sims.id', 'phone_sims.item', 'phone_sims.user', 'departments.name as dept', 'phone_sims.desc', 'phone_sims.serial_no', 'phone_sims.remarks', 'sites.name AS site_name', 'phone_sims.status', 'phone_sims.invoice', 'phone_sims.date_del', 'phone_sims.date_issued', 'phone_sims.is_Defective')
+            ->join('sites', 'phone_sims.site', '=', 'sites.id')
+            ->join('departments', 'phone_sims.department', '=', 'departments.id')
+            ->where('phone_sims.id', $request->id)
+            ->first();
+
+        $result = '';
+        $his = '';
+        $thisSPHs = PhoneSimHistory::select('phone_sim_histories.*', 'users.name as user_name', 'departments.name as dept_name', 'sites.name as site_name')
+        ->join('users', 'phone_sim_histories.to', '=', 'users.id')
+        ->join('sites', 'phone_sim_histories.site', '=', 'sites.id')
+        ->join('departments', 'phone_sim_histories.department', '=', 'departments.id')
+        ->where('phone_sim_histories.ps_id', $request->id) 
+        ->get();
+
+        if($thisSPHs->count() > 0){
+            foreach($thisSPHs as $thisSPH){
+                $his .= '
+                    <tr class="text-left border-b border-gray-500">
+                        <td class="">
+                            '.date('F j, Y', strtotime($thisSPH->date_issued)).'
+                        </td>
+                        <td>
+                            '.$thisSPH->user.'
+                        </td>
+                        <td>
+                            '.$thisSPH->dept_name.'
+                        </td>
+                        <td>
+                            '.$thisSPH->site_name.'
+                        </td>
+                        <td>
+                            '.$thisSPH->remakrs.'
+                        </td>
+                        <td>
+                            '.$thisSPH->user_name.'
+                        </td>
+                        <td>
+                            '.date('F j, Y', strtotime($thisSPH->created_at)).'
+                        </td>
+                    </tr>
+                ';
+            }
+        }else{
+            $his .= '
+                <tr class="text-left border-b border-gray-500">
+                    <td colspan="7" class="text-center">
+                        No Data.
+                    </td>
+                </tr>
+            ';
+        }
+
+        $result = array(
+            'id' => $thisSP,
+            'item' => $thisSP->item,
+            'user' => $thisSP->user,
+            'dept' => $thisSP->dept,
+            'desc' => $thisSP->desc,
+            'serial_no' => $thisSP->serial_no,
+            'remarks' => $thisSP->remarks,
+            'site' => $thisSP->site_name,
+            'status' => $thisSP->status,
+            'invoice' => $thisSP->invoice,
+            'date_del' => $thisSP->date_del,
+            'date_issued' => $thisSP->date_issued,
+            'is_Defective' => $thisSP->is_Defective,
+            'his' => $his,
+        );
+
+        echo json_encode($result);
+    }
 
     public function add(){
         $sites = DB::table('sites')->orderBy('name', 'ASC')->get();
@@ -192,6 +272,26 @@ class PhoneSimController extends Controller
         // }else{
             DB::update('UPDATE phone_sims SET phone_sims.user=?, phone_sims.desc=?, phone_sims.serial_no=?, phone_sims.remarks=?, phone_sims.site=?, phone_sims.status=?, phone_sims.date_del=?, phone_sims.department=?, phone_sims.cost=?, phone_sims.color=?, phone_sims.date_issued=? WHERE phone_sims.id=?', [$user, $description, $serial_no, $remarks, $site, $status, $date_del, $department, $cost, strtoupper($color), $date_issued, $ItemID]);
         // }
+
+        return redirect()->route('phoneSim.index');
+    }
+
+    public function reissue(Request $request){
+        $id = $request->reissueID;
+        $user = $request->user;
+        $department = $request->department;
+        $site = $request->site;
+        $date_issued = $request->date_issued;
+        $remarks = $request->remarks;
+
+        $ps = PhoneSim::where('id', $id)->first();
+        $ps->user = $user;
+        $ps->department = $department;
+        $ps->site = $site;
+        $ps->date_issued = $date_issued;
+        $ps->remarks = $remarks;
+        $ps->status = 'RE-ISSUED';
+        $ps->save();
 
         return redirect()->route('phoneSim.index');
     }
