@@ -21,6 +21,7 @@ use App\Http\Controllers\UserController;
 use App\Models\DeptInCharge;
 use App\Models\Issuance;
 use App\Models\PhoneSim;
+use App\Models\Ticket;
 use App\Models\TicketCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +58,11 @@ Route::get('/dashboard', function () {
     $userDept = DB::table('departments')->where('id', $userDeptID)->get()[0]->name;
     $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
 
+    $newTickets = DB::table('tickets')
+        ->where('created_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 1 DAY)'))
+        ->whereIn('status', ['PENDING', 'ONGOING'])
+        ->count();
+
     if($userDeptID != $deptInCharge){
         $tickets = DB::table('tickets')
             ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
@@ -72,6 +78,7 @@ Route::get('/dashboard', function () {
                     });
             })
             ->orderBy('tickets.id', 'desc')
+            ->limit(7)
             ->get();
 
         // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution 
@@ -118,6 +125,7 @@ Route::get('/dashboard', function () {
             ->where('tickets.status', 'PENDING')
             ->orWhere('tickets.status', 'ONGOING')
             ->orderBy('tickets.id', 'desc')
+            ->limit(7)
             ->get();
 
         // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.status = 'PENDING' || tickets.status = 'ONGOING' ORDER BY tickets.id DESC");
@@ -146,7 +154,7 @@ Route::get('/dashboard', function () {
         // $pending = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'PENDING'");
         // $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE status = 'ONGOING'");
     }
-    return view('dashboard', compact('userDept', 'tickets', 'deptInCharge', 'userDeptID', 'ticketReq', 'pending', 'ongoing'));
+    return view('dashboard', compact('userDept', 'tickets', 'deptInCharge', 'userDeptID', 'ticketReq', 'pending', 'ongoing', 'newTickets'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

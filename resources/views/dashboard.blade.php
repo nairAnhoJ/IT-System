@@ -176,38 +176,59 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 mb-3 h-20 gap-x-3">
+        <div class="grid grid-cols-3 mb-3 h-[calc(100vw/6)] gap-x-5">
             @if ($userDeptID == $deptInCharge)
-                <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-blue-500">{{ $ticketReq }}</h1> 
-                    <h1 class="ml-5 font-semibold tracking-wider">ASSIGNED TICKETS</h1> 
+                @if (Auth::user()->role == 'admin')
+                    <div class="rounded bg-emerald-500 bg-opacity-80 h-full">
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $newTickets }}</h1> 
+                            <h1 class="font-bold tracking-wider text-2xl">NEW TICKETS</h1> 
+                        </div>
+                    </div>
+                @else
+                    <div class="rounded bg-blue-500 bg-opacity-80">
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $ticketReq }}</h1> 
+                            <h1 class="font-bold tracking-wider text-2xl">ASSIGNED TICKETS</h1> 
+                        </div>
+                    </div>
+                @endif
+                <div class="rounded bg-red-500 bg-opacity-80">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $pending }}</h1>
+                        <h1 class="font-bold tracking-wider text-2xl">TOTAL PENDING</h1> 
+                    </div>
                 </div>
-                <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-red-500">{{ $pending }}</h1>
-                    <h1 class="ml-5 font-semibold tracking-wider">TOTAL PENDING</h1> 
-                </div>
-                <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-amber-300">{{ $ongoing }}</h1> 
-                    <h1 class="ml-5 font-semibold tracking-wider">TOTAL ONGOING</h1> 
+                <div class="rounded bg-yellow-500 bg-opacity-80">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $ongoing }}</h1> 
+                        <h1 class="font-bold tracking-wider text-2xl">TOTAL ONGOING</h1> 
+                    </div>
                 </div>
             @else
-                <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-blue-500">{{ $ticketReq }}</h1>
-                    <h1 class="ml-5 font-semibold tracking-wider">TICKETS REQUESTED</h1> 
+                <div class="rounded bg-blue-500 bg-opacity-80">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $ticketReq }}</h1>
+                        <h1 class="ml-5 font-semibold tracking-wider">TICKETS REQUESTED</h1> 
+                    </div>
                 </div>
-                <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-red-500">{{ $pending }}</h1> 
-                    <h1 class="ml-5 font-semibold tracking-wider">TOTAL PENDING</h1> 
+                <div class="rounded bg-red-500 bg-opacity-80">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $pending }}</h1> 
+                        <h1 class="font-bold tracking-wider text-2xl">TOTAL PENDING</h1> 
+                    </div>
                 </div>
-                <div class="rounded bg-gray-700">
-                    <h1 class="ml-5 mt-1 text-4xl font-extrabold tracking-wider text-amber-300">{{ $ongoing }}</h1> 
-                    <h1 class="ml-5 font-semibold tracking-wider">TOTAL ONGOING</h1> 
+                <div class="rounded bg-yellow-500 bg-opacity-80">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $ongoing }}</h1> 
+                        <h1 class="font-bold tracking-wider text-2xl">TOTAL ONGOING</h1> 
+                    </div>
                 </div>
             @endif
         </div>
 
         {{-- CONTROLS --}}
-        <div class="grid grid-cols-3 mb-0 h-10">
+        {{-- <div class="grid grid-cols-3 mb-0 h-10">
             <div class="flex h-8">
                 <div class="items-center w-full">
                     <label for="simple-search" class="sr-only">Search</label>
@@ -219,7 +240,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- TABLE --}}
         <div style="max-height: calc(100% - 170px);" class="overflow-x-auto relative shadow-md rounded-t-lg">
@@ -254,7 +275,7 @@
                 </thead>
                 <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
                     @foreach ($tickets as $ticket)
-                        <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
+                        <tr class="ticketsRows bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'text-green-500' : '' }}">
                             <th scope="row" class="py-3 px-6 font-medium text-white text-center">
                                 <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
                                     {{ $ticket->ticket_no }}
@@ -298,6 +319,13 @@
                             </td>
                         </tr>
                     @endforeach
+                    @if ($tickets->count() == 7)
+                        <tr class="seeMore bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
+                            <th colspan="8" scope="row" class="font-medium text-white text-center relative">
+                                <a href="{{ route('ticket.index') }}" class="py-1 px-6 w-full h-full block text-lg">See More...</a>
+                            </th>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -321,7 +349,7 @@
                 });
             }
     
-            $('#ticketTableBody tr').click(function() {
+            $('.ticketsRows').click(function() {
                 var id = $(this).find("span").data('id');
                 $('#ticketID').val(id);
     
