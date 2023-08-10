@@ -275,22 +275,22 @@
                 </thead>
                 <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
                     @foreach ($tickets as $ticket)
-                        <tr class="ticketsRows font-medium border-b border-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'bg-emerald-500 hover:bg-emerald-600 opacity-80 text-black' : 'bg-gray-800 hover:bg-gray-700' }}">
+                        <tr class="ticketsRows border-b border-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'bg-emerald-500 hover:bg-emerald-600 opacity-80 text-black' : 'bg-gray-800 hover:bg-gray-700' }}">
                             <th scope="row" class="py-3 px-6 text-center">
                                 <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
                                     {{ $ticket->ticket_no }}
                                 </span>
                             </th>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center whitespace-nowrap font-medium">
                                 {{ $ticket->user }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center whitespace-nowrap font-medium">
                                 {{ $ticket->dept }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center whitespace-nowrap font-medium">
                                 {{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center whitespace-nowrap font-medium">
                                 <span class="
                                     @php
                                         $status = $ticket->status;
@@ -302,19 +302,19 @@
                                             echo 'text-teal-500';
                                         }
                                     @endphp
-                                ">
+                                 font-medium">
                                     @php
                                         echo $status;
                                     @endphp
                                 </span>
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center whitespace-nowrap font-medium">
                                 {{ $ticket->nature_of_problem }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap max-w-xs overflow-hidden">
+                            <td class="py-3 px-6 text-center whitespace-nowrap max-w-xs overflow-hidden font-medium">
                                 {{ $ticket->subject }}
                             </td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">
+                            <td class="py-3 px-6 text-center whitespace-nowrap font-medium">
                                 {{ $ticket->assigned_to }}
                             </td>
                         </tr>
