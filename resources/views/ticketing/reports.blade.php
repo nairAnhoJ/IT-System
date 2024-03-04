@@ -71,8 +71,8 @@
         }
     </style>
 
-    <div style="height: calc(100vh - 65px);" class="p-3 text-gray-200 w-screen">
-        <h1 class="mb-3 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">REPORT</h1>
+    <div style="height: calc(100vh - 65px);" class="w-screen p-3 text-gray-200">
+        <h1 class="mb-3 text-3xl font-extrabold leading-none tracking-wide text-blue-500">REPORT</h1>
 
         <!-- ========================================================= Modal toggle ========================================================= -->
         <button id="viewTicket" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="ticketModal">
@@ -82,16 +82,16 @@
         {{-- <div id="ticketModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-4xl md:h-auto">
                 <!-- Modal content -->
-                <form enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
+                <form enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative text-sm bg-gray-700 rounded-lg shadow">
                     <!-- Modal header -->
-                    <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
-                        <h3 class="text-2xl font-semibold text-white leading-5 tracking-wide">
+                    <div class="flex items-start justify-between p-4 border-b border-gray-600 rounded-t">
+                        <h3 class="text-2xl font-semibold leading-5 tracking-wide text-white">
                             @csrf
                             <input type="hidden" id="ticketID" name="ticketID">
                             <input type="hidden" id="ticketStatus" name="ticketStatus">
                             <span id="ticketNumber"></span>
                             <br>
-                            <span id="ticketRequester" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDepartment" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDate" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketStatus2" class="text-sm"></span>
+                            <span id="ticketRequester" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketDepartment" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketDate" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketStatus2" class="text-sm"></span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="ticketModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -99,7 +99,7 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-3">
-                        <p id="ticketSubject" class="text-xl leading-relaxed font-semibold text-gray-300 mb-3"></p>
+                        <p id="ticketSubject" class="mb-3 text-xl font-semibold leading-relaxed text-gray-300"></p>
                         <p class="text-sm font-semibold tracking-wide">Description</p>
                         <p id="ticketDesc" class="ml-5 text-base leading-relaxed text-gray-300"></p>
                         <div>
@@ -110,7 +110,7 @@
                         </div>
                     </div>
                     <!-- Modal footer -->
-                    <div class="flex items-center p-3 border-t rounded-b border-gray-600">
+                    <div class="flex items-center p-3 border-t border-gray-600 rounded-b">
                         <button data-modal-toggle="ticketModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </form>
@@ -120,10 +120,10 @@
         <div id="ticketModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-4xl md:h-auto">
                 <!-- Modal content -->
-                <form id="statusUpdateForm" enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative rounded-lg shadow bg-gray-700 text-sm">
+                <form id="statusUpdateForm" enctype="multipart/form-data" action="{{ route('ticket.update') }}" method="POST" class="relative text-sm bg-gray-700 rounded-lg shadow">
                     <!-- Modal header -->
-                    <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
-                        <h3 class="text-2xl font-semibold text-white leading-5 tracking-wide">
+                    <div class="flex items-start justify-between p-4 border-b border-gray-600 rounded-t">
+                        <h3 class="text-2xl font-semibold leading-5 tracking-wide text-white">
                             @csrf
                             <input type="hidden" id="ticketID" name="ticketID">
                             <input type="hidden" id="ticketStatus" name="ticketStatus">
@@ -131,7 +131,7 @@
                             <input type="hidden" id="isUpdate" name="isUpdate" value="0">
                             <span id="ticketNumber"></span>
                             <br>
-                            <span id="ticketRequester" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDepartment" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketDate" class="text-sm"></span><span class="text-sm mx-2">|</span><span id="ticketStatus2" class="text-sm"></span>
+                            <span id="ticketRequester" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketDepartment" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketDate" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketStatus2" class="text-sm"></span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="ticketModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -139,7 +139,7 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-3">
-                        <p id="ticketSubject" class="mb-2 text-xl leading-relaxed font-semibold text-gray-300"></p>
+                        <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
                         <div id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300 whitespace-pre-line"></div>
                         <div>
                             <button id="AttachedFileButton" data-modal-toggle="AttachedFileModal" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View Attached File</button>
@@ -159,7 +159,7 @@
                         <div id="ticketResolutionDiv"></div>
                     </div>
                     <!-- Modal footer -->
-                    <div class="flex items-center p-3 border-t rounded-b border-gray-600">
+                    <div class="flex items-center p-3 border-t border-gray-600 rounded-b">
                         {{-- @if (auth()->user()->dept_id == $deptInCharge)
                             <div id="updateButtonDiv"></div>
                             <button data-modal-toggle="ticketModal" type="submit" id="ticketButton" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 mr-3 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"></button>
@@ -175,10 +175,10 @@
         <div id="AttachedFileModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-6xl md:h-auto">
                 <!-- Modal content -->
-                <div class="relative rounded-lg shadow bg-gray-700 text-sm">
+                <div class="relative text-sm bg-gray-700 rounded-lg shadow">
                     <!-- Modal header -->
-                    <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
-                        <h3 class="text-2xl font-semibold text-white tracking-wide">
+                    <div class="flex items-start justify-between p-4 border-b border-gray-600 rounded-t">
+                        <h3 class="text-2xl font-semibold tracking-wide text-white">
                             <span id="aticketNumber"></span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="AttachedFileModal">
@@ -192,7 +192,7 @@
                         </div>
                     </div>
                     <!-- Modal footer -->
-                    <div class="flex items-center p-3 space-x-3 border-t rounded-b border-gray-600">
+                    <div class="flex items-center p-3 space-x-3 border-t border-gray-600 rounded-b">
                         <button data-modal-toggle="AttachedFileModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </div>
@@ -206,10 +206,10 @@
         <div id="SAPModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-6xl md:h-auto">
                 <!-- Modal content -->
-                <div class="relative rounded-lg shadow bg-gray-700 text-sm">
+                <div class="relative text-sm bg-gray-700 rounded-lg shadow">
                     <!-- Modal header -->
-                    <div class="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
-                        <h3 class="text-2xl font-semibold text-white tracking-wide">
+                    <div class="flex items-start justify-between p-4 border-b border-gray-600 rounded-t">
+                        <h3 class="text-2xl font-semibold tracking-wide text-white">
                             <span id="sticketNumber"></span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="SAPModal">
@@ -219,14 +219,14 @@
                     <!-- Modal body -->
                     <div class="p-6">
                         <div>
-                            <h1 class="mb-8 font-extrabold leading-none text-3xl text-blue-500 tracking-wide">SAP BUSINESS PARTNER</h1>
+                            <h1 class="mb-8 text-3xl font-extrabold leading-none tracking-wide text-blue-500">SAP BUSINESS PARTNER</h1>
                             
-                            <div class="w-full grid grid-cols-9 gap-2 content-center">
-                                <div class="leading-7 py-px text-sm">Type of Request</div>
+                            <div class="grid content-center w-full grid-cols-9 gap-2">
+                                <div class="py-px text-sm leading-7">Type of Request</div>
                                 <div class="col-span-2">
                                     <input type="text" id="request" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Remarks</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Remarks</div>
                                 <div class="col-span-5">
                                     <input type="text" id="remarks" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
@@ -238,15 +238,15 @@
                                     <div class="w-full h-px border-b border-b-gray-500"></div>
                                 </div>
                                 
-                                <div class="leading-7 py-px text-sm">BP Code</div>
+                                <div class="py-px text-sm leading-7">BP Code</div>
                                 <div class="col-span-2">
                                     <input type="text" id="code" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">WTax Code</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">WTax Code</div>
                                 <div class="col-span-2">
                                     <input type="text" id="wtax_code" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">AR In-Charge</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">AR In-Charge</div>
                                 <div class="col-span-2">
                                     <input type="text" id="AR_inCharge" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
@@ -255,98 +255,98 @@
 
 
                 
-                                <div class="leading-7 py-px text-sm">BP Type</div>
+                                <div class="py-px text-sm leading-7">BP Type</div>
                                 <div class="col-span-2">
                                     <input type="text" id="type" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">On Hold</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">On Hold</div>
                                 <div class="col-span-2">
                                     <input type="text" id="isOnHold" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">AR Email</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">AR Email</div>
                                 <div class="col-span-2">
                                     <input type="text" id="AR_email" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
                 
                 
                 
-                                <div class="leading-7 py-px text-sm">Customer Name</div>
+                                <div class="py-px text-sm leading-7">Customer Name</div>
                                 <div class="col-span-2">
                                     <input type="text" id="name" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">SOA Auto Email</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">SOA Auto Email</div>
                                 <div class="col-span-2">
                                     <input type="text" id="isAutoEmail" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Payment Terms</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Payment Terms</div>
                                 <div class="col-span-2">
                                     <input type="text" id="payment_terms" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
                 
                 
                 
-                                <div class="leading-7 py-px text-sm">Billing Address</div>
+                                <div class="py-px text-sm leading-7">Billing Address</div>
                                 <div class="col-span-2">
                                     <input type="text" id="billing_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Business Style</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Business Style</div>
                                 <div class="col-span-5">
                                     <input type="text" id="style" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly>
                                 </div>
                 
                 
                 
-                                <div class="leading-7 py-px text-sm">Shipping Address</div>
+                                <div class="py-px text-sm leading-7">Shipping Address</div>
                                 <div class="col-span-2">
                                     <input type="text" id="shipping_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact Name</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact Name</div>
                                 <div class="">
                                     <input type="text" id="contact_name1" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact No</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact No</div>
                                 <div class="">
                                     <input type="text" id="contact_no1" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact Email</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact Email</div>
                                 <div class="">
                                     <input type="text" id="contact_email1" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
                 
                 
                 
-                                <div class="leading-7 py-px text-sm">TIN</div>
+                                <div class="py-px text-sm leading-7">TIN</div>
                                 <div class="col-span-2">
                                     <input type="text" id="tin" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact Name</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact Name</div>
                                 <div class="">
                                     <input type="text" id="contact_name2" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact No</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact No</div>
                                 <div class="">
                                     <input type="text" id="contact_no2" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact Email</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact Email</div>
                                 <div class="">
                                     <input type="text" id="contact_email2" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
                 
                 
                 
-                                <div class="leading-7 py-px text-sm">Sales Employee</div>
+                                <div class="py-px text-sm leading-7">Sales Employee</div>
                                 <div class="col-span-2">
                                     <input type="text" id="sales_employee" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact Name</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact Name</div>
                                 <div class="">
                                     <input type="text" id="contact_name3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact No</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact No</div>
                                 <div class="">
                                     <input type="text" id="contact_no3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
-                                <div class="leading-7 py-px justify-self-end text-sm">Contact Email</div>
+                                <div class="py-px text-sm leading-7 justify-self-end">Contact Email</div>
                                 <div class="">
                                     <input type="text" id="contact_email3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                                 </div>
@@ -354,7 +354,7 @@
                         </div>
                     </div>
                     <!-- Modal footer -->
-                    <div class="flex items-center p-3 space-x-3 border-t rounded-b border-gray-600">
+                    <div class="flex items-center p-3 space-x-3 border-t border-gray-600 rounded-b">
                         <button data-modal-toggle="SAPModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
                     </div>
                 </div>
@@ -404,15 +404,15 @@
                     </select>
                 </div>
             </div>
-            <div class="col-span-3 self-center">
+            <div class="self-center col-span-3">
                 <div class="flex items-center">
-                    <input {{ ($cbp == 1) ? 'checked' : ''; }} name="cbPending" id="cbPending" type="checkbox" value="1" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600">
+                    <input {{ ($cbp == 1) ? 'checked' : ''; }} name="cbPending" id="cbPending" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
                     <label for="cbPending" class="ml-2 text-sm font-medium text-gray-300">PENDING</label>
                     
-                    <input {{ ($cbo == 1) ? 'checked' : ''; }} name="cbOngoing" id="cbOngoing" type="checkbox" value="1" class="ml-5 w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600">
+                    <input {{ ($cbo == 1) ? 'checked' : ''; }} name="cbOngoing" id="cbOngoing" type="checkbox" value="1" class="w-4 h-4 ml-5 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
                     <label for="cbOngoing" class="ml-2 text-sm font-medium text-gray-300">ONGOING</label>
                     
-                    <input {{ ($cbd == 1) ? 'checked' : ''; }} name="cbDone" id="cbDone" type="checkbox" value="1" class="ml-5 w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600">
+                    <input {{ ($cbd == 1) ? 'checked' : ''; }} name="cbDone" id="cbDone" type="checkbox" value="1" class="w-4 h-4 ml-5 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
                     <label for="cbDone" class="ml-2 text-sm font-medium text-gray-300">DONE</label>
                 </div>
             </div>
@@ -423,7 +423,7 @@
         {{-- ========================================== REPORT FILTER END ========================================== --}}
 
         {{-- ========================================== TICKET COUNT ========================================== --}}
-        <div class="grid grid-cols-3 justify-items-center mb-3">
+        <div class="grid grid-cols-3 mb-3 justify-items-center">
             <div class="col-span-3">
                 <h1 class="text-sm font-light">TOTAL: <span class="ml-2 text-xl font-semibold">{{ $total }}</span></h1>
             </div>
@@ -440,10 +440,10 @@
         {{-- ========================================== TICKET COUNT END ========================================== --}}
         
         {{-- ========================================== TICKET TABLE ========================================== --}}
-        <div style="max-height: calc(100% - 210px);" class="overflow-x-auto relative shadow-md rounded-t-lg">
+        <div style="max-height: calc(100% - 210px);" class="relative overflow-x-auto rounded-t-lg shadow-md">
             <table class="min-w-full text-sm text-left text-gray-400">
-                <thead class="relative top-0 text-xs uppercase bg-gray-600 text-gray-400 border-x-8 border-gray-600">
-                    <tr class="bg-gray-600 sticky top-0">
+                <thead class="relative top-0 text-xs text-gray-400 uppercase bg-gray-600 border-gray-600 border-x-8">
+                    <tr class="sticky top-0 bg-gray-600">
                         <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
                             TICKET #
                         </th>
@@ -475,34 +475,34 @@
                 </thead>
                 <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
                   @foreach ($tickets as $ticket)
-                      <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
-                          <th scope="row" class="py-3 px-6 font-medium text-white text-center">
+                      <tr class="bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-700">
+                          <th scope="row" class="px-6 py-3 font-medium text-center text-white">
                               <span data-id="{{ $ticket->id }}" data-ticket_no="{{ $ticket->ticket_no }}" data-is_SAP="{{ $ticket->is_SAP }}" data-user="{{ $ticket->user }}" data-dept="{{ $ticket->dept }}" data-date="{{ date("M d, Y", strtotime($ticket->created_at)) }}" data-subject="{{ $ticket->subject }}" data-desc="{{ $ticket->description }}" data-status="{{ $ticket->status }}" data-src="{{ $ticket->attachment }}" data-reso="{{ $ticket->resolution }}">
                                   {{ $ticket->ticket_no }}
                               </span>
                           </th>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ $ticket->user }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ $ticket->dept }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ date("M d, Y", strtotime($ticket->created_at)) }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ $ticket->nature_of_problem }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ $ticket->subject }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ $ticket->assigned_to }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               {{ $ticket->done_by }}
                           </td>
-                          <td class="py-3 px-6 text-center whitespace-nowrap">
+                          <td class="px-6 py-3 text-center whitespace-nowrap">
                               <span class="
                                   @php
                                       $status = $ticket->status;
@@ -540,9 +540,9 @@
 
             if($('#ticketButton').length){
                 $('#ticketButton').click(function(){
-                    $('#loadingScreen').html(`<div wire:loading class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-800 opacity-75 flex flex-col items-center justify-center">
-                        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-                        <h2 class="text-center text-white text-xl font-semibold">Processing...</h2>
+                    $('#loadingScreen').html(`<div wire:loading class="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen overflow-hidden bg-gray-800 opacity-75">
+                        <div class="w-12 h-12 mb-4 ease-linear border-4 border-t-4 border-gray-200 rounded-full loader"></div>
+                        <h2 class="text-xl font-semibold text-center text-white">Processing...</h2>
                         <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
                     </div>`);
                 });
@@ -643,7 +643,7 @@
                     }
                     $('#ticketResolutionDiv').html(`<hr class="my-5">
                                                     <label for="ticketResolution" class="block mb-2 text-base font-medium text-white">Resolution</label>
-                                                    <h2 id="ticketResolution" class="text-base leading-relaxed text-gray-300">${reso}</h2>`);
+                                                    <textarea disabled style="max-height: 250px; resize: none;" id="ticketResolution" class="w-full text-base leading-relaxed text-gray-300 bg-gray-700">${reso}</textarea>`);
                     $('#ticketStatus2').removeClass('text-red-500');
                     $('#ticketStatus2').removeClass('text-amber-300');
                     $('#ticketStatus2').addClass('text-teal-500');
@@ -681,6 +681,10 @@
                 // $("meta[name='refresh_timer']").remove();
                 $('meta[http-equiv="refresh"]').attr('content', '');
                 $('#viewTicket').click();
+
+                var ticketResolution = $('#ticketResolution');
+                ticketResolution.css('height', 'auto');
+                ticketResolution.css('height', ticketResolution.prop('scrollHeight') + 'px');
             });
 
             // $('#ticketTableBody tr').click(function() {
