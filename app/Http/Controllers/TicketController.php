@@ -223,10 +223,23 @@ class TicketController extends Controller
 
         if($status == 'PENDING'){
             if($request->isCancel == '1'){
-                DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
+
+                $ticket = Ticket::where('id', $id)->first();
+                $ticket->status = "CANCELLED";
+                $ticket->assigned_to = auth()->user()->id;
+                $ticket->save();
+
+                // DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
+
                 return redirect()->route('ticket.index');
             }else{
-                DB::update('update tickets set status = "ONGOING", start_date_time = NOW()  where id = ?', [$id]);
+
+                $ticket = Ticket::where('id', $id)->first();
+                $ticket->status = "ONGOING";
+                $ticket->start_date_time = date('Y-m-d H:i:s');
+                $ticket->save();
+
+                // DB::update('update tickets set status = "ONGOING", start_date_time = NOW()  where id = ?', [$id]);
 
                 // ===================================================================================================================
                         
@@ -277,17 +290,37 @@ class TicketController extends Controller
 
         }else if($status == 'ONGOING'){
             if($request->isCancel == '1'){
-                DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
+
+                $ticket = Ticket::where('id', $id)->first();
+                $ticket->status = "CANCELLED";
+                $ticket->assigned_to = auth()->user()->id;
+                $ticket->save();
+
+                // DB::update('update tickets set assigned_to = ?, status = "CANCELLED" where id = ?', [auth()->user()->id, $id]);
+
                 return redirect()->route('ticket.index');
             }else if($request->isUpdate == '1'){
-                DB::update('update tickets set tickets.update = ? where id = ?', [$ticketUpdate, $id]);
+
+                $ticket = Ticket::where('id', $id)->first();
+                $ticket->update = $ticketUpdate;
+                $ticket->save();
+
+                // DB::update('update tickets set tickets.update = ? where id = ?', [$ticketUpdate, $id]);
+
                 return redirect()->route('ticket.index');
             }else{
                 $request->validate([
                     'ticketResolution' => 'required',
                 ]);
+
+                $ticket = Ticket::where('id', $id)->first();
+                $ticket->status = "DONE";
+                $ticket->done_by = auth()->user()->id;
+                $ticket->resolution = $request->ticketResolution;
+                $ticket->end_date_time = date('Y-m-d H:i:s');
+                $ticket->save();
             
-                DB::update('update tickets set status = "DONE", done_by = ?, resolution = ?, end_date_time = NOW()  where id = ?', [auth()->user()->id, $request->ticketResolution, $id]);
+                // DB::update('update tickets set status = "DONE", done_by = ?, resolution = ?, end_date_time = NOW()  where id = ?', [auth()->user()->id, $request->ticketResolution, $id]);
             
                 // ===================================================================================================================
                         
