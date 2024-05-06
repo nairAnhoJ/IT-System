@@ -30,6 +30,7 @@ class PhoneSimReport implements FromCollection, WithHeadings
             'sites.name as site_name', 
             'phone_sims.desc', 
             'phone_sims.serial_no', 
+            'phone_sims.remarks', 
             'phone_sims.status', 
             'phone_sims.date_issued', 
             'phone_sims.date_del')
@@ -53,6 +54,7 @@ class PhoneSimReport implements FromCollection, WithHeadings
             'SITE',
             'DESCRIPTION',
             'SERIAL NUMBER',
+            'REMARKS',
             'STATUS',
             'DATE ISSUED',
             'DATE DELIVERED',
