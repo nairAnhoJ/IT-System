@@ -80,6 +80,6 @@ class UserController extends Controller
                 'first_time_login' => 1
             ]);
 
-        return redirect()->route('user.index')->with('success', 'Password Reset Successful!');
+        return redirect()->route('user.index')->with('success', 'Password Reset Successful! Default Password: ticketing2023');
     }
 }
