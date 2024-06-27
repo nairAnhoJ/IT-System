@@ -51,7 +51,7 @@
             <div class="grid grid-cols-7 gap-x-2 text-sm">
                 <div>Name: </div>
                 <div class="font-semibold col-span-4 tracking-wide">{{ $item->user}}</div>
-                <div>Date Returned: </div>
+                <div>Date Issued: </div>
                 <div class="font-semibold tracking-wide">{{ $item->date_issued }}</div>
 
                 <div>Department: </div>
