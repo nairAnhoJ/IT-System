@@ -383,6 +383,9 @@
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             DEPARTMENT
                         </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            SITE
+                        </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE CREATED
                         </th>
@@ -413,6 +416,9 @@
                         </td>
                         <td class="px-6 py-3 text-center whitespace-nowrap">
                             {{ $ticket->dept }}
+                        </td>
+                        <td class="px-6 py-3 text-center whitespace-nowrap">
+                            {{ $ticket->site }}
                         </td>
                         <td class="px-6 py-3 text-center whitespace-nowrap">
                             {{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}

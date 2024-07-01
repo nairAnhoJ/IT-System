@@ -127,6 +127,14 @@
                                 </select>
                             </div>
                             <div>
+                                <label for="site" class="block mb-2 text-sm font-medium text-white">Site</label>
+                                <select id="site" name="site" value="{{old('site')}}" autocomplete="off" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" :value="old('department')">
+                                    @foreach ($sites as $site)
+                                        <option value="{{ $site->id }}">{{ $site->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
                                 <label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
                                 <input type="email" id="email" name="email" value="{{old('email')}}" autocomplete="off" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
@@ -268,6 +276,9 @@
                             DEPARTMENT
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
+                            SITE
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
                             EMAIL
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
@@ -295,6 +306,9 @@
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
                             {{ $user->dept }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ $user->site }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
                             {{ $user->email }}
@@ -351,6 +365,7 @@
                     $('#id_no').val(result.id_no);
                     $('#name').val(result.name);
                     $('#department').val(result.department);
+                    $('#site').val(result.site);
                     $('#email').val(result.email);
                     $('#phone').val(result.phone);
 

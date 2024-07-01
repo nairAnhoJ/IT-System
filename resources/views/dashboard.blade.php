@@ -256,6 +256,9 @@
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             DEPARTMENT
                         </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            SITE
+                        </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE CREATED
                         </th>
@@ -286,6 +289,9 @@
                             </td>
                             <td class="px-6 py-3 font-medium text-center whitespace-nowrap">
                                 {{ $ticket->dept }}
+                            </td>
+                            <td class="px-6 py-3 font-medium text-center whitespace-nowrap">
+                                {{ $ticket->site }}
                             </td>
                             <td class="px-6 py-3 font-medium text-center whitespace-nowrap">
                                 {{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}
@@ -321,7 +327,7 @@
                     @endforeach
                     @if ($tickets->count() == 7)
                         <tr class="bg-gray-800 border-gray-700 cursor-pointer seeMore hover:bg-gray-700">
-                            <th colspan="8" scope="row" class="relative font-medium text-center text-white">
+                            <th colspan="9" scope="row" class="relative font-medium text-center text-white">
                                 <a href="{{ route('ticket.index') }}" class="block w-full h-full px-6 py-1 text-lg">See More...</a>
                             </th>
                         </tr>

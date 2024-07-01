@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -22,9 +23,9 @@ class TicketController extends Controller
         $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
 
         if($userDeptID != $deptInCharge){
-            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.update, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.department = ? ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200", [$userDeptID]);
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, tickets.site, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.update, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.department = ? ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200", [$userDeptID]);
         }else{
-            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.update, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200");
+            $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, tickets.is_SAP, u.name AS user, departments.name AS dept, tickets.site, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.update, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id ORDER BY tickets.status DESC, tickets.id DESC LIMIT 200");
         }
 
         return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge'));
@@ -46,6 +47,7 @@ class TicketController extends Controller
         $inChargeID = (DB::table('departments')->where('id', auth()->user()->dept_id)->get())[0]->in_charge;
         $incharge = (DB::table('users')->where('id', $inChargeID)->first());
         $smtp = DB::table('settings')->where('id', 1)->first();
+        $site = DB::table('sites')->where('id', Auth::user()->site)->first()->name;
 
         $TicketID = DB::table('tickets')->orderBy('id','DESC')->first();
         if(isset($TicketID)){
@@ -80,6 +82,7 @@ class TicketController extends Controller
         $ticket->ticket_no = $ticketNo;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
+        $ticket->site = $site;
         $ticket->nature_of_problem = $nature;
         $ticket->assigned_to = $inChargeID;
         $ticket->subject = $subject;
@@ -146,6 +149,7 @@ class TicketController extends Controller
         $nature = $request->nature;
         $user = $request->user;
         $user_dept = (DB::table('users')->where('id', $user)->first())->dept_id;
+        $site = DB::table('sites')->where('id', Auth::user()->site)->first()->name;
         $subject = $request->subject;
         $description = $request->description;
         $status = $request->status;
@@ -189,6 +193,7 @@ class TicketController extends Controller
         $ticket->ticket_no = $ticketNo;
         $ticket->user_id = $user;
         $ticket->department = $user_dept;
+        $ticket->site = $site;
         $ticket->nature_of_problem = $nature;
         $ticket->assigned_to = auth()->user()->id;
         $ticket->subject = $subject;
