@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('ticket_no');
             $table->bigInteger('user_id');
             $table->string('department');
+            $table->string('site');
             $table->string('nature_of_problem');
             $table->string('assigned_to');
             $table->string('subject');

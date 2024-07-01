@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SAP;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -16,6 +17,8 @@ class SAPController extends Controller
     }
 
     public function store(Request $request){
+        $site = DB::table('sites')->where('id', Auth::user()->site)->first()->name;
+
         $saprequest = $request->saprequest;
         $remarks = $request->remarks;
         $type = $request->type;
@@ -104,6 +107,7 @@ class SAPController extends Controller
         $ticket->ticket_no = $ticketNo;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
+        $ticket->site = $site;
         $ticket->nature_of_problem = '5';
         $ticket->assigned_to = $inChargeID;
         $ticket->subject = 'FOR '.$saprequest;
@@ -200,6 +204,8 @@ class SAPController extends Controller
     }
 
     public function update(Request $request){
+        $site = DB::table('sites')->where('id', Auth::user()->site)->first()->name;
+        
         $id = $request->id;
         $type = $request->type;
         $saprequest = $request->saprequest;
@@ -289,6 +295,7 @@ class SAPController extends Controller
         $ticket->ticket_no = $ticketNo;
         $ticket->user_id = auth()->user()->id;
         $ticket->department = auth()->user()->dept_id;
+        $ticket->site = $site;
         $ticket->nature_of_problem = '5';
         $ticket->assigned_to = $inChargeID;
         $ticket->subject = 'FOR '.$saprequest;
