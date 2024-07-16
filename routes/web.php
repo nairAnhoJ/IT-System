@@ -65,7 +65,7 @@ Route::get('/dashboard', function () {
 
     if($userDeptID != $deptInCharge){
         $tickets = DB::table('tickets')
-            ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'tickets.site', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
+            ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'tickets.site', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.start_date_time', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
             ->join('users AS u', 'tickets.user_id', '=', 'u.id')
             ->join('departments', 'tickets.department', '=', 'departments.id')
             ->join('users AS a', 'tickets.assigned_to', '=', 'a.id')
@@ -117,7 +117,7 @@ Route::get('/dashboard', function () {
         // $ongoing = DB::select("SELECT COUNT(*) AS count FROM tickets WHERE user_id = ? AND status = 'ONGOING'", [auth()->user()->id]);
     }else{
         $tickets = DB::table('tickets')
-            ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'tickets.site', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
+            ->select('tickets.id', 'tickets.ticket_no', 'u.name AS user', 'departments.name AS dept', 'tickets.site', 'ticket_categories.name AS nature_of_problem', 'a.name AS assigned_to', 'tickets.subject', 'tickets.description', 'tickets.start_date_time', 'tickets.status', 'tickets.created_at', 'tickets.attachment', 'tickets.resolution')
             ->join('users AS u', 'tickets.user_id', '=', 'u.id')
             ->join('departments', 'tickets.department', '=', 'departments.id')
             ->join('users AS a', 'tickets.assigned_to', '=', 'a.id')

@@ -265,9 +265,11 @@
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             STATUS
                         </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            ELAPSED TIME
-                        </th>
+                        @if (auth()->user()->dept_id == $deptInCharge)
+                            <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                                ELAPSED TIME
+                            </th>
+                        @endif
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             NATURE OF PROBLEM
                         </th>
@@ -320,11 +322,13 @@
                                     @endphp
                                 </span>
                             </td>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                @if ($status == 'ONGOING')
-                                    {{ $hours }}
-                                @endif
-                            </td>
+                            @if (auth()->user()->dept_id == $deptInCharge)
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    @if ($status == 'ONGOING')
+                                        {{ $hours }}
+                                    @endif
+                                </td>
+                            @endif
                             <td class="px-6 py-3 font-medium text-center whitespace-nowrap">
                                 {{ $ticket->nature_of_problem }}
                             </td>
