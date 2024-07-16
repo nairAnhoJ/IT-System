@@ -279,9 +279,6 @@
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             ASSIGNED TO
                         </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            ASSIGNED TO
-                        </th>
                     </tr>
                 </thead>
                 <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
