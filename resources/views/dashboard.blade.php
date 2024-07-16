@@ -343,7 +343,7 @@
                     @endforeach
                     @if ($tickets->count() == 7)
                         <tr class="bg-gray-800 border-gray-700 cursor-pointer seeMore hover:bg-gray-700">
-                            <th colspan="9" scope="row" class="relative font-medium text-center text-white">
+                            <th colspan="10" scope="row" class="relative font-medium text-center text-white">
                                 <a href="{{ route('ticket.index') }}" class="block w-full h-full px-6 py-1 text-lg">See More...</a>
                             </th>
                         </tr>
