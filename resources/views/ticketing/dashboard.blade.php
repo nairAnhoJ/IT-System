@@ -394,7 +394,7 @@
                         </th>
                         @if (auth()->user()->dept_id == $deptInCharge)
                             <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                                ELAPSED TIME
+                                ELAPSED TIME (HRS)
                             </th>
                         @endif
                         <th scope="col" class="sticky top-0 py-2 text-center">

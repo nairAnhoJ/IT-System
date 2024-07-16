@@ -267,7 +267,7 @@
                         </th>
                         @if (auth()->user()->dept_id == $deptInCharge)
                             <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                                ELAPSED TIME
+                                ELAPSED TIME (HRS)
                             </th>
                         @endif
                         <th scope="col" class="sticky top-0 py-2 text-center">
@@ -311,6 +311,10 @@
                                         if($status == 'PENDING'){
                                             echo 'text-red-500';
                                         }elseif($status == 'ONGOING'){
+                                            $createdDateTime = new DateTime($ticket->start_date_time);
+                                            $currentDateTime = new DateTime();
+                                            $interval = $createdDateTime->diff($currentDateTime);
+                                            $hours = $interval->h;
                                             echo 'text-amber-300';
                                         }elseif($status == 'DONE'){
                                             echo 'text-teal-500';
