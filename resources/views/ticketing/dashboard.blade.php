@@ -384,13 +384,16 @@
                             DEPARTMENT
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            SITE
+                            SITE/BRANCH
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE CREATED
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             STATUS
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            ELAPSED TIME
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             NATURE OF PROBLEM
@@ -430,6 +433,10 @@
                                     if($status == 'PENDING'){
                                         echo 'text-red-500';
                                     }elseif($status == 'ONGOING'){
+                                        $createdDateTime = new DateTime($ticket->start_date_time);
+                                        $currentDateTime = new DateTime();
+                                        $interval = $createdDateTime->diff($currentDateTime);
+                                        $hours = $interval->h;
                                         echo 'text-amber-300';
                                     }elseif($status == 'DONE'){
                                         echo 'text-teal-500';
@@ -442,6 +449,11 @@
                                     echo $status;
                                 @endphp
                             </span>
+                        </td>
+                        <td class="px-6 py-3 text-center whitespace-nowrap">
+                            @if ($status == 'ONGOING')
+                                {{ $hours }}
+                            @endif
                         </td>
                         <td class="px-6 py-3 text-center whitespace-nowrap">
                             {{ $ticket->nature_of_problem }}

@@ -257,7 +257,7 @@
                             DEPARTMENT
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            SITE
+                            SITE/BRANCH
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             DATE CREATED
@@ -265,11 +265,17 @@
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             STATUS
                         </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            ELAPSED TIME
+                        </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
                             NATURE OF PROBLEM
                         </th>
                         <th scope="col" class="sticky top-0 max-w-xs py-2 text-center">
                             SUBJECT
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            ASSIGNED TO
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             ASSIGNED TO
@@ -313,6 +319,11 @@
                                         echo $status;
                                     @endphp
                                 </span>
+                            </td>
+                            <td class="px-6 py-3 text-center whitespace-nowrap">
+                                @if ($status == 'ONGOING')
+                                    {{ $hours }}
+                                @endif
                             </td>
                             <td class="px-6 py-3 font-medium text-center whitespace-nowrap">
                                 {{ $ticket->nature_of_problem }}
