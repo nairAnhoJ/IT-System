@@ -309,12 +309,16 @@
                                             $createdDateTime = new DateTime($ticket->created_at);
                                             $currentDateTime = new DateTime();
                                             $interval = $createdDateTime->diff($currentDateTime);
+                                            $months = $interval->m;
+                                            $days = $interval->d;
                                             $hours = $interval->h;
                                             echo 'text-red-500';
                                         }elseif($status == 'ONGOING'){
                                             $createdDateTime = new DateTime($ticket->start_date_time);
                                             $currentDateTime = new DateTime();
                                             $interval = $createdDateTime->diff($currentDateTime);
+                                            $months = $interval->m;
+                                            $days = $interval->d;
                                             $hours = $interval->h;
                                             echo 'text-amber-300';
                                         }elseif($status == 'DONE'){
@@ -330,7 +334,7 @@
                             @if (auth()->user()->dept_id == $deptInCharge)
                                 <td class="px-6 py-3 text-center whitespace-nowrap">
                                     @if ($status == 'ONGOING' || $status == 'PENDING')
-                                        {{ $hours }}
+                                        {{ $days . 'Days' . $hours . 'Hours' }}
                                     @endif
                                 </td>
                             @endif
