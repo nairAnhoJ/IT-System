@@ -334,17 +334,17 @@
                             @if (auth()->user()->dept_id == $deptInCharge)
                                 <td class="px-6 py-3 text-center whitespace-nowrap">
                                     @php
-                                        $labelMonth = ' Month ';
-                                        $labelDay = ' Day ';
-                                        $labelHour = ' Hour ';
-                                        if($months > 1){
-                                            $labelMonth = ' Months ';
+                                        $labelMonth = ' Months ';
+                                        $labelDay = ' Days ';
+                                        $labelHour = ' Hours ';
+                                        if($months == 1){
+                                            $labelMonth = ' Month ';
                                         }
-                                        if ($days > 1) {
-                                            $labelDay = ' Days ';
+                                        if ($days == 1) {
+                                            $labelDay = ' Day ';
                                         }
-                                        if ($hours > 1) {
-                                            $labelHour = ' Hours ';
+                                        if ($hours == 1) {
+                                            $labelHour = ' Hour ';
                                         }
                                     @endphp
                                     @if ($months != 0)
