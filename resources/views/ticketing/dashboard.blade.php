@@ -463,7 +463,27 @@
                         @if (auth()->user()->dept_id == $deptInCharge)
                             <td class="px-6 py-3 text-center whitespace-nowrap">
                                 @if ($status == 'ONGOING' || $status == 'PENDING')
-                                    {{ $days . 'Days' . $hours . 'Hours' }}
+                                    @php
+                                        $labelMonth = ' Month ';
+                                        $labelDay = ' Day ';
+                                        $labelHour = ' Hour ';
+                                        if($months > 1){
+                                            $labelMonth = ' Months ';
+                                        }
+                                        if ($days > 1) {
+                                            $labelDay = ' Days ';
+                                        }
+                                        if ($hours > 1) {
+                                            $labelHour = ' Hours ';
+                                        }
+                                    @endphp
+                                    @if ($months != 0)
+                                        {{ $months . $labelMonth . $days . $labelDay . $hours . $labelHour }}
+                                    @elseif ($days != 0)
+                                        {{ $days . $labelDay . $hours . $labelHour }}
+                                    @else
+                                        {{ $hours . $labelHour }}
+                                    @endif
                                 @endif
                             </td>
                         @endif
