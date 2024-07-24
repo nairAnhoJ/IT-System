@@ -13,7 +13,9 @@ class UserController extends Controller
     public function index(){
         $depts = DB::table('departments')->orderBy('name', 'asc')->where('id','!=','1')->get();
         $sites = DB::table('sites')->orderBy('name', 'asc')->get();
-        $users = DB::select('SELECT users.id, users.id_no, users.name, departments.name AS dept, sites.name AS site, users.email, users.phone FROM users INNER JOIN departments ON users.dept_id = departments.id INNER JOIN sites ON users.site = sites.id WHERE users.id != "1" ORDER BY users.name ASC');
+        $users = User::with('site_row', 'department_row')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+
+        // $users = DB::select('SELECT users.id, users.id_no, users.name, departments.name AS dept, sites.name AS site, users.email, users.phone FROM users INNER JOIN departments ON users.dept_id = departments.id INNER JOIN sites ON users.site = sites.id WHERE users.id != "1" ORDER BY users.name ASC');
         return view('admin.system-management.user', compact('users', 'depts', 'sites'));
     }
 
@@ -27,6 +29,7 @@ class UserController extends Controller
             "name"=>$user->name, 
             "department"=>$user->dept_id, 
             "site"=>$user->site, 
+            "role"=>$user->role, 
             "email"=>$user->email, 
             "phone"=>$user->phone
         );
@@ -46,7 +49,25 @@ class UserController extends Controller
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
-            DB::update('update users set id_no=?, name=?, dept_id=?, site=?, email=?, phone=?, password=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->site, $request->email, $request->phone, Hash::make($request->password), $request->id]);
+            $role = $request->role;
+            if($role == 'head'){
+                $head = User::where('role', 'head')->first();
+                if($head != null){
+                    $head->role = 'user';
+                    $head->save();
+                }
+            }
+
+            $user = User::where('id', $request->id)->first();
+            $user->id_no = strtoupper($request->id_no);
+            $user->name = strtoupper($request->name);
+            $user->dept_id = $request->department;
+            $user->site = $request->site;
+            $user->role = $request->role;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->password = Hash::make($request->password);
+            $user->save();
         }else{
             $request->validate([
                 'id_no' => ['required', 'string', 'max:255'],
@@ -56,7 +77,24 @@ class UserController extends Controller
                 'phone' => ['required', 'string', 'max:255'],
             ]);
 
-            DB::update('update users set id_no=?, name=?, dept_id=?, site=?, email=?, phone=? where id = ?', [strtoupper($request->id_no), strtoupper($request->name), $request->department, $request->site, $request->email, $request->phone, $request->id]);
+            $role = $request->role;
+            if($role == 'head'){
+                $head = User::where('role', 'head')->first();
+                if($head != null){
+                    $head->role = 'user';
+                    $head->save();
+                }
+            }
+
+            $user = User::where('id', $request->id)->first();
+            $user->id_no = strtoupper($request->id_no);
+            $user->name = strtoupper($request->name);
+            $user->dept_id = $request->department;
+            $user->site = $request->site;
+            $user->role = $request->role;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->save();
         }
 
         return redirect()->route('user.index')->with('success', 'User details has been updated successfully');

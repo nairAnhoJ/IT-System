@@ -46,4 +46,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function site_row() {
+        return $this->belongsTo(Site::class, 'site');
+    }
+
+    public function department_row() {
+        return $this->belongsTo(Department::class, 'dept_id');
+    }
 }

@@ -108,7 +108,7 @@
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <div class="px-6 pb-7 space-y-3">
+                        <div class="px-6 pb-7 space-y-3 max-h-[calc(100vh-180px)] overflow-y-auto">
                             <input type="hidden" id="userId" name="id">
                             <div>
                                 <label for="id_no" class="block mb-2 text-sm font-medium text-white">ID Number</label>
@@ -132,6 +132,13 @@
                                     @foreach ($sites as $site)
                                         <option value="{{ $site->id }}">{{ $site->name }}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                            <div id="role_container">
+                                <label for="role" class="block mb-2 text-sm font-medium text-white">Role</label>
+                                <select id="role" name="role" value="{{old('role')}}" autocomplete="off" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" :value="old('department')">
+                                        <option value="user">USER</option>
+                                        <option value="head">HEAD</option>
                                 </select>
                             </div>
                             <div>
@@ -279,6 +286,9 @@
                             SITE
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
+                            Role
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center">
                             EMAIL
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center">
@@ -305,10 +315,13 @@
                             {{ $user->name }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
-                            {{ $user->dept }}
+                            {{ $user->department_row->name }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
-                            {{ $user->site }}
+                            {{ $user->site_row->name }}
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-nowrap">
+                            {{ strtoupper($user->role) }}
                         </td>
                         <td class="py-3 px-6 text-center whitespace-nowrap">
                             {{ $user->email }}
@@ -366,6 +379,7 @@
                     $('#name').val(result.name);
                     $('#department').val(result.department);
                     $('#site').val(result.site);
+                    $('#role').val(result.role);
                     $('#email').val(result.email);
                     $('#phone').val(result.phone);
 

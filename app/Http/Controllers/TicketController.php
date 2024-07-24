@@ -140,9 +140,10 @@ class TicketController extends Controller
     public function createForIT(){
         $cats = DB::select('SELECT * FROM ticket_categories ORDER BY ticket_categories.name ASC');
         $dic = (DB::table('dept_in_charges')->first())->dept_id;
-        $users = DB::table('users')->orderBy('name', 'asc')->get();
+        $users = User::with('site_row', 'department_row')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
+        $dic_users = User::with('site_row', 'department_row')->where('id', '!=', 1)->where('dept_id', $dic)->orderBy('name', 'asc')->get();
 
-        return view('ticketing.create-ticket', compact('cats', 'users'));
+        return view('ticketing.create-ticket', compact('cats', 'users', 'dic', 'dic_users'));
     }
 
     public function storeForIT(Request $request){
@@ -154,6 +155,7 @@ class TicketController extends Controller
         $description = $request->description;
         $status = $request->status;
         $attachment = $request->attachment;
+        $assigned_to = $request->assigned_to;
 
         if($status == 'DONE'){
             $resolution = $request->resolution;
@@ -195,12 +197,20 @@ class TicketController extends Controller
         $ticket->department = $user_dept;
         $ticket->site = $site;
         $ticket->nature_of_problem = $nature;
-        $ticket->assigned_to = auth()->user()->id;
+        if($assigned_to != null){
+            $ticket->assigned_to = $assigned_to;
+        }else{
+            $ticket->assigned_to = auth()->user()->id;
+        }
         $ticket->subject = $subject;
         $ticket->description = $description;
         if($status == 'DONE'){
             $ticket->resolution = $resolution;
-            $ticket->done_by = auth()->user()->id;
+            if($assigned_to != null){
+                $ticket->done_by = $assigned_to;
+            }else{
+                $ticket->done_by = auth()->user()->id;
+            }
             $ticket->start_date_time = date('Y-m-d H:i:s');
             $ticket->end_date_time = date('Y-m-d H:i:s');
         }else if($status == 'ONGOING'){

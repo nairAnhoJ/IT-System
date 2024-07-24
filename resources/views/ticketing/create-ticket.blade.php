@@ -38,9 +38,8 @@
                 @endforeach
             </select>
 
-
             <div>
-                <label for="brand" class="mt-3 block text-sm font-medium text-white">User</label>
+                <label for="user" class="mt-3 block text-sm font-medium text-white">User</label>
                 <div class="wrapper w-full relative">
                     <div class="select-btn flex items-center justify-between rounded-md bg-gray-700 p-2 h-9 cursor-pointer">
                         <span>{{ $users[0]->name }}</span>
@@ -61,14 +60,16 @@
                 </div>
             </div>
 
-            {{-- <div class="mt-5">
-                <label for="user" class="block text-sm font-medium text-white">User</label>
-                <select required id="user" name="user" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
-                    @foreach ($users as $user)
-                        <option value="{{$user->id}}">{{$user->name}}</option>
-                    @endforeach
-                </select>
-            </div> --}}
+            @if (Auth::user()->role == 'head' || Auth::user()->role == 'admin')
+                <div class="mt-5">
+                    <label for="assigned_to" class="block text-sm font-medium text-white">Assign To</label>
+                    <select required id="assigned_to" name="assigned_to" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                        @foreach ($dic_users as $dic_user)
+                            <option value="{{$dic_user->id}}">{{$dic_user->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
 
             <div class="mt-5">
                 <label for="subject" class="block text-sm font-medium text-white">Subject</label>
