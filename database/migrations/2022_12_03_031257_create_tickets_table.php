@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('status')->default('PENDING');
             $table->dateTime('start_date_time')->nullable();
             $table->dateTime('end_date_time')->nullable();
+            $table->string('resolution_attachment', 100)->nullable();
 
             $table->integer('is_SAP');
             $table->string('code')->nullable();
