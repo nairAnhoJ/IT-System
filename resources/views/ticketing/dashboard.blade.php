@@ -77,13 +77,16 @@
     <div id="loadingScreen"></div>
 
     <div style="height: calc(100vh - 65px);" class="w-screen p-3 text-gray-200">
-        <div class="grid grid-cols-2 items-center mb-1.5">
-            <h1 class="text-3xl font-extrabold leading-none tracking-wide text-blue-500">TICKETING</h1>
-            
-            @if (auth()->user()->dept_id == $deptInCharge)
-            <a href="{{ route('ticket.reports') }}" type="button" class="justify-self-end w-48 text-white text-center focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Ticket Report</a>
-            @endif
-        </div>
+
+        <!--  Header  -->
+            <div class="grid grid-cols-2 items-center mb-1.5">
+                <h1 class="text-3xl font-extrabold leading-none tracking-wide text-blue-500">TICKETING</h1>
+                
+                @if (auth()->user()->dept_id == $deptInCharge)
+                <a href="{{ route('ticket.reports') }}" type="button" class="justify-self-end w-48 text-white text-center focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Ticket Report</a>
+                @endif
+            </div>
+        <!--  Header  -->
         
         <!--  View Ticket Modal  -->
             <button id="viewTicket" class="hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button" data-modal-toggle="ticketModal">
@@ -101,6 +104,7 @@
                                     <input type="hidden" id="ticketStatus" name="ticketStatus">
                                     <input type="hidden" id="isCancel" name="isCancel" value="0">
                                     <input type="hidden" id="isUpdate" name="isUpdate" value="0">
+                                    <input type="hidden" id="isReassign" name="isReassign" value="0">
                                     <span id="ticketNumber"></span>
                                     <br>
                                     <span id="ticketRequester" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketDepartment" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketDate" class="text-sm"></span><span class="mx-2 text-sm">|</span><span id="ticketStatus2" class="text-sm"></span>
@@ -111,8 +115,12 @@
                             </div>
                         <!-- Modal body -->
                         <div class="p-3">
-                            <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
-                            <div id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300 whitespace-pre-line"></div>
+
+                            {{-- Ticket Info --}}
+                                <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
+                                <div id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300 whitespace-pre-line"></div>
+                            {{-- Ticket Info --}}
+
                             {{-- Attachment Buttons --}}
                                 <div>
                                     <button id="AttachedFileButton" data-modal-toggle="AttachedFileModal" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View Attached File</button>
@@ -127,36 +135,64 @@
                                     <button id="SAPButton" type="button" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 mt-3 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">View SAP Business Partner</button>
                                 </div>
                             {{-- Attachment Buttons --}}
-                                    <div id="ticketUpdateDiv">
-                                        <hr class="my-5">
-                                        <label for="ticketUpdateTextArea" class="block text-base font-medium text-white">Update</label>
-                                        <textarea disabled id="ticketUpdateTextArea" style="resize: none;" rows=4 cols=50 maxlength=1000 class="UpdateDivAutoHeight block max-h-[200px] p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>
+
+                            {{-- Ticket Update --}}
+                                <div id="ticketUpdateDiv">
+                                    <hr class="my-5">
+                                    <label for="ticketUpdateTextArea" class="block text-base font-medium text-white">Update</label>
+                                    <textarea disabled id="ticketUpdateTextArea" style="resize: none;" rows=4 cols=50 maxlength=1000 class="UpdateDivAutoHeight block max-h-[200px] p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>
+                                </div>
+                                <div id="ticketUpdateInputDiv" class="flex gap-x-3">
+                                    <input type="text" id="ticketUpdateInput" name="ticketUpdate" class="w-full first-letter:block p-2.5 text-sm rounded-lg bg-gray-700 border border-gray-300 placeholder-gray-400 text-white" placeholder="Update here..." autocomplete="off">
+                                    <div id="updateButtonDiv" class=" whitespace-nowrap">
+                                        <button id="updateButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-neutral-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-yellow-500 bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-900">Update Ticket</button>
                                     </div>
-                                    <div id="ticketUpdateInputDiv" class="flex gap-x-3">
-                                        <input type="text" id="ticketUpdateInput" name="ticketUpdate" class="w-full first-letter:block p-2.5 text-sm rounded-lg bg-gray-700 border border-gray-300 placeholder-gray-400 text-white" placeholder="Update here..." autocomplete="off">
-                                        <div id="updateButtonDiv" class=" whitespace-nowrap">
-                                            <button id="updateButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-neutral-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-yellow-500 bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-900">Update Ticket</button>
-                                        </div>
-                                    </div>
-                                    @if (auth()->user()->dept_id == $deptInCharge)
-                                        <div id="ticketResolutionInputDiv">
-                                            <label class="block mt-5 mb-2 text-base font-medium text-white">
-                                                Resolution <span class="text-red-500 text-sm">*Required upon completion</span>
-                                            </label>
-                                            <textarea style="resize: none;" id="ticketResolutionInput" name="ticketResolution" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>
-                                            <div class="mt-5">
-                                                <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
-                                                <div class="col-span-5">
-                                                    <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept=".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx">
-                                                </div>
+                                </div>
+                            {{-- Ticket Update --}}
+
+                            {{-- Ticket Resolution Input --}}
+                                @if (auth()->user()->dept_id == $deptInCharge)
+                                    <div id="ticketResolutionInputDiv">
+                                        <label class="block mt-5 mb-2 text-base font-medium text-white">
+                                            Resolution <span class="text-red-500 text-sm">*Required upon completion</span>
+                                        </label>
+                                        <textarea style="resize: none;" id="ticketResolutionInput" name="ticketResolution" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                        <div class="mt-5">
+                                            <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
+                                            <div class="col-span-5">
+                                                <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept=".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx">
                                             </div>
                                         </div>
-                                    @endif
-                                    <div id="ticketResolutionDiv">
-                                        <hr class="my-5">
-                                        <label for="ticketResolution" class="block mb-2 text-base font-medium text-white">Resolution</label>
-                                        <textarea disabled style="max-height: 150px; resize: none;" id="ticketResolution" class="ResolutionAutoHeight w-full text-base leading-relaxed text-gray-300 bg-gray-700"></textarea>
                                     </div>
+                                @endif
+                            {{-- Ticket Resolution Input --}}
+
+                            {{-- Reassign Ticket --}}
+                                @if (Auth::user()->role == 'head' || Auth::user()->role == 'admin')
+                                    <div id="transferAssignTo" class="mt-5 flex items-end gap-x-3">
+                                        <div class="w-full">
+                                            <label for="assigned_to" class="block text-sm font-medium text-white">Reassign To</label>
+                                            <select required id="assigned_to" name="assigned_to" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                                                @foreach ($dic_users as $dic_user)
+                                                    <option value="{{$dic_user->id}}">{{$dic_user->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div id="reassignSubmitButtonDiv" class=" whitespace-nowrap">
+                                            <button id="reassignSubmitButton" type="button" data-modal-toggle="ticketModal" type="button" class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 border border-blue-600 bg-blue-600 hover:bg-blue-700 focus:ring-yellow-900">Submit</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            {{-- Reassign Ticket --}}
+                            
+                            {{-- Ticket Resolution Display --}}
+                                <div id="ticketResolutionDiv">
+                                    <hr class="my-5">
+                                    <label for="ticketResolution" class="block mb-2 text-base font-medium text-white">Resolution</label>
+                                    <textarea disabled style="max-height: 150px; resize: none;" id="ticketResolution" class="ResolutionAutoHeight w-full text-base leading-relaxed text-gray-300 bg-gray-700"></textarea>
+                                </div>
+                            {{-- Ticket Resolution Display --}}
+
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-3 border-t border-gray-600 rounded-b">
@@ -397,187 +433,188 @@
             </div>
         <!--  SAP modal  -->
 
-
-        {{-- CONTROLS --}}
-        <div class="grid h-10 grid-cols-3 mb-0">
-            <div class="h-8 col-span-2">
-                {{-- @if ($userDept != 'IT') --}}
-                @if (auth()->user()->dept_id != $deptInCharge)
-                    <a href="{{ route('ticket.create') }}" type="button" class="w-40 mb-2 mr-2 text-sm font-medium leading-8 text-center text-white bg-blue-600 rounded-lg focus:ring-4 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</a>
-                    <a href="{{ route('sap.index') }}" type="button" class="w-40 mb-2 mr-2 text-sm font-medium leading-8 text-center text-white bg-blue-600 rounded-lg focus:ring-4 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">SAP BP</a>
-                @else
-                    <a href="{{ route('ticket.createForIT') }}" type="button" class="w-40 mb-2 mr-2 text-sm font-medium leading-8 text-center text-white bg-blue-600 rounded-lg focus:ring-4 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</a>
-                @endif
-            </div>
-            <div class="flex h-8">
-                {{-- <div class="flex w-1/3">
-                    <label for="status" class="self-center mr-3">Status: </label>
-                    <select id="status" class="block border text-sm rounded-lg px-2.5 pt-1 pb-0 w-full h-full bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
-                        <option selected value="all">All</option>
-                        <option value="proc">Pending</option>
-                        <option value="mobo">Ongoing</option>
-                        <option value="ram">Done</option>
-                    </select>
-                </div> --}}
-                <div class="items-center w-full">
-                    <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-full h-full">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+        <!--  Controls  -->
+            <div class="grid h-10 grid-cols-3 mb-0">
+                <div class="h-8 col-span-2">
+                    {{-- @if ($userDept != 'IT') --}}
+                    @if (auth()->user()->dept_id != $deptInCharge)
+                        <a href="{{ route('ticket.create') }}" type="button" class="w-40 mb-2 mr-2 text-sm font-medium leading-8 text-center text-white bg-blue-600 rounded-lg focus:ring-4 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</a>
+                        <a href="{{ route('sap.index') }}" type="button" class="w-40 mb-2 mr-2 text-sm font-medium leading-8 text-center text-white bg-blue-600 rounded-lg focus:ring-4 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">SAP BP</a>
+                    @else
+                        <a href="{{ route('ticket.createForIT') }}" type="button" class="w-40 mb-2 mr-2 text-sm font-medium leading-8 text-center text-white bg-blue-600 rounded-lg focus:ring-4 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Create Ticket</a>
+                    @endif
+                </div>
+                <div class="flex h-8">
+                    {{-- <div class="flex w-1/3">
+                        <label for="status" class="self-center mr-3">Status: </label>
+                        <select id="status" class="block border text-sm rounded-lg px-2.5 pt-1 pb-0 w-full h-full bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                            <option selected value="all">All</option>
+                            <option value="proc">Pending</option>
+                            <option value="mobo">Ongoing</option>
+                            <option value="ram">Done</option>
+                        </select>
+                    </div> --}}
+                    <div class="items-center w-full">
+                        <label for="simple-search" class="sr-only">Search</label>
+                        <div class="relative w-full h-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <input type="text" id="tableSearch" autocomplete="off" class="h-full border text-sm rounded-lg block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required>
                         </div>
-                        <input type="text" id="tableSearch" autocomplete="off" class="h-full border text-sm rounded-lg block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required>
                     </div>
                 </div>
             </div>
-        </div>
+        <!--  Controls  -->
 
         
-            {{-- TABLE --}}
-        <div style="max-height: calc(100% - 85px);" class="relative overflow-x-auto rounded-t-lg shadow-md">
-            <table class="min-w-full text-sm text-left text-gray-400">
-                <thead class="relative top-0 text-xs text-gray-400 uppercase bg-gray-600 border-gray-600 border-x-8">
-                    <tr class="sticky top-0 bg-gray-600">
-                        <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
-                            TICKET #
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center">
-                            REQUESTER
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            DEPARTMENT
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            SITE/BRANCH
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center">
-                            DATE CREATED
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            STATUS
-                        </th>
-                        @if (auth()->user()->dept_id == $deptInCharge)
+        <!--  Table  -->
+            <div style="max-height: calc(100% - 85px);" class="relative overflow-x-auto rounded-t-lg shadow-md">
+                <table class="min-w-full text-sm text-left text-gray-400">
+                    <thead class="relative top-0 text-xs text-gray-400 uppercase bg-gray-600 border-gray-600 border-x-8">
+                        <tr class="sticky top-0 bg-gray-600">
+                            <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
+                                TICKET #
+                            </th>
+                            <th scope="col" class="sticky top-0 py-2 text-center">
+                                REQUESTER
+                            </th>
                             <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                                ELAPSED TIME
+                                DEPARTMENT
                             </th>
-                        @endif
-                        <th scope="col" class="sticky top-0 py-2 text-center">
-                            NATURE OF PROBLEM
-                        </th>
-                        <th scope="col" class="sticky top-0 max-w-xs py-2 text-center">
-                            SUBJECT
-                        </th>
-                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
-                            ASSIGNED TO
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
-                    @foreach ($tickets as $ticket)
-                        <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'text-green-500' : '' }}">
-                            <th scope="row" class="px-6 py-3 font-medium text-center text-white">
-                                <span 
-                                    data-id="{{ $ticket->id }}" 
-                                    data-ticket_no="{{ $ticket->ticket_no }}" 
-                                    data-is_SAP="{{ $ticket->is_SAP }}" 
-                                    data-user_id="{{ $ticket->user_id }}" 
-                                    data-user="{{ $ticket->requestor->name }}" 
-                                    data-dept="{{ $ticket->departmentRow->name }}" 
-                                    data-date="{{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}" 
-                                    data-subject="{{ $ticket->subject }}" 
-                                    data-desc="{{ $ticket->description }}" 
-                                    data-status="{{ $ticket->status }}" 
-                                    data-src="{{ $ticket->attachment }}" 
-                                    data-resolution_attachment="{{ $ticket->resolution_attachment }}" 
-                                    data-reso="{{ $ticket->resolution }}" 
-                                    data-update="{{ $ticket->update }}">
-                                        {{ $ticket->ticket_no }}
-                                </span>
+                            <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                                SITE/BRANCH
                             </th>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                {{ $ticket->requestor->name }}
-                            </td>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                {{ $ticket->departmentRow->name }}
-                            </td>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                {{ $ticket->site }}
-                            </td>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                {{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}
-                            </td>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                <span class="
-                                    @php
-                                        $status = $ticket->status;
-                                        if($status == 'PENDING'){
-                                            $createdDateTime = new DateTime($ticket->created_at);
-                                            $currentDateTime = new DateTime();
-                                            $interval = $createdDateTime->diff($currentDateTime);
-                                            $months = $interval->m;
-                                            $days = $interval->d;
-                                            $hours = $interval->h;
-                                            echo 'text-red-500';
-                                        }elseif($status == 'ONGOING'){
-                                            $createdDateTime = new DateTime($ticket->start_date_time);
-                                            $currentDateTime = new DateTime();
-                                            $interval = $createdDateTime->diff($currentDateTime);
-                                            $months = $interval->m;
-                                            $days = $interval->d;
-                                            $hours = $interval->h;
-                                            echo 'text-amber-300';
-                                        }elseif($status == 'DONE'){
-                                            echo 'text-teal-500';
-                                        }elseif($status == 'CANCELLED'){
-                                            echo 'text-neutral-300';
-                                        }
-                                    @endphp
-                                ">
-                                    @php
-                                        echo $status;
-                                    @endphp
-                                </span>
-                            </td>
-                                @if (auth()->user()->dept_id == $deptInCharge)
-                                    <td class="px-6 py-3 text-center whitespace-nowrap">
-                                        @if ($status == 'ONGOING' || $status == 'PENDING')
-                                            @php
-                                                $labelMonth = ' Months ';
-                                                $labelDay = ' Days ';
-                                                $labelHour = ' Hours ';
-                                                if($months == 1){
-                                                    $labelMonth = ' Month ';
-                                                }
-                                                if ($days == 1) {
-                                                    $labelDay = ' Day ';
-                                                }
-                                                if ($hours == 1) {
-                                                    $labelHour = ' Hour ';
-                                                }
-                                            @endphp
-                                            @if ($months != 0)
-                                                {{ $months . $labelMonth . $days . $labelDay . $hours . $labelHour }}
-                                            @elseif ($days != 0)
-                                                {{ $days . $labelDay . $hours . $labelHour }}
-                                            @else
-                                                {{ $hours . $labelHour }}
-                                            @endif
-                                        @endif
-                                    </td>
-                                @endif
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                {{ $ticket->category->name }}
-                            </td>
-                            <td class="max-w-xs px-6 py-3 overflow-hidden text-center whitespace-nowrap">
-                                {{ $ticket->subject }}
-                            </td>
-                            <td class="px-6 py-3 text-center whitespace-nowrap">
-                                {{ $ticket->assigned->name }}
-                            </td>
+                            <th scope="col" class="sticky top-0 py-2 text-center">
+                                DATE CREATED
+                            </th>
+                            <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                                STATUS
+                            </th>
+                            @if (auth()->user()->dept_id == $deptInCharge)
+                                <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                                    ELAPSED TIME
+                                </th>
+                            @endif
+                            <th scope="col" class="sticky top-0 py-2 text-center">
+                                NATURE OF PROBLEM
+                            </th>
+                            <th scope="col" class="sticky top-0 max-w-xs py-2 text-center">
+                                SUBJECT
+                            </th>
+                            <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                                ASSIGNED TO
+                            </th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
+                        @foreach ($tickets as $ticket)
+                            <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'text-green-500' : '' }}">
+                                <th scope="row" class="px-6 py-3 font-medium text-center text-white">
+                                    <span 
+                                        data-id="{{ $ticket->id }}" 
+                                        data-ticket_no="{{ $ticket->ticket_no }}" 
+                                        data-is_SAP="{{ $ticket->is_SAP }}" 
+                                        data-user_id="{{ $ticket->user_id }}" 
+                                        data-user="{{ $ticket->requestor->name }}" 
+                                        data-dept="{{ $ticket->departmentRow->name }}" 
+                                        data-date="{{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}" 
+                                        data-subject="{{ $ticket->subject }}" 
+                                        data-desc="{{ $ticket->description }}" 
+                                        data-status="{{ $ticket->status }}" 
+                                        data-src="{{ $ticket->attachment }}" 
+                                        data-resolution_attachment="{{ $ticket->resolution_attachment }}" 
+                                        data-reso="{{ $ticket->resolution }}" 
+                                        data-update="{{ $ticket->update }}">
+                                            {{ $ticket->ticket_no }}
+                                    </span>
+                                </th>
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    {{ $ticket->requestor->name }}
+                                </td>
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    {{ $ticket->departmentRow->name }}
+                                </td>
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    {{ $ticket->site }}
+                                </td>
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    {{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}
+                                </td>
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    <span class="
+                                        @php
+                                            $status = $ticket->status;
+                                            if($status == 'PENDING'){
+                                                $createdDateTime = new DateTime($ticket->created_at);
+                                                $currentDateTime = new DateTime();
+                                                $interval = $createdDateTime->diff($currentDateTime);
+                                                $months = $interval->m;
+                                                $days = $interval->d;
+                                                $hours = $interval->h;
+                                                echo 'text-red-500';
+                                            }elseif($status == 'ONGOING'){
+                                                $createdDateTime = new DateTime($ticket->start_date_time);
+                                                $currentDateTime = new DateTime();
+                                                $interval = $createdDateTime->diff($currentDateTime);
+                                                $months = $interval->m;
+                                                $days = $interval->d;
+                                                $hours = $interval->h;
+                                                echo 'text-amber-300';
+                                            }elseif($status == 'DONE'){
+                                                echo 'text-teal-500';
+                                            }elseif($status == 'CANCELLED'){
+                                                echo 'text-neutral-300';
+                                            }
+                                        @endphp
+                                    ">
+                                        @php
+                                            echo $status;
+                                        @endphp
+                                    </span>
+                                </td>
+                                    @if (auth()->user()->dept_id == $deptInCharge)
+                                        <td class="px-6 py-3 text-center whitespace-nowrap">
+                                            @if ($status == 'ONGOING' || $status == 'PENDING')
+                                                @php
+                                                    $labelMonth = ' Months ';
+                                                    $labelDay = ' Days ';
+                                                    $labelHour = ' Hours ';
+                                                    if($months == 1){
+                                                        $labelMonth = ' Month ';
+                                                    }
+                                                    if ($days == 1) {
+                                                        $labelDay = ' Day ';
+                                                    }
+                                                    if ($hours == 1) {
+                                                        $labelHour = ' Hour ';
+                                                    }
+                                                @endphp
+                                                @if ($months != 0)
+                                                    {{ $months . $labelMonth . $days . $labelDay . $hours . $labelHour }}
+                                                @elseif ($days != 0)
+                                                    {{ $days . $labelDay . $hours . $labelHour }}
+                                                @else
+                                                    {{ $hours . $labelHour }}
+                                                @endif
+                                            @endif
+                                        </td>
+                                    @endif
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    {{ $ticket->category->name }}
+                                </td>
+                                <td class="max-w-xs px-6 py-3 overflow-hidden text-center whitespace-nowrap">
+                                    {{ $ticket->subject }}
+                                </td>
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    {{ $ticket->assigned->name }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        <!--  Table  -->
     </div>
 
   <script>
@@ -909,6 +946,18 @@
                 $('#statusUpdateForm').submit();
             });
         // Update Button
+
+        // Reassign Submit Button
+            jQuery(document).on( "click", "#reassignSubmitButton", function(){
+                $('#loadingScreen').html(`<div wire:loading class="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen overflow-hidden bg-gray-800 opacity-75">
+                    <div class="w-12 h-12 mb-4 ease-linear border-4 border-t-4 border-gray-200 rounded-full loader"></div>
+                    <h2 class="text-xl font-semibold text-center text-white">Processing...</h2>
+                    <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+                </div>`);
+                $('#isReassign').val('1');
+                $('#statusUpdateForm').submit();
+            });
+        // Reassign Submit Button
 
         // View Attached file button
             $('#ResolutionAttachedFileButton').click(function(){

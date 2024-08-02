@@ -19,6 +19,8 @@ class TicketController extends Controller
         $userID = auth()->user()->id;
         $userDeptID = auth()->user()->dept_id;
         $userRow = DB::table('users')->where('id', $userID)->first();
+        $dic = (DB::table('dept_in_charges')->first())->dept_id;
+        $dic_users = User::with('site_row', 'department_row')->where('id', '!=', 1)->where('dept_id', $dic)->orderBy('name', 'asc')->get();
 
         $userDept = '';
         $deptInCharge = '';
@@ -49,7 +51,7 @@ class TicketController extends Controller
                 ->get();
         }
 
-        return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge'));
+        return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge', 'dic_users'));
     }
 
     public function create(){
@@ -268,137 +270,145 @@ class TicketController extends Controller
         $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
         
         $smtp = DB::table('settings')->where('id', 1)->first();
-        $thisTicket = DB::table('tickets')->where('id', $id)->first();
+        $thisTicket = Ticket::where('id', $id)->first();
         $req = DB::table('users')->where('id', $thisTicket->user_id)->first();
+        
+        $isReassign = $request->isReassign;
 
-        if($status == 'PENDING'){
-            if($request->isCancel == '1'){
-                $ticket = Ticket::where('id', $id)->first();
-                $ticket->status = "CANCELLED";
-                $ticket->assigned_to = auth()->user()->id;
-                $ticket->save();
-            }else{
-                $ticket = Ticket::where('id', $id)->first();
-                $ticket->status = "ONGOING";
-                $ticket->start_date_time = date('Y-m-d H:i:s');
-                $ticket->save();
-
-                // SMTP
-                    if($smtp->smtp_is_activated == 1){
-                        $hostServer = $smtp->smtp_server;
-                        $name = $smtp->smtp_name;
-                        $username = $smtp->smtp_username;
-                        $password = $smtp->smtp_password;
-                        $port = $smtp->smtp_port;
-                        $emailto = $req->email;
-                        $reqName = $req->name;
-                        $ticketNo = $thisTicket->ticket_no;
-
-                        try {
-                            $mail = new PHPMailer(true);
-                            //Server settings
-                            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                            $mail->isSMTP();                                            //Send using SMTP
-                            $mail->Host       = "$hostServer";                     //Set the SMTP server to send through
-                            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                            $mail->Username   = "$username";                     //SMTP username
-                            $mail->Password   = "$password";                               //SMTP password
-                            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                            $mail->Port       = $port;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                        
-                            //Recipients
-                            $mail->setFrom("$username", "$name");
-                            $mail->addAddress("$emailto");     //Add a recipient
-                        
-                            //Content
-                            $mail->isHTML(true);                                  //Set email format to HTML
-                            $mail->Subject = 'Ticketing System - Ticket Update - '.$ticketNo;
-                            $mail->Body    = 'Dear '.$reqName.',<br><br>Ticket Status: <b>ONGOING</b><br><br>The status of your ticket has been updated as shown above.<br><br>You can check on the status of your ticket at any time by logging into IT Ticketing System.<br><br>If you have any questions, please feel free to contact us at local 406<br><br><br>Kind regards,<br>IT Department<br><br><br><i>Note: Please do not reply to this email, this is auto generated email.</i>';
-                        
-                            $mail->send();
-
-                            return redirect()->route('ticket.index');
-                        } catch (Exception $e) {
-                            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                        }
-                    }
-                // SMTP
-            }
-        }else if($status == 'ONGOING'){
-            if($request->isCancel == '1'){
-                $ticket = Ticket::where('id', $id)->first();
-                $ticket->status = "CANCELLED";
-                $ticket->assigned_to = auth()->user()->id;
-                $ticket->save();
-            }else if($request->isUpdate == '1'){
-                $ticket = Ticket::where('id', $id)->first();
-                if($ticket->update != null){
-                    $ticket_update = $ticket->update;
-                    $ticket->update = $ticket_update . "\n" . $ticketUpdate;
+        if($isReassign == 1){
+            $assigned_to = $request->assigned_to;
+            $thisTicket->assigned_to = $assigned_to;
+            $thisTicket->save();
+        }else{
+            if($status == 'PENDING'){
+                if($request->isCancel == '1'){
+                    $ticket = Ticket::where('id', $id)->first();
+                    $ticket->status = "CANCELLED";
+                    $ticket->assigned_to = auth()->user()->id;
+                    $ticket->save();
                 }else{
-                    $ticket->update = $ticketUpdate;
-                }
-                $ticket->save();
-            }else{
-                $request->validate([
-                    'ticketResolution' => 'required',
-                ]);
-                $attachment = $request->attachment;
-                
-                $ticket = Ticket::where('id', $id)->first();
-                $ticket->status = "DONE";
-                $ticket->done_by = auth()->user()->id;
-                $ticket->resolution = $request->ticketResolution;
-                if($attachment != null){
-                    $filename = date('Ymd-His') . '-' . $ticket->ticket_no . '.' . $request->file('attachment')->getClientOriginalExtension();
-                    $path = "storage/attachments/";
-                    $attachment_path = $path . $filename;
-                    $request->file('attachment')->move(public_path($path), $filename);
-                    $ticket->resolution_attachment = $attachment_path;
-                }
-                $ticket->end_date_time = date('Y-m-d H:i:s');
-                $ticket->save();
-
-                // SMTP
-                    if($smtp->smtp_is_activated == 1){
-                        $hostServer = $smtp->smtp_server;
-                        $name = $smtp->smtp_name;
-                        $username = $smtp->smtp_username;
-                        $password = $smtp->smtp_password;
-                        $port = $smtp->smtp_port;
-                        $emailto = $req->email;
-                        $reqName = $req->name;
-                        $ticketNo = $thisTicket->ticket_no;
-
-                        try {
-                            $mail = new PHPMailer(true);
-                            //Server settings
-                            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                            $mail->isSMTP();                                            //Send using SMTP
-                            $mail->Host       = "$hostServer";                     //Set the SMTP server to send through
-                            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                            $mail->Username   = "$username";                     //SMTP username
-                            $mail->Password   = "$password";                               //SMTP password
-                            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                            $mail->Port       = $port;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                        
-                            //Recipients
-                            $mail->setFrom("$username", "$name");
-                            $mail->addAddress("$emailto");     //Add a recipient
-                        
-                            //Content
-                            $mail->isHTML(true);                                  //Set email format to HTML
-                            $mail->Subject = 'Ticketing System - Ticket Update - '.$ticketNo;
-                            $mail->Body    = 'Dear '.$reqName.',<br><br>Ticket Status: <b>DONE</b><br><br>The status of your ticket has been updated as shown above.<br><br>If you have any questions, please feel free to contact us at local 406<br><br><br>Kind regards,<br>IT Department<br><br><br><i>Note: Please do not reply to this email, this is auto generated email.</i>';
-                        
-                            $mail->send();
-
-                            return redirect()->route('ticket.index');
-                        } catch (Exception $e) {
-                            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                    $ticket = Ticket::where('id', $id)->first();
+                    $ticket->status = "ONGOING";
+                    $ticket->start_date_time = date('Y-m-d H:i:s');
+                    $ticket->save();
+    
+                    // SMTP
+                        if($smtp->smtp_is_activated == 1){
+                            $hostServer = $smtp->smtp_server;
+                            $name = $smtp->smtp_name;
+                            $username = $smtp->smtp_username;
+                            $password = $smtp->smtp_password;
+                            $port = $smtp->smtp_port;
+                            $emailto = $req->email;
+                            $reqName = $req->name;
+                            $ticketNo = $thisTicket->ticket_no;
+    
+                            try {
+                                $mail = new PHPMailer(true);
+                                //Server settings
+                                $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                                $mail->isSMTP();                                            //Send using SMTP
+                                $mail->Host       = "$hostServer";                     //Set the SMTP server to send through
+                                $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                                $mail->Username   = "$username";                     //SMTP username
+                                $mail->Password   = "$password";                               //SMTP password
+                                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                                $mail->Port       = $port;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                            
+                                //Recipients
+                                $mail->setFrom("$username", "$name");
+                                $mail->addAddress("$emailto");     //Add a recipient
+                            
+                                //Content
+                                $mail->isHTML(true);                                  //Set email format to HTML
+                                $mail->Subject = 'Ticketing System - Ticket Update - '.$ticketNo;
+                                $mail->Body    = 'Dear '.$reqName.',<br><br>Ticket Status: <b>ONGOING</b><br><br>The status of your ticket has been updated as shown above.<br><br>You can check on the status of your ticket at any time by logging into IT Ticketing System.<br><br>If you have any questions, please feel free to contact us at local 406<br><br><br>Kind regards,<br>IT Department<br><br><br><i>Note: Please do not reply to this email, this is auto generated email.</i>';
+                            
+                                $mail->send();
+    
+                                return redirect()->route('ticket.index');
+                            } catch (Exception $e) {
+                                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                            }
                         }
+                    // SMTP
+                }
+            }else if($status == 'ONGOING'){
+                if($request->isCancel == '1'){
+                    $ticket = Ticket::where('id', $id)->first();
+                    $ticket->status = "CANCELLED";
+                    $ticket->assigned_to = auth()->user()->id;
+                    $ticket->save();
+                }else if($request->isUpdate == '1'){
+                    $ticket = Ticket::where('id', $id)->first();
+                    if($ticket->update != null){
+                        $ticket_update = $ticket->update;
+                        $ticket->update = $ticket_update . "\n" . $ticketUpdate;
+                    }else{
+                        $ticket->update = $ticketUpdate;
                     }
-                // SMTP
+                    $ticket->save();
+                }else{
+                    $request->validate([
+                        'ticketResolution' => 'required',
+                    ]);
+                    $attachment = $request->attachment;
+                    
+                    $ticket = Ticket::where('id', $id)->first();
+                    $ticket->status = "DONE";
+                    $ticket->done_by = auth()->user()->id;
+                    $ticket->resolution = $request->ticketResolution;
+                    if($attachment != null){
+                        $filename = date('Ymd-His') . '-' . $ticket->ticket_no . '.' . $request->file('attachment')->getClientOriginalExtension();
+                        $path = "storage/attachments/";
+                        $attachment_path = $path . $filename;
+                        $request->file('attachment')->move(public_path($path), $filename);
+                        $ticket->resolution_attachment = $attachment_path;
+                    }
+                    $ticket->end_date_time = date('Y-m-d H:i:s');
+                    $ticket->save();
+    
+                    // SMTP
+                        if($smtp->smtp_is_activated == 1){
+                            $hostServer = $smtp->smtp_server;
+                            $name = $smtp->smtp_name;
+                            $username = $smtp->smtp_username;
+                            $password = $smtp->smtp_password;
+                            $port = $smtp->smtp_port;
+                            $emailto = $req->email;
+                            $reqName = $req->name;
+                            $ticketNo = $thisTicket->ticket_no;
+    
+                            try {
+                                $mail = new PHPMailer(true);
+                                //Server settings
+                                $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                                $mail->isSMTP();                                            //Send using SMTP
+                                $mail->Host       = "$hostServer";                     //Set the SMTP server to send through
+                                $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                                $mail->Username   = "$username";                     //SMTP username
+                                $mail->Password   = "$password";                               //SMTP password
+                                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                                $mail->Port       = $port;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                            
+                                //Recipients
+                                $mail->setFrom("$username", "$name");
+                                $mail->addAddress("$emailto");     //Add a recipient
+                            
+                                //Content
+                                $mail->isHTML(true);                                  //Set email format to HTML
+                                $mail->Subject = 'Ticketing System - Ticket Update - '.$ticketNo;
+                                $mail->Body    = 'Dear '.$reqName.',<br><br>Ticket Status: <b>DONE</b><br><br>The status of your ticket has been updated as shown above.<br><br>If you have any questions, please feel free to contact us at local 406<br><br><br>Kind regards,<br>IT Department<br><br><br><i>Note: Please do not reply to this email, this is auto generated email.</i>';
+                            
+                                $mail->send();
+    
+                                return redirect()->route('ticket.index');
+                            } catch (Exception $e) {
+                                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                            }
+                        }
+                    // SMTP
+                }
             }
         }
 
