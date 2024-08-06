@@ -51,6 +51,8 @@ class TicketController extends Controller
                 ->get();
         }
 
+        dd($tickets);
+
         return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge', 'dic_users'));
     }
 
