@@ -118,7 +118,7 @@
 
                             {{-- Ticket Info --}}
                                 <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
-                                <div id="ticketDesc" class="mb-2 max-h-[200px] text-base leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
+                                <div id="ticketDesc" class="mb-2 max-h-[160px] text-base leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
                             {{-- Ticket Info --}}
 
                             {{-- Attachment Buttons --}}
@@ -140,7 +140,7 @@
                                 <div id="ticketUpdateDiv">
                                     <hr class="my-5">
                                     <label for="ticketUpdateTextArea" class="block text-base font-medium text-white">Update</label>
-                                    <textarea disabled id="ticketUpdateTextArea" style="resize: none;" rows=4 cols=50 maxlength=1000 class="UpdateDivAutoHeight block max-h-[200px] p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>
+                                    <textarea disabled id="ticketUpdateTextArea" style="resize: none;" rows=4 cols=50 maxlength=1000 class="UpdateDivAutoHeight block max-h-[160px] p-2.5 w-full text-sm rounded-lg bg-gray-700 border-gray-700 placeholder-gray-400 text-white">${update}</textarea>
                                 </div>
                                 <div id="ticketUpdateInputDiv" class="flex gap-x-3">
                                     <input type="text" id="ticketUpdateInput" name="ticketUpdate" class="w-full first-letter:block p-2.5 text-sm rounded-lg bg-gray-700 border border-gray-300 placeholder-gray-400 text-white" placeholder="Update here..." autocomplete="off">
