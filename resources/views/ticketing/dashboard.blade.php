@@ -118,7 +118,7 @@
 
                             {{-- Ticket Info --}}
                                 <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
-                                <div id="ticketDesc" class="mb-2 text-base leading-relaxed text-gray-300 whitespace-pre-line"></div>
+                                <div id="ticketDesc" class="mb-2 max-h-[200px] text-base leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
                             {{-- Ticket Info --}}
 
                             {{-- Attachment Buttons --}}
@@ -516,8 +516,8 @@
                                         data-ticket_no="{{ $ticket->ticket_no }}" 
                                         data-is_SAP="{{ $ticket->is_SAP }}" 
                                         data-user_id="{{ $ticket->user_id }}" 
-                                        data-user="{{ $ticket->requestor->name }}" 
-                                        data-dept="{{ $ticket->departmentRow->name }}" 
+                                        data-user="{{ $ticket->requestor['name'] }}" 
+                                        data-dept="{{ $ticket->departmentRow['name'] }}" 
                                         data-date="{{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}" 
                                         data-subject="{{ $ticket->subject }}" 
                                         data-desc="{{ $ticket->description }}" 
