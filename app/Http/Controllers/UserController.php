@@ -51,7 +51,7 @@ class UserController extends Controller
 
             $role = $request->role;
             if($role == 'head'){
-                $head = User::where('role', 'head')->first();
+                $head = User::where('id', '!=', 1)->where('role', 'head')->first();
                 if($head != null){
                     $head->role = 'user';
                     $head->save();
@@ -79,7 +79,7 @@ class UserController extends Controller
 
             $role = $request->role;
             if($role == 'head'){
-                $head = User::where('role', 'head')->first();
+                $head = User::where('id', '!=', 1)->where('role', 'head')->first();
                 if($head != null){
                     $head->role = 'user';
                     $head->save();

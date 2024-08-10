@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
         $role = $request->role;
         if($role == 'head'){
-            $head = User::where('role', 'head')->first();
+            $head = User::where('id', '!=', 1)->where('role', 'head')->first();
             $head->role = 'user';
             $head->save();
         }
