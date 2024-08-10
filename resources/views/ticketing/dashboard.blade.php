@@ -168,7 +168,7 @@
                             {{-- Ticket Resolution Input --}}
 
                             {{-- Reassign Ticket --}}
-                                @if (Auth::user()->role == 'head')
+                                @if (Auth::user()->role == 'head' || auth()->user()->role == 'superadmin')
                                     <div id="transferAssignTo" class="mt-5 flex items-end gap-x-3">
                                         <div class="w-full">
                                             <label for="assigned_to" class="block text-sm font-medium text-white">Reassign To</label>

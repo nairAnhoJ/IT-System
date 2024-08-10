@@ -178,7 +178,7 @@
 
         <div class="grid grid-cols-3 mb-3 h-[calc(100vw/6)] gap-x-5">
             @if ($userDeptID == $deptInCharge)
-                @if (Auth::user()->role == 'admin')
+                @if (Auth::user()->role == 'superadmin')
                     <div class="h-full rounded bg-emerald-500 bg-opacity-80">
                         <div class="flex flex-col items-center justify-center h-full">
                             <h1 class="text-[calc(100vw/8)] leading-[calc(100vw/9)] font-extrabold tracking-wider text-white">{{ $newTickets }}</h1> 
