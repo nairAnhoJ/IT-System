@@ -48,12 +48,12 @@ class DepartmentController extends Controller
     }
 
     public function delete(Request $request){
-        $deptInCharge = (DB::table('dept_in_charges')->where('id', '1')->get())[0]->dept_id;
-        $dept_id = $request->id;
+        // $deptInCharge = (DB::table('dept_in_charges')->where('id', '1')->get())[0]->dept_id;
+        // $dept_id = $request->id;
 
-        if($deptInCharge != $dept_id){
-            DB::delete('delete FROM departments where id = ?', [$dept_id]);
-        }
+        // if($deptInCharge != $dept_id){
+        //     DB::delete('delete FROM departments where id = ?', [$dept_id]);
+        // }
         return redirect()->route('department.index');
     }
 

@@ -44,7 +44,7 @@ class SiteController extends Controller
     public function delete(Request $request){
         $IT_id = $request->id;
 
-        DB::delete('delete FROM sites where id = ?', [$IT_id]);
+        // DB::delete('delete FROM sites where id = ?', [$IT_id]);
 
         return redirect()->back();
     }

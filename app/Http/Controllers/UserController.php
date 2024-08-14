@@ -101,7 +101,7 @@ class UserController extends Controller
     }
 
     public function delete(Request $request){
-        DB::delete('delete from users where id = ?', [$request->id]);
+        // DB::delete('delete from users where id = ?', [$request->id]);
         return redirect()->route('user.index')->with('success', 'User details has been deleted successfully');
     }
 
