@@ -138,6 +138,7 @@
                                 <label for="role" class="block mb-2 text-sm font-medium text-white">Role</label>
                                 <select id="role" name="role" value="{{old('role')}}" autocomplete="off" class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" :value="old('department')">
                                         <option value="user">USER</option>
+                                        <option value="admin">ADMIN</option>
                                         <option value="head">HEAD</option>
                                 </select>
                             </div>
