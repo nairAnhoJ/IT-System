@@ -573,33 +573,33 @@
                                         @endphp
                                     </span>
                                 </td>
-                                    @if (auth()->user()->dept_id == $deptInCharge)
-                                        <td class="px-6 py-3 text-center whitespace-nowrap">
-                                            @if ($status == 'ONGOING' || $status == 'PENDING')
-                                                @php
-                                                    $labelMonth = ' Months ';
-                                                    $labelDay = ' Days ';
-                                                    $labelHour = ' Hours ';
-                                                    if($months == 1){
-                                                        $labelMonth = ' Month ';
-                                                    }
-                                                    if ($days == 1) {
-                                                        $labelDay = ' Day ';
-                                                    }
-                                                    if ($hours == 1) {
-                                                        $labelHour = ' Hour ';
-                                                    }
-                                                @endphp
-                                                @if ($months != 0)
-                                                    {{ $months . $labelMonth . $days . $labelDay . $hours . $labelHour }}
-                                                @elseif ($days != 0)
-                                                    {{ $days . $labelDay . $hours . $labelHour }}
-                                                @else
-                                                    {{ $hours . $labelHour }}
-                                                @endif
+                                @if (auth()->user()->dept_id == $deptInCharge)
+                                    <td class="px-6 py-3 text-center whitespace-nowrap">
+                                        @if ($status == 'ONGOING' || $status == 'PENDING')
+                                            @php
+                                                $labelMonth = ' Months ';
+                                                $labelDay = ' Days ';
+                                                $labelHour = ' Hours ';
+                                                if($months == 1){
+                                                    $labelMonth = ' Month ';
+                                                }
+                                                if ($days == 1) {
+                                                    $labelDay = ' Day ';
+                                                }
+                                                if ($hours == 1) {
+                                                    $labelHour = ' Hour ';
+                                                }
+                                            @endphp
+                                            @if ($months != 0)
+                                                {{ $months . $labelMonth . $days . $labelDay . $hours . $labelHour }}
+                                            @elseif ($days != 0)
+                                                {{ $days . $labelDay . $hours . $labelHour }}
+                                            @else
+                                                {{ $hours . $labelHour }}
                                             @endif
-                                        </td>
-                                    @endif
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="px-6 py-3 text-center whitespace-nowrap">
                                     {{ $ticket->category->name }}
                                 </td>

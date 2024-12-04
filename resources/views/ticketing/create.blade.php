@@ -58,7 +58,7 @@
                 <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
                 <div class="grid grid-cols-5 gap-x-5">
                     <div class="col-span-5">
-                        <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept="image/*">
+                        <input id="attachment" name="attachment" class="block w-full h-10 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept=".png, .jpeg, .jpg">
                     </div>
                 </div>
             </div>

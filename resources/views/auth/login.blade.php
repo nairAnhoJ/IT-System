@@ -4,10 +4,13 @@
     @endsection
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
+            <div class="text-white text-center text-3xl font-bold mb-5">
+                IT TICKETING SYSTEM
+            </div>
+            <div>
                 <img src="{{ asset('storage\images\logo\logo.png') }}" class="block w-60 h-auto" alt="">
                 {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-200" /> --}}
-            </a>
+            </div>
         </x-slot>
 
         <!-- Session Status -->
