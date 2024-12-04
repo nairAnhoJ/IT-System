@@ -72,9 +72,15 @@ class SAPController extends Controller
 
         $attPath = null;
         if($bir_attachment != null){
-            $unique = Str::random(12);
-            $attPath = $request->file('bir_attachment')->storeAs('attachments/'.date('mY'), date('Ymd') . '-' . $ticketNo . '.' . $request->file('bir_attachment')->getClientOriginalExtension(), 'public');
+            $filename = date('Ymd') . '-' . $ticketNo . '.' . $request->file('bir_attachment')->getClientOriginalExtension();
+            $path = "attachments/";
+            $attPath = $path . $filename;
+            $request->file('bir_attachment')->move(public_path('storage/'.$path), $filename);
         }
+        // if($bir_attachment != null){
+        //     $unique = Str::random(12);
+        //     $attPath = $request->file('bir_attachment')->storeAs('attachments/'.date('mY'), date('Ymd') . '-' . $ticketNo . '.' . $request->file('bir_attachment')->getClientOriginalExtension(), 'public');
+        // }
 
         $sap = new SAP();
         $sap->type = $type;
