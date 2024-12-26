@@ -59,7 +59,7 @@
                 <div class="col-span-2">
                     <input type="text" id="wtax_code" name="wtax_code" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                 </div>
-                <div class="leading-7 py-px justify-self-end text-sm">AR In-Charge</div>
+                <div class="leading-7 py-px justify-self-end text-sm">Employee In-Charge</div>
                 <div class="col-span-2">
                     <input type="text" id="AR_inCharge" name="AR_inCharge" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                 </div>
@@ -81,7 +81,7 @@
                         <option value="0">NO</option>
                     </select>
                 </div>
-                <div class="leading-7 py-px justify-self-end text-sm">AR Email</div>
+                <div class="leading-7 py-px justify-self-end text-sm">Email</div>
                 <div class="col-span-2">
                     <input type="text" id="AR_email" name="AR_email" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off">
                 </div>
