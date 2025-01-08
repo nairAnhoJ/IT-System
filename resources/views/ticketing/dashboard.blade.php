@@ -358,7 +358,7 @@
                     
                                     <div class="py-px text-sm leading-7">Billing Address</div>
                                     <div class="col-span-2">
-                                        <textarea name="" id="billing_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly></textarea>
+                                        <textarea name="" id="billing_address" rows="3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly></textarea>
                                         {{-- <input type="text" id="billing_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly> --}}
                                     </div>
                                     <div class="py-px text-sm leading-7 justify-self-end">Business Style</div>
@@ -370,7 +370,7 @@
                     
                                     <div class="py-px text-sm leading-7">Shipping Address</div>
                                     <div class="col-span-2">
-                                        <textarea name="" id="shipping_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly></textarea>
+                                        <textarea name="" id="shipping_address" rows="3" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" readonly></textarea>
                                         {{-- <input type="text" id="shipping_address" class="border text-sm rounded-lg block w-full px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" autocomplete="off"> --}}
                                     </div>
                                     <div class="py-px text-sm leading-7 justify-self-end">Contact Name</div>
