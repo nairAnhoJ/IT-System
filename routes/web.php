@@ -12,6 +12,7 @@ use App\Http\Controllers\PhoneSimController;
 use App\Http\Controllers\PhoneSimReportController;
 use App\Http\Controllers\PhoneSimRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\SAPController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SiteController;
@@ -218,6 +219,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/items/{page}', [ItemController::class, 'itemPaginate']);
     Route::get('/inventory/items/{page}/{search}', [ItemController::class, 'itemSearch']);
 
+
+
+    
+    Route::get('/request', [RequestController::class, 'index'])->name('request.index');
+    // Route::get('/request', [RequestController::class, 'index'])->name('request.store');
 
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');

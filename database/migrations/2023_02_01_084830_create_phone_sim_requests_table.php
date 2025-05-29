@@ -15,15 +15,18 @@ return new class extends Migration
     {
         Schema::create('phone_sim_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('pr_no');
+            $table->string('pr_no')->nullable();
             $table->string('item');
-            $table->string('description');
-            $table->string('remarks');
-            $table->string('req_by');
+            $table->string('description')->nullable();
+            $table->string('remarks')->nullable();
+            $table->string('requested_by');
+            $table->string('requested_by_department');
+            $table->string('requested_for');
             $table->string('site');
             $table->string('status');
-            $table->string('date_req');
-            $table->string('date_del');
+            $table->string('date_requested');
+            $table->string('date_delivered')->nullable();
+            $table->string('attachment');
             $table->timestamps();
         });
     }

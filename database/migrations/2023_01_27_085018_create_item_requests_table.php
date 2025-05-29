@@ -9,24 +9,27 @@ return new class extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return void 
      */
     public function up()
     {
         Schema::create('item_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('pr_no');
+            $table->string('pr_no')->nullable();
             $table->string('type_id');
-            $table->string('brand');
-            $table->string('description');
-            $table->string('remarks');
-            $table->string('quantity');
+            $table->string('brand')->nullable();
+            $table->string('description')->nullable();
+            $table->string('remarks')->nullable();
+            $table->string('quantity')->nullable();
             $table->string('quantity_delivered')->nullable();
-            $table->string('req_by');
+            $table->string('requested_by');
+            $table->string('requested_by_department');
+            $table->string('requested_for');
             $table->string('site');
             $table->string('status');
             $table->string('date_requested');
-            $table->string('date_delivered');
+            $table->string('date_delivered')->nullable();
+            $table->string('attachment');
             $table->timestamps();
         });
     }
