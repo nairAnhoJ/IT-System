@@ -222,8 +222,10 @@ Route::middleware('auth')->group(function () {
 
 
     
-    Route::get('/request', [RequestController::class, 'index'])->name('request.index');
-    // Route::get('/request', [RequestController::class, 'index'])->name('request.store');
+    Route::get('/requests', [RequestController::class, 'index'])->name('request.index');
+    Route::get('/request/new-request', [RequestController::class, 'add'])->name('request.add');
+    Route::post('/request/store', [RequestController::class, 'store'])->name('request.store');
+    Route::post('/request/cancel', [RequestController::class, 'cancel'])->name('request.cancel');
 
     // Item Request
     Route::get('/request/items', [ItemRequestController::class, 'index'])->name('reqItem.index');
