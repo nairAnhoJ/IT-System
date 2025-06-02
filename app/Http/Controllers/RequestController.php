@@ -18,7 +18,7 @@ class RequestController extends Controller
 {
     public function index(){
         $types = ItemType::orderBy('name', 'asc')->get();
-        $requests = [];
+        $unordered_requests = [];
 
         if(Auth::user()->role == 'user'){
             $item_requests = ItemRequest::with('item')->with('req_by')->with('department')->with('req_site')->where('requested_by_department', Auth::user()->dept_id)->get();
@@ -28,10 +28,11 @@ class RequestController extends Controller
                 $obj->item = $item->item->name;
                 $obj->requested_by = $item->req_by->name;
                 $obj->requested_for = $item->requested_for;
+                $obj->date_requested = $item->date_requested;
                 $obj->site = $item->req_site->name;
                 $obj->status = $item->status;
-                $obj->attachment = $item->status;
-                $requests[] = $obj;
+                $obj->attachment = $item->attachment;
+                $unordered_requests[] = $obj;
             }
 
             $ps_requests = PhoneSimRequest::with('req_by')->with('req_site')->where('requested_by_department', Auth::user()->dept_id)->get();
@@ -41,12 +42,15 @@ class RequestController extends Controller
                 $obj->item = $ps->item;
                 $obj->requested_by = $ps->req_by->name;
                 $obj->requested_for = $ps->requested_for;
+                $obj->date_requested = $ps->date_requested;
                 $obj->site = $ps->req_site->name;
                 $obj->status = $ps->status;
                 $obj->attachment = $ps->attachment;
-                $requests[] = $obj;
+                $unordered_requests[] = $obj;
             }
         }
+
+        $requests = collect($unordered_requests)->sortByDesc('date_requested')->values();
 
         return view('request.user-request', compact('types', 'requests'));
     }
@@ -73,7 +77,7 @@ class RequestController extends Controller
             $filename = date('Ymd') . '-' . Str::uuid() . '.' . $request->file('attachment')->getClientOriginalExtension();
             $path = "storage/attachments/requests/";
             $attachment_path = $path . $filename;
-            $request->file('attachment')->move(public_path('storage/'.$path), $filename);
+            $request->file('attachment')->move(public_path($path), $filename);
         }
 
         if($type == 'PHONE' || $type == 'SIM'){

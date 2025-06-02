@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('site');
             $table->string('status');
             $table->string('date_requested');
-            $table->string('date_delivered')->nullable();
+            $table->string('done_date')->nullable();
             $table->string('attachment');
             $table->timestamps();
         });

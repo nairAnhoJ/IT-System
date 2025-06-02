@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\ItemRequest;
+use App\Models\TempAttachment;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -12,9 +16,12 @@ class ItemRequestController extends Controller
 {
     public function index(){
         $types = DB::table('item_types')->orderBy('name', 'asc')->get();
-        $reqs = DB::select('SELECT item_requests.id, item_requests.pr_no, item_types.name AS type, item_requests.brand, item_requests.description, item_requests.remarks, item_requests.quantity, item_requests.quantity_delivered, item_requests.req_by, sites.name AS site, item_requests.status, item_requests.date_requested, item_requests.date_delivered FROM item_requests INNER JOIN item_types ON item_requests.type_id = item_types.id INNER JOIN sites ON item_requests.site = sites.id ORDER BY item_requests.id DESC');
+        $requests = ItemRequest::with('item')->with('req_by')->with('department')->with('req_site')->orderBy('date_requested', 'desc')->get();
+        // $reqs = DB::select('SELECT item_requests.id, item_requests.pr_no, item_types.name AS type, item_requests.brand, item_requests.description, item_requests.remarks, item_requests.quantity, item_requests.quantity_delivered, item_requests.req_by, sites.name AS site, item_requests.status, item_requests.date_requested, item_requests.date_delivered FROM item_requests INNER JOIN item_types ON item_requests.type_id = item_types.id INNER JOIN sites ON item_requests.site = sites.id ORDER BY item_requests.id DESC');
 
-        return view('request.items', compact('types', 'reqs'));
+        // dd($requests);
+
+        return view('request.items', compact('types', 'requests'));
     }
 
     public function add(){
@@ -149,68 +156,59 @@ class ItemRequestController extends Controller
         return view('request.items-delivered', compact('id', 'req'));
     }
 
-    public function statusDelivered(Request $request){
-        $reqID = $request->reqID;
-        $type_id = $request->type_id;
-        $itemCode = '';
+    public function done(Request $request){
+        $id = $request->doneId;
+        // $pr_no = $request->pr_no;
         $brand = $request->brand;
-        $serial_no = array_filter(explode(";", str_replace(' ', '', $request->serial_no)));
         $description = $request->description;
-        $invoice = $request->invoice;
-        $date_del = $request->date_del;
-        $user = auth()->user()->name;
-        $quantity = $request->quantity;
+        $serial_number = $request->serial_number;
+        $remarks = $request->remarks;
+        $now = (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('Y-m-d H:i:s');
 
-        $request->validate([
-            'serial_no' => 'required',
-            'invoice' => 'required',
-            'date_del' => 'required'
-        ]);
-
-        $invoicePath = null;
-        $newDate_del = date("mdY", strtotime($date_del));
-        $invoicePath = $request->file('invoice')->storeAs('invoice/items/'.date('mY'), date('mdY') . '-' . $newDate_del . '.' . $request->file('invoice')->getClientOriginalExtension(), 'public');
-
-        if(count($serial_no) > $quantity){
-            return redirect()->back()->withInput();
-        }else{
-            for($x = 0; $x < count($serial_no); $x++){
-                
-                $lastItemCode = DB::table('items')->orderBy('id','desc')->take(1)->get();
-                if($lastItemCode->count() > 0){
-                    $lastIC = substr($lastItemCode[0]->code, -6);
-                    $lastIC++;
-                    while(mb_strlen($lastIC, "UTF-8") < 6){
-                        $lastIC = "0{$lastIC}";
-                    }
-                    $itemCode = "HII-{$lastIC}";
-                }else{
-                    $itemCode = 'HII-000001';
-                }
-
-                $invoicePath = null;
-                $newDate_del = date("mdY", strtotime($date_del));
-                $invoicePath = $request->file('invoice')->storeAs('invoice/items/'.date('mY'), $itemCode.'-'.$newDate_del.'.'.$request->file('invoice')->getClientOriginalExtension(), 'public');
-
-                $item = new Item();
-                $item->type_id = $type_id;
-                $item->code = $itemCode;
-                $item->brand = strtoupper($brand);
-                $item->serial_no = strtoupper($serial_no[$x]);
-                $item->invoice_no = strtoupper($invoicePath);
-                $item->description = strtoupper($description);
-                $item->date_purchased = $date_del;
-                $item->status = 'SPARE';
-                $item->computer_id = '1';
-                $item->site_id = '1';
-                $item->added_by = strtoupper($user);
-                $item->edited_by = strtoupper($user);
-                $item->save();
+        // $new_id = TempAttachment::orderBy('id','desc')->first()->id + 1;
+        $lastId = Item::orderBy('id','desc')->first();
+        if($lastId != null){
+            $newId = $lastId->id + 1;
+            while(strlen($newId) < 6){
+                $newId = "0{$newId}";
             }
-            DB::update('UPDATE item_requests SET item_requests.status=?, item_requests.quantity_delivered=?, item_requests.date_delivered=? WHERE item_requests.id=?', ['DELIVERED', count($serial_no), $date_del, $reqID]);
-
-            return redirect()->route('reqItem.index');
+            $itemCode = "HII-{$newId}";
+        }else{
+            $itemCode = "HII-000001";
         }
+
+        $attachment = $request->invoice;
+        if($attachment != null){
+            $filename = $itemCode . '.' . $request->file('invoice')->getClientOriginalExtension();
+            $path = "attachments/invoice/" . date("mdY") . '/';
+            $attachment_path = $path . $filename;
+            $request->file('invoice')->move(public_path("storage/".$path), $filename);
+        }
+
+        $request = ItemRequest::where('id', $id)->first();
+        $request->brand = strtoupper($brand);
+        $request->description = $description;
+        $request->remarks = $remarks;
+        $request->status = "DONE";
+        $request->done_date = $now;
+        $request->save();
+        
+        $item = new Item();
+        $item->type_id = $request->type_id;
+        $item->code = $itemCode;
+        $item->brand = strtoupper($brand);
+        $item->serial_no = strtoupper($serial_number);
+        $item->invoice_no = $attachment_path;
+        $item->description = strtoupper($description);
+        $item->date_purchased = $now;
+        $item->status = 'SPARE';
+        $item->computer_id = '1';
+        $item->site_id = '1';
+        $item->added_by = strtoupper(Auth::user()->name);
+        $item->edited_by = strtoupper(Auth::user()->name);
+        $item->save();
+
+        return redirect()->route('reqItem.index');
     }
 
     public function delete(Request $request){

@@ -236,7 +236,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/request/items/delivered/{id}', [ItemRequestController::class, 'statusD'])->name('reqItem.del');
     Route::post('/request/items/delete', [ItemRequestController::class, 'delete'])->name('reqItem.delete');;
     Route::post('/request/items/status-update', [ItemRequestController::class, 'statusUpdate'])->name('reqItem.statusUpdate');
-    Route::post('/request/items/status-delivered', [ItemRequestController::class, 'statusDelivered'])->name('reqItem.statusDelivered');
+    Route::post('/request/items/done', [ItemRequestController::class, 'done'])->name('reqItem.done');
     
     // Phone SIM
     Route::get('/inventory/phone-sim', [PhoneSimController::class, 'index'])->name('phoneSim.index');

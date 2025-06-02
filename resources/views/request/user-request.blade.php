@@ -110,6 +110,9 @@
                             REQUESTED FOR
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
+                            REQUESTED DATE
+                        </th>
+                        <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
                             STATUS
                         </th>
                         <th scope="col" class="sticky top-0 py-2 text-center whitespace-nowrap">
@@ -140,6 +143,9 @@
                                     {{ $request->requested_for }}
                                 </td>
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
+                                    {{ date("F j, Y", strtotime($request->date_requested)) }}
+                                </td>
+                                <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <span class="
                                         @php
                                             $status = $request->status;
@@ -156,7 +162,7 @@
                                     </span>
                                 </td>
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
-                                    <button id="viewAttachment" data-path="{{ $request->attachment }}" class="text-blue-500 hover:underline font-semibold">VIEW</button>
+                                    <button id="viewAttachment" data-path="{{ asset($request->attachment) }}" class="text-blue-500 hover:underline font-semibold">VIEW</button>
                                 </td>
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     @if ($request->status != "CANCELLED")
@@ -181,6 +187,7 @@
         $(document).ready(function(){
             jQuery(document).on("click", "#viewAttachment", function(){
                 const path = $(this).data('path');
+                console.log(path);
                 $('#attachment').attr('src', path);
                 $('#attachmentModal').removeClass('hidden');
             });
