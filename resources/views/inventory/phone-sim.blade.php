@@ -433,7 +433,7 @@
                                 {{ $item->status }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                {{ ($item->date_issued) ? date('F j, Y', strtotime($item->date_issued)) : '' }}
+                                {{ ($item->date_issued != 'N/A') ? date('F j, Y', strtotime($item->date_issued)) : $item->date_issued }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
                                 {{ ($item->date_del) ? date('F j, Y', strtotime($item->date_del)) : '' }}
