@@ -340,7 +340,7 @@
                     @foreach ($items as $item)
                         <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer">
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-i_remarks="{{ $item->i_remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ $item->date_purchased }}" data-com="{{ $item->comp }}" data-i_user="{{ $item->i_user }}" data-i_dept="{{ $item->dept_name }}" data-i_date_issued="{{ $item->i_date_issued }}" data-prev_user="{{ $item->prev_user }}" data-prev_user_dept="{{ $item->prev_user_dept }}" data-date_returned="{{ $item->date_returned }}" data-return_remarks="{{ $item->return_remarks }}">
+                                <span data-id="{{ $item->id }}" data-code="{{ $item->code }}" data-type="{{ $item->type }}" data-desc="{{ $item->brand.' '.$item->description }}" data-status="{{ $item->status }}" data-i_remarks="{{ $item->i_remarks }}" data-serial_no="{{ $item->serial_no }}" data-invoice_no="{{ $item->invoice_no }}" data-site="{{ $item->site }}" data-date_delivered="{{ ($item->date_purchased) ? date('F j, Y', strtotime($item->date_purchased)) : '' }}" data-com="{{ $item->comp }}" data-i_user="{{ $item->i_user }}" data-i_dept="{{ $item->dept_name }}" data-i_date_issued="{{ ($item->i_date_issued) ? date('F j, Y', strtotime($item->i_date_issued)) : '' }}" data-prev_user="{{ $item->prev_user }}" data-prev_user_dept="{{ $item->prev_user_dept }}" data-date_returned="{{ ($item->date_returned) ? date('F j, Y', strtotime($item->date_returned)) : '' }}" data-return_remarks="{{ $item->return_remarks }}">
                                     {{ $item->code }}
                                 </span>
                             </td>
@@ -354,7 +354,7 @@
                                 {{ $item->serial_no }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                {{ $item->date_purchased }}
+                                {{ ($item->date_purchased) ? date('F j, Y', strtotime($item->date_purchased)) : '' }}
                             </td>
                             <td class="py-3 px-6 text-center font-medium tracking-wide whitespace-nowrap {{ ($item->status == 'SPARE') ? 'text-emerald-400' : 'text-red-400'; }}">
                                 {{ $item->status }}

@@ -407,7 +407,7 @@
                                 <a type="button" data-id="{{ $item->id }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" class="deleteButton font-medium text-red-500 hover:underline">Delete</a>
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                <span data-id="{{ $item->id }}" data-item="{{ $item->item }}" data-user="{{ $item->user }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" data-remarks="{{ $item->remarks }}" data-site="{{ $item->site_name }}" data-status="{{ $item->status }}" data-date_del="{{ $item->date_del }}" data-date_issued="{{ $item->date_issued }}">
+                                <span data-id="{{ $item->id }}" data-item="{{ $item->item }}" data-user="{{ $item->user }}" data-desc="{{ $item->desc }}" data-serial_no="{{ $item->serial_no }}" data-remarks="{{ $item->remarks }}" data-site="{{ $item->site_name }}" data-status="{{ $item->status }}" data-date_del="{{ ($item->date_del) ? date('F j, Y', strtotime($item->date_del)) : '' }}" data-date_issued="{{ ($item->date_issued) ? date('F j, Y', strtotime($item->date_issued)) : '' }}">
                                     {{ $item->item }}
                                 </span>
                             </td>
@@ -433,10 +433,10 @@
                                 {{ $item->status }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                {{ $item->date_issued }}
+                                {{ ($item->date_issued) ? date('F j, Y', strtotime($item->date_issued)) : '' }}
                             </td>
                             <td class="py-3 px-6 text-center whitespace-nowrap">
-                                {{ $item->date_del }}
+                                {{ ($item->date_del) ? date('F j, Y', strtotime($item->date_del)) : '' }}
                             </td>
                         </tr>
                     @endforeach
