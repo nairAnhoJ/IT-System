@@ -165,7 +165,7 @@
                                     <button id="viewAttachment" data-path="{{ asset($request->attachment) }}" class="text-blue-500 hover:underline font-semibold">VIEW</button>
                                 </td>
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
-                                    @if ($request->status != "CANCELLED")
+                                    @if ($request->status != "CANCELLED" && $request->status != "DONE")
                                         <button id="cancelRequest" data-id="{{ $request->id }}" data-item="{{ $request->item }}" class="text-red-500 hover:underline font-semibold">CANCEL</button>
                                     @endif
                                 </td>
@@ -187,7 +187,6 @@
         $(document).ready(function(){
             jQuery(document).on("click", "#viewAttachment", function(){
                 const path = $(this).data('path');
-                console.log(path);
                 $('#attachment').attr('src', path);
                 $('#attachmentModal').removeClass('hidden');
             });

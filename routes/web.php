@@ -273,6 +273,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/request/phone-sim/delete', [PhoneSimRequestController::class, 'delete'])->name('reqPhoneSim.delete');
     Route::post('/request/phone-sim/status-update', [PhoneSimRequestController::class, 'statusUpdate'])->name('reqPhoneSim.statusUpdate');
     Route::post('/request/phone-sim/status-delivered', [PhoneSimRequestController::class, 'statusDelivered'])->name('reqPhoneSim.statusDelivered');
+    Route::post('/request/phone-sim/done', [PhoneSimRequestController::class, 'done'])->name('reqPhoneSim.done');
 
 
 

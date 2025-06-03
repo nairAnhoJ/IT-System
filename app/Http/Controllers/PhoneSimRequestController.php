@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\PhoneSim;
 use App\Models\PhoneSimRequest;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PhoneSimRequestController extends Controller
 {
     public function index(){
-        $reqs = DB::select('SELECT phone_sim_requests.id, phone_sim_requests.pr_no, phone_sim_requests.item, phone_sim_requests.description, phone_sim_requests.remarks, phone_sim_requests.req_by, sites.name AS site, phone_sim_requests.status, phone_sim_requests.date_req, phone_sim_requests.date_del FROM phone_sim_requests INNER JOIN sites ON phone_sim_requests.site = sites.id ORDER BY phone_sim_requests.id DESC');
+        // $reqs = DB::select('SELECT phone_sim_requests.id, phone_sim_requests.pr_no, phone_sim_requests.item, phone_sim_requests.description, phone_sim_requests.remarks, phone_sim_requests.req_by, sites.name AS site, phone_sim_requests.status, phone_sim_requests.date_req, phone_sim_requests.date_del FROM phone_sim_requests INNER JOIN sites ON phone_sim_requests.site = sites.id ORDER BY phone_sim_requests.id DESC');
+        $requests = PhoneSimRequest::with('req_site')->with('req_by')->get();
 
-        return view('request.phone-sim', compact('reqs'));
+        // dd($requests);
+
+        return view('request.phone-sim', compact('requests'));
     }
 
     public function add(){
@@ -138,6 +144,41 @@ class PhoneSimRequestController extends Controller
         }else{
             return redirect()->route('reqPhoneSim.index');
         }
+    }
+
+    public function done (Request $request){
+        $id = $request->doneId;
+        $description = $request->description;
+        $serial_number = $request->serial_number;
+        $cost = $request->cost;
+        $color = $request->color;
+        $remarks = $request->remarks;
+        $now = (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('Y-m-d H:i:s');
+
+        $psrequest = PhoneSimRequest::where('id', $id)->first();
+        $psrequest->description = strtoupper($description);
+        $psrequest->remarks = strtoupper($remarks);
+        $psrequest->status = "DONE";
+        $psrequest->done_date = $now;
+        $psrequest->save();
+        
+        $phonesim = new PhoneSim();
+        $phonesim->item = $psrequest->item;
+        $phonesim->user = "N/A";
+        $phonesim->department = 1;
+        $phonesim->desc = strtoupper($description);
+        $phonesim->serial_no = strtoupper($serial_number);
+        $phonesim->remarks = strtoupper($remarks);
+        $phonesim->site = 1;
+        $phonesim->status = "NEW";
+        $phonesim->cost = strtoupper($cost);
+        $phonesim->color = strtoupper($color);
+        $phonesim->invoice = "N/A";
+        $phonesim->date_issued = "N/A";
+        $phonesim->date_del = $now;
+        $phonesim->save();
+
+        return redirect()->route('reqPhoneSim.index');
     }
 
     public function statusDelivered(Request $request){

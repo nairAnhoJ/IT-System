@@ -165,7 +165,6 @@ class ItemRequestController extends Controller
         $remarks = $request->remarks;
         $now = (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('Y-m-d H:i:s');
 
-        // $new_id = TempAttachment::orderBy('id','desc')->first()->id + 1;
         $lastId = Item::orderBy('id','desc')->first();
         if($lastId != null){
             $newId = $lastId->id + 1;
