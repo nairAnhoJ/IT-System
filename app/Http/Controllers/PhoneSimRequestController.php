@@ -153,7 +153,7 @@ class PhoneSimRequestController extends Controller
         $cost = $request->cost;
         $color = $request->color;
         $remarks = $request->remarks;
-        $now = (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('Y-m-d H:i:s');
+        $now = (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('m/d/Y');
 
         $psrequest = PhoneSimRequest::where('id', $id)->first();
         $psrequest->description = strtoupper($description);
