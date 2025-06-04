@@ -56,7 +56,7 @@ class RequestController extends Controller
     }
 
     public function add(){
-        $types = ItemType::get();
+        $types = ItemType::where('is_requestable', 1)->orderBy('name', 'asc')->get();
         $sites = Site::get();
 
         return view('request.user-request-add', compact('types', 'sites'));
