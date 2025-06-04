@@ -14,9 +14,7 @@ class PhoneSimRequestController extends Controller
 {
     public function index(){
         // $reqs = DB::select('SELECT phone_sim_requests.id, phone_sim_requests.pr_no, phone_sim_requests.item, phone_sim_requests.description, phone_sim_requests.remarks, phone_sim_requests.req_by, sites.name AS site, phone_sim_requests.status, phone_sim_requests.date_req, phone_sim_requests.date_del FROM phone_sim_requests INNER JOIN sites ON phone_sim_requests.site = sites.id ORDER BY phone_sim_requests.id DESC');
-        $requests = PhoneSimRequest::with('req_site')->with('req_by')->get();
-
-        // dd($requests);
+        $requests = PhoneSimRequest::with('req_site')->with('req_by')->orderBy('date_requested', 'desc')->get();
 
         return view('request.phone-sim', compact('requests'));
     }

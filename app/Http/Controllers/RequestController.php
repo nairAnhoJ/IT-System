@@ -91,6 +91,28 @@ class RequestController extends Controller
             $nReq->date_requested = $now;
             $nReq->attachment = $attachment_path;
             $nReq->save();
+        }else if($type == 'PHONE WITH SIM'){
+            $nReq = new PhoneSimRequest();
+            $nReq->item = 'PHONE';
+            $nReq->requested_by = Auth::user()->id;
+            $nReq->requested_by_department = Auth::user()->dept_id;
+            $nReq->requested_for = $requested_for;
+            $nReq->site = $site;
+            $nReq->status = 'PENDING';
+            $nReq->date_requested = $now;
+            $nReq->attachment = $attachment_path;
+            $nReq->save();
+            
+            $nReq = new PhoneSimRequest();
+            $nReq->item = 'SIM';
+            $nReq->requested_by = Auth::user()->id;
+            $nReq->requested_by_department = Auth::user()->dept_id;
+            $nReq->requested_for = $requested_for;
+            $nReq->site = $site;
+            $nReq->status = 'PENDING';
+            $nReq->date_requested = $now;
+            $nReq->attachment = $attachment_path;
+            $nReq->save();
         }else{
             $nReq = new ItemRequest();
             $nReq->type_id = $type;

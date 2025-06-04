@@ -55,6 +55,7 @@
 
             <label for="type" class="mt-5 block text-sm font-medium text-white">Item</label>
             <select required id="type" name="type" autocomplete="off" class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
+                <option value="PHONE WITH SIM">PHONE WITH SIM</option>
                 <option value="PHONE">PHONE</option>
                 <option value="SIM">SIM</option>
                 @foreach ($types as $type)
