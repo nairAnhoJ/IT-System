@@ -21,14 +21,12 @@
                         {{ __('Ticketing') }}
                     </x-nav-link>
 
-                    {{-- @if (Auth::user()->role != 'admin' && Auth::user()->role != 'head' && Auth::user()->role != 'superadmin')
+                    @if (Auth::user()->role != 'admin' && Auth::user()->role != 'head' && Auth::user()->role != 'superadmin')
                         <x-nav-link :href="route('request.index')" :active="request()->routeIs('request.index')" class="relative">
                             {{ __('Request') }}
-                            <div class="absolute top-0 right-1">
-                                test
-                            </div>
+                            <img id="new" src="{{ asset('images\NEW.png') }}" class="absolute top-3 left-9 w-9 animate-bounce"></img>
                         </x-nav-link>
-                    @endif --}}
+                    @endif
 
                     @if (auth()->user()->role == 'admin' || auth()->user()->dept_id == 2)
                         <button id="ddInventoryLink" data-dropdown-toggle="ddInventory" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium md:hover:bg-transparent text-sm md:hover:text-gray-200 md:p-0 md:w-auto text-gray-400 hover:text-gray-200 focus:text-white border-b-2 border-transparent hover:border-blue-300 text-center
@@ -275,4 +273,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
 </nav>

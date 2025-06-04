@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 class RequestController extends Controller
 {
     public function index(){
-        $types = ItemType::orderBy('name', 'asc')->get();
+        $types = ItemType::where('is_requestable', 1)->orderBy('name', 'asc')->get();
         $unordered_requests = [];
 
         if(Auth::user()->role == 'user'){
