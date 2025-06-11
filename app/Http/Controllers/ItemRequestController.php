@@ -203,6 +203,7 @@ class ItemRequestController extends Controller
         $item->status = 'SPARE';
         $item->computer_id = '1';
         $item->site_id = '1';
+        $item->i_department = '1';
         $item->added_by = strtoupper(Auth::user()->name);
         $item->edited_by = strtoupper(Auth::user()->name);
         $item->save();
