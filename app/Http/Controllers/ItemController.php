@@ -221,7 +221,7 @@ class ItemController extends Controller
         // unlink(storage_path('app/public/'.$oldInvoice));
         $item = Item::where('id', $request->deleteID)->first();
         $item->is_deleted = 1;
-        $item->updated_by = Auth::user()->name;
+        $item->edited_by = Auth::user()->name;
         $item->save();
         // DB::delete('DELETE FROM items WHERE items.id=?', [$request->deleteID]);
         return redirect()->route('item.index');
