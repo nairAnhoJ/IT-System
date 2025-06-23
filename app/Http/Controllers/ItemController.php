@@ -23,6 +23,7 @@ class ItemController extends Controller
             ->where('items.is_Defective', '0')
             ->where('items.for_disposal', '0')
             ->where('items.is_disposed', '0')
+            ->where('items.is_deleted', '0')
             ->orderBy('items.id', 'desc')
             ->paginate(100);
 
@@ -51,6 +52,7 @@ class ItemController extends Controller
             ->where('items.is_Defective', '0')
             ->where('items.for_disposal', '0')
             ->where('items.is_disposed', '0')
+            ->where('items.is_deleted', '0')
             ->orderBy('items.id', 'desc')
             ->paginate(100,'*','page',$page);
 
@@ -71,6 +73,7 @@ class ItemController extends Controller
             ->where('items.is_Defective', '0')
             ->where('items.for_disposal', '0')
             ->where('items.is_disposed', '0')
+            ->where('items.is_deleted', '0')
             ->orderBy('items.id', 'desc')
             ->paginate(100,'*','page',$page);
 
@@ -214,9 +217,13 @@ class ItemController extends Controller
     }
 
     public function delete(Request $request){
-        $oldInvoice = (DB::table('items')->where('id', $request->deleteID)->first())->invoice_no;
-        unlink(storage_path('app/public/'.$oldInvoice));
-        DB::delete('DELETE FROM items WHERE items.id=?', [$request->deleteID]);
+        // $oldInvoice = (DB::table('items')->where('id', $request->deleteID)->first())->invoice_no;
+        // unlink(storage_path('app/public/'.$oldInvoice));
+        $item = Item::where('id', $request->deleteID)->first();
+        $item->is_deleted = 1;
+        $item->updated_by = Auth::user()->name;
+        $item->save();
+        // DB::delete('DELETE FROM items WHERE items.id=?', [$request->deleteID]);
         return redirect()->route('item.index');
     }
 
