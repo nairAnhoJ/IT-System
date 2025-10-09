@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('nature_of_problem');
             $table->string('assigned_to');
             $table->string('subject');
-            $table->string('description');
+            $table->binary('description');
             $table->binary('resolution')->nullable();
             $table->string('attachment')->nullable();
             $table->string('status')->default('PENDING');

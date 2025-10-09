@@ -520,7 +520,7 @@
                                         data-user_id="{{ $ticket->user_id }}" 
                                         data-user="{{ $ticket->requestor->name }}" 
                                         data-dept="{{ $ticket->departmentRow->name }}" 
-                                        data-date="{{ date("M d, Y h:i A", strtotime($ticket->created_at)) }}" 
+                                        data-date="{{ date('M d, Y h:i A', strtotime($ticket->created_at)) }}" 
                                         data-subject="{{ $ticket->subject }}" 
                                         data-desc="{{ $ticket->description }}" 
                                         data-status="{{ $ticket->status }}" 
