@@ -434,6 +434,62 @@
                 </div>
             </div>
         <!--  SAP modal  -->
+        
+        <!--  Feedback modal  -->
+            <button id="OpenFeedbackModal" type="button" data-modal-toggle="FeedbackModal" class="hidden"></button>
+            <div id="FeedbackModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+                <div class="relative h-full md:h-auto">
+                    <!-- Modal content -->
+                    <div class="relative text-sm bg-gray-700 rounded-lg shadow">
+                        <!-- Modal header -->
+                        <!-- <div class="flex items-start justify-between p-4 border-b border-gray-600 rounded-t">
+                            <h3 class="text-2xl font-semibold tracking-wide text-white">
+                                Feedback
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="FeedbackModal">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                            </button>
+                        </div> -->
+                        <!-- Modal body -->
+                        <div class="py-14 px-14 w-[500px]">
+                            <button class="absolute h-9 w-9" data-modal-toggle="FeedbackModal">
+                                <svg class="w-9 hover:bg-text-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+                                    <path d="M400-116 36-480l364-364 34 34-330 330 330 330-34 34Z"/>
+                            </svg>
+                        </button>
+                            <h1 class="text-center text-3xl font-bold">Give feedback</h1>
+                            <p class="text-center mt-14">Rate your experience?</p>
+                            <div class="flex items-center justify-center gap-x-3 mt-6">
+                                <span data-star=1 class="stars cursor-pointer"><img id="s1" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                <input type="checkbox" name="rating" id="r1" class="hidden">
+
+                                <span data-star=2 class="stars cursor-pointer"><img id="s2" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                <input type="checkbox" name="rating" id="r2" class="hidden">
+
+                                <span data-star=3 class="stars cursor-pointer"><img id="s3" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                <input type="checkbox" name="rating" id="r3" class="hidden">
+
+                                <span data-star=4 class="stars cursor-pointer"><img id="s4" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                <input type="checkbox" name="rating" id="r4" class="hidden">
+
+                                <span data-star=5 class="stars cursor-pointer"><img id="s5" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                <input type="checkbox" name="rating" id="r5" class="hidden">
+                            </div>
+
+                            <textarea name="" id="" class="mt-6 bg-gray-500 text-sm text-gray-100 placeholder-gray-300 p-2 rounded-2xl shadow-inner shadow-gray-600 w-full h-40 focus:outline-none focus:outline-0 focus:ring-0 resize-none" placeholder="Tell us about your experience!"></textarea>
+
+                            <div class="w-full flex items-center justify-center mt-6">
+                                <button class="w-full px-14 py-4 font-bold text-gray-700 bg-emerald-400 hover:bg-emerald-500 rounded-2xl shadow-md">Submit Rating</button>
+                            </div>
+                        </div>
+                        <!-- Modal footer -->
+                        <!-- <div class="flex items-center p-3 space-x-3 border-t border-gray-600 rounded-b">
+                            <button data-modal-toggle="FeedbackModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        <!--  Feedback modal  -->
 
         <!--  Controls  -->
             <div class="grid h-10 grid-cols-3 mb-0">
@@ -476,6 +532,9 @@
                     <thead class="relative top-0 text-xs text-gray-400 uppercase bg-gray-600 border-gray-600 border-x-8">
                         <tr class="sticky top-0 bg-gray-600">
                             <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
+                                ACTION
+                            </th>
+                            <th scope="col" class="sticky top-0 py-2 text-center">
                                 TICKET #
                             </th>
                             <th scope="col" class="sticky top-0 py-2 text-center">
@@ -512,6 +571,9 @@
                     <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
                         @foreach ($tickets as $ticket)
                             <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'text-green-500' : '' }}">
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
+                                    <button id="feedbackButton" class="text-orange-500 font-semibold hover:underline">FEEDBACK</button>
+                                </td>
                                 <th scope="row" class="px-6 py-3 font-medium text-center text-white">
                                     <span 
                                         data-id="{{ $ticket->id }}" 
@@ -969,6 +1031,32 @@
                 }
             });
         // View Attached file button
+
+        $('#feedbackButton').click(function(e) {
+            e.stopPropagation();
+            $('#OpenFeedbackModal').click();
+        })
+
+        $('.stars').click(function(){
+            const value = $(this).data('star');
+            for (let u = 1; u <= 5; u++) {
+                const rid = "#r"+u;
+                const sid = "#s"+u;
+                $(rid).prop('checked', false);
+                $(sid).attr("src", "{{ asset('images/star-border-only.png') }}");
+                console.log(sid);
+            }
+            for (let index = 1; index <= value; index++) {
+                // setTimeout(() => {
+                const rid = "#r"+index;
+                const sid = "#s"+index;
+                $(rid).prop('checked', true);
+                $(sid).attr("src", "{{ asset('images/star-no-bg.png') }}");
+                // }, index * 20);
+            }
+            console.log(value);
+            
+        });
     });
   </script>
 </x-app-layout>

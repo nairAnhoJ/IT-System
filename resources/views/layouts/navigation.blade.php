@@ -24,7 +24,7 @@
                     @if (Auth::user()->role != 'admin' && Auth::user()->role != 'head' && Auth::user()->role != 'superadmin')
                         <x-nav-link :href="route('request.index')" :active="request()->routeIs('request.index')" class="relative">
                             {{ __('Request') }}
-                            <img id="new" src="{{ asset('images\NEW.png') }}" class="absolute top-3 left-9 w-9 animate-bounce"></img>
+                            <!-- <img id="new" src="{{ asset('images\NEW.png') }}" class="absolute top-3 left-9 w-9 animate-bounce"></img> -->
                         </x-nav-link>
                     @endif
 
