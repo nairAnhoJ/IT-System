@@ -774,118 +774,19 @@ class TicketController extends Controller
 
 
 
-        return view('ticketing.reports', compact('usersInCharge', 'usersColor', 'usersBorderColor', 'avgResponseTime', 'avgResolutionTime', 'tickets', 'total', 'pending', 'ongoing', 'done', 'users', 'cats', 'inputDateFrom', 'inputDateTo', 'cbp', 'cbo', 'cbd', 'userF', 'categoryF', 'dates', 'ticketsPerDay', 'deptInCharge'));}
+        return view('ticketing.reports', compact('usersInCharge', 'usersColor', 'usersBorderColor', 'avgResponseTime', 'avgResolutionTime', 'tickets', 'total', 'pending', 'ongoing', 'done', 'users', 'cats', 'inputDateFrom', 'inputDateTo', 'cbp', 'cbo', 'cbd', 'userF', 'categoryF', 'dates', 'ticketsPerDay', 'deptInCharge'));
+    }
     
-    // public function genReport(Request $request){
-    //     $deptInCharge = (DB::table('dept_in_charges')->where('id', 1)->first())->dept_id;
-    //     $users = DB::select('SELECT * FROM users WHERE dept_id = ? AND id != ?', [$deptInCharge, 1]);
-    //     $cats = DB::table('ticket_categories')->orderBy('name', 'desc')->get();
+    public function rate(Request $request){
+        $id = $request->id;
+        $rating = $request->rating;
+        $rate_comments = $request->rate_comments;
 
-    //     $inputDateFrom = $request->dateFrom;
-    //     $inputDateTo = $request->dateTo;
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->rating = $rating;
+        $ticket->rate_comments = $rate_comments;
+        $ticket->save();
 
-
-    //     $dateFrom = $request->dateFrom.' 00:00:00.000';
-    //     $newDateFrom = date("Y-m-d H:i:s", strtotime($dateFrom));
-    //     $dateTo = $request->dateTo.' 23:59:59';
-    //     $newDateTo = date("Y-m-d H:i:s", strtotime($dateTo));
-    //     $userF = $request->user;
-    //     $userfilter = "";
-    //     if($userF != 0){
-    //         $userfilter = " AND tickets.done_by = ".$userF;
-    //     }
-
-    //     $categoryF = $request->category;
-    //     $catfilter = "";
-    //     if($categoryF != 0){
-    //         $catfilter = " AND tickets.nature_of_problem = ".$categoryF;
-    //     }
-    //     $cbp = 0;
-    //     $cbo = 0;
-    //     $cbd = 0;
-
-        
-    //     $pending = (DB::select("SELECT COUNT(id) AS count FROM tickets WHERE status = 'PENDING' AND created_at BETWEEN CONVERT(?, DATETIME) AND CONVERT(?, DATETIME)".$userfilter.$catfilter, [$newDateFrom, $newDateTo]))[0]->count;
-    //     $ongoing = (DB::select("SELECT COUNT(id) AS count FROM tickets WHERE status = 'ONGOING' AND created_at BETWEEN CONVERT(?, DATETIME) AND CONVERT(?, DATETIME)".$userfilter.$catfilter, [$newDateFrom, $newDateTo]))[0]->count;
-    //     $done = (DB::select("SELECT COUNT(id) AS count FROM tickets WHERE status = 'DONE' AND created_at BETWEEN CONVERT(?, DATETIME) AND CONVERT(?, DATETIME)".$userfilter.$catfilter, [$newDateFrom, $newDateTo]))[0]->count;
-
-    //     // $tickets = DB::select("SELECT tickets.id, tickets.ticket_no, u.name AS user, departments.name AS dept, ticket_categories.name AS nature_of_problem, a.name AS assigned_to, tickets.subject, tickets.description, tickets.status, tickets.created_at, tickets.attachment, tickets.resolution FROM tickets INNER JOIN users AS u ON tickets.user_id = u.id INNER JOIN departments ON tickets.department = departments.id INNER JOIN users AS a ON tickets.assigned_to = a.id INNER JOIN ticket_categories ON tickets.nature_of_problem = ticket_categories.id WHERE tickets.created_at BETWEEN CONVERT(?, DATETIME) AND CONVERT(?, DATETIME) AND tickets.status != 'CANCELLED'".$status.$userfilter.$catfilter." ORDER BY tickets.id DESC", [$newDateFrom, $newDateTo]);
-
-    //     $query = DB::table('tickets')
-    //         ->select(
-    //             'tickets.id',
-    //             'tickets.ticket_no',
-    //             'u.name AS user',
-    //             'departments.name AS dept',
-    //             'ticket_categories.name AS nature_of_problem',
-    //             'a.name AS assigned_to',
-    //             'd.name AS done_by',
-    //             'tickets.subject',
-    //             'tickets.description',
-    //             'tickets.status',
-    //             'tickets.is_SAP',
-    //             'tickets.created_at',
-    //             'tickets.attachment',
-    //             'tickets.resolution_attachment',
-    //             'tickets.update',
-    //             'tickets.resolution'
-    //         )
-    //         ->join('users AS u', 'tickets.user_id', '=', 'u.id')
-    //         ->join('departments', 'tickets.department', '=', 'departments.id')
-    //         ->join('users AS a', 'tickets.assigned_to', '=', 'a.id')
-    //         ->leftJoin('users AS d', 'tickets.done_by', '=', 'd.id')
-    //         ->join('ticket_categories', 'tickets.nature_of_problem', '=', 'ticket_categories.id')
-    //         ->whereBetween('tickets.created_at', [date('Y-m-d H:i:s', strtotime($newDateFrom)), date('Y-m-d H:i:s', strtotime($newDateTo))])
-    //         ->where('tickets.status', '!=', 'CANCELLED');
-    //         // Add additional filters conditionally
-    //         if(isset($request->cbPending) && !isset($request->cbOngoing) && !isset($request->cbDone)){
-    //             $query->where('tickets.status', 'PENDING');
-    //             $cbp = 1;
-    //             $ongoing = 0;
-    //             $done = 0;
-    //         }elseif(!isset($request->cbPending) && isset($request->cbOngoing) && !isset($request->cbDone)){
-    //             $query->where('tickets.status', 'ONGOING');
-    //             $cbo = 1;
-    //             $pending = 0;
-    //             $done = 0;
-    //         }elseif(!isset($request->cbPending) && !isset($request->cbOngoing) && isset($request->cbDone)){
-    //             $query->where('tickets.status', 'DONE');
-    //             $cbd = 1;
-    //             $pending = 0;
-    //             $ongoing = 0;
-    //         }elseif(isset($request->cbPending) && isset($request->cbOngoing) && !isset($request->cbDone)){
-    //             $query->where('tickets.status', '!=', 'DONE');
-    //             $cbp = 1;
-    //             $cbo = 1;
-    //             $done = 0;
-    //         }elseif(isset($request->cbPending) && !isset($request->cbOngoing) && isset($request->cbDone)){
-    //             $query->where('tickets.status', '!=', 'ONGOING');
-    //             $cbd = 1;
-    //             $cbp = 1;
-    //             $ongoing = 0;
-    //         }elseif(!isset($request->cbPending) && isset($request->cbOngoing) && isset($request->cbDone)){
-    //             $query->where('tickets.status', '!=', 'PENDING');
-    //             $cbo = 1;
-    //             $cbd = 1;
-    //             $pending = 0;
-    //         }else{
-    //             // $status = "";
-    //             $cbp = 1;
-    //             $cbo = 1;
-    //             $cbd = 1;
-    //         }
-    //         if ($userF != 0) {
-    //             $query->where('tickets.done_by', $userF);
-    //         }
-    //         if ($categoryF != 0) {
-    //             $query->where('tickets.nature_of_problem', $categoryF);
-    //         }
-    //         $tickets = $query->orderBy('tickets.id', 'DESC')
-    //         ->get();
-
-    //     $total = count($tickets);
-
-
-    //     return view('ticketing.reports', compact('tickets', 'total', 'pending', 'ongoing', 'done', 'users', 'cats', 'inputDateFrom', 'inputDateTo', 'cbp', 'cbo', 'cbd', 'userF', 'categoryF'));
-    // }
+        return redirect()->route('ticket.index');
+    }
 }

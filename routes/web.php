@@ -168,6 +168,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/ticketing/store', [TicketController::class, 'store'])->name('ticket.store');
     Route::post('/ticketing/store-ticket', [TicketController::class, 'storeForIT'])->name('ticket.storeForIT');
     Route::post('/ticketing/temp', [TicketController::class, 'temp'])->name('ticket.temp');
+    Route::post('/ticketing/rate', [TicketController::class, 'rate'])->name('ticket.rate');
     Route::post('/ticketing/update', [TicketController::class, 'update'])->name('ticket.update');
     Route::get('/ticketing/reports', [TicketController::class, 'report'])->name('ticket.reports');
     Route::post('/ticketing/reports', [TicketController::class, 'genReport'])->name('ticket.genReports');

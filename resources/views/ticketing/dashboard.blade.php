@@ -441,51 +441,54 @@
                 <div class="relative h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="relative text-sm bg-gray-700 rounded-lg shadow">
-                        <!-- Modal header -->
-                        <!-- <div class="flex items-start justify-between p-4 border-b border-gray-600 rounded-t">
-                            <h3 class="text-2xl font-semibold tracking-wide text-white">
-                                Feedback
-                            </h3>
-                            <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white" data-modal-toggle="FeedbackModal">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
-                            </button>
-                        </div> -->
-                        <!-- Modal body -->
-                        <div class="py-14 px-14 w-[500px]">
-                            <button class="absolute h-9 w-9" data-modal-toggle="FeedbackModal">
-                                <svg class="w-9 hover:bg-text-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
-                                    <path d="M400-116 36-480l364-364 34 34-330 330 330 330-34 34Z"/>
-                            </svg>
-                        </button>
-                            <h1 class="text-center text-3xl font-bold">Give feedback</h1>
-                            <p class="text-center mt-14">Rate your experience?</p>
-                            <div class="flex items-center justify-center gap-x-3 mt-6">
-                                <span data-star=1 class="stars cursor-pointer"><img id="s1" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
-                                <input type="checkbox" name="rating" id="r1" class="hidden">
+                        <div class="py-14 px-14 w-[500px] h-[560px]">
+                            <div class="w-full h-full overflow-hidden relative">
 
-                                <span data-star=2 class="stars cursor-pointer"><img id="s2" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
-                                <input type="checkbox" name="rating" id="r2" class="hidden">
+                                <!-- Page 1 -->
+                                <form method="POST" action="{{ route('ticket.rate') }}" id="ratingPage1" class="w-full h-full absolute top-0 left-0 transition-all duration-150 ease-out px-1">
+                                    @csrf
+                                    <input type="hidden" id="rateTicketID" name="id">
+                                    <button class="absolute h-9 w-9" data-modal-toggle="FeedbackModal">
+                                        <svg class="w-6 hover:bg-text-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+                                            <path d="M400-116 36-480l364-364 34 34-330 330 330 330-34 34Z"/>
+                                        </svg>
+                                    </button>
+                                    <h1 class="text-center text-3xl font-bold">Give feedback</h1>
+                                    <p class="text-center mt-14">Rate your experience?</p>
+                                    <div class="flex items-center justify-center gap-x-3 mt-6">
+                                        <span data-star=1 class="stars cursor-pointer"><img id="s1" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                        <input type="radio" name="rating" value=1 id="r1" class="hidden">
 
-                                <span data-star=3 class="stars cursor-pointer"><img id="s3" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
-                                <input type="checkbox" name="rating" id="r3" class="hidden">
+                                        <span data-star=2 class="stars cursor-pointer"><img id="s2" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                        <input type="radio" name="rating" value=2 id="r2" class="hidden">
 
-                                <span data-star=4 class="stars cursor-pointer"><img id="s4" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
-                                <input type="checkbox" name="rating" id="r4" class="hidden">
+                                        <span data-star=3 class="stars cursor-pointer"><img id="s3" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                        <input type="radio" name="rating" value=3 id="r3" class="hidden">
 
-                                <span data-star=5 class="stars cursor-pointer"><img id="s5" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
-                                <input type="checkbox" name="rating" id="r5" class="hidden">
-                            </div>
+                                        <span data-star=4 class="stars cursor-pointer"><img id="s4" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                        <input type="radio" name="rating" value=4 id="r4" class="hidden">
 
-                            <textarea name="" id="" class="mt-6 bg-gray-500 text-sm text-gray-100 placeholder-gray-300 p-2 rounded-2xl shadow-inner shadow-gray-600 w-full h-40 focus:outline-none focus:outline-0 focus:ring-0 resize-none" placeholder="Tell us about your experience!"></textarea>
+                                        <span data-star=5 class="stars cursor-pointer"><img id="s5" class="w-12" src={{ asset('images/star-border-only.png') }} alt="empty star"></span>
+                                        <input type="radio" name="rating" value=5 id="r5" class="hidden">
+                                    </div>
 
-                            <div class="w-full flex items-center justify-center mt-6">
-                                <button class="w-full px-14 py-4 font-bold text-gray-700 bg-emerald-400 hover:bg-emerald-500 rounded-2xl shadow-md">Submit Rating</button>
+                                    <textarea name="rate_comments" id="" class="mt-6 bg-gray-500 text-sm text-gray-100 placeholder-gray-300 p-2 rounded-2xl shadow-inner shadow-gray-600 w-full h-40 focus:outline-none focus:outline-0 focus:ring-0 resize-none" placeholder="Tell us about your experience!"></textarea>
+
+                                    <div class="w-full flex items-center justify-center mt-6">
+                                        <button type="button" id='ratingSubmitButton' class="w-full px-14 py-4 font-bold text-gray-100 bg-emerald-600 hover:bg-[#048f67] rounded-2xl shadow-md">Submit Rating</button>
+                                    </div>
+                                </form>
+
+                                <!-- Page 2 -->
+                                <div id="ratingPage2" class="w-full h-full absolute top-0 left-full transition-all duration-150 ease-out px-1">
+                                    <div class="h-full pb-10 flex flex-col items-center justify-center">
+                                        <img src="{{ asset('/images/thankyou.png') }}" class="w-80" alt="thank you">
+
+                                        <!-- <button id='ratingSubmitButton' data-modal-toggle="FeedbackModal" class="w-full px-14 py-4 font-bold text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-2xl shadow-md">Close</button> -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Modal footer -->
-                        <!-- <div class="flex items-center p-3 space-x-3 border-t border-gray-600 rounded-b">
-                            <button data-modal-toggle="FeedbackModal" type="button" class="focus:ring-4 focus:outline-none rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600">Close</button>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -572,7 +575,9 @@
                         @foreach ($tickets as $ticket)
                             <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'text-green-500' : '' }}">
                                 <td class="px-6 py-3 text-center whitespace-nowrap">
-                                    <button id="feedbackButton" class="text-orange-500 font-semibold hover:underline">FEEDBACK</button>
+                                    @if (!$ticket->rating && $ticket->status === "DONE")
+                                        <button id="feedbackButton" data-id="{{ $ticket->id }}" class="text-orange-500 font-semibold hover:underline">FEEDBACK</button>
+                                    @endif
                                 </td>
                                 <th scope="row" class="px-6 py-3 font-medium text-center text-white">
                                     <span 
@@ -1034,6 +1039,16 @@
 
         $('#feedbackButton').click(function(e) {
             e.stopPropagation();
+            $('input[name="rating"]').prop('checked', false);
+            for (let u = 1; u <= 5; u++) {
+                const sid = "#s"+u;
+                $(sid).attr("src", "{{ asset('images/star-border-only.png') }}");
+            }
+            $('#rateTicketID').val($(this).data('id'));
+            $('#ratingPage1').addClass('left-0');
+            $('#ratingPage1').removeClass('-left-full');
+            $('#ratingPage2').addClass('left-full');
+            $('#ratingPage2').removeClass('left-0');
             $('#OpenFeedbackModal').click();
         })
 
@@ -1044,7 +1059,6 @@
                 const sid = "#s"+u;
                 $(rid).prop('checked', false);
                 $(sid).attr("src", "{{ asset('images/star-border-only.png') }}");
-                console.log(sid);
             }
             for (let index = 1; index <= value; index++) {
                 // setTimeout(() => {
@@ -1054,9 +1068,19 @@
                 $(sid).attr("src", "{{ asset('images/star-no-bg.png') }}");
                 // }, index * 20);
             }
-            console.log(value);
-            
         });
+
+        $('#ratingSubmitButton').click(function(){
+            const value = $('input[name="rating"]:checked').val();
+            console.log(value);
+            if(value){
+                $('#ratingPage1').removeClass('left-0').addClass('-left-full');
+                $('#ratingPage2').removeClass('left-full').addClass('left-0');
+                setTimeout(() => {
+                    $('#ratingPage1').submit();
+                }, 1000);
+            }
+        })
     });
   </script>
 </x-app-layout>
