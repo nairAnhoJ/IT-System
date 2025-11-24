@@ -534,9 +534,11 @@
                 <table class="min-w-full text-sm text-left text-gray-400">
                     <thead class="relative top-0 text-xs text-gray-400 uppercase bg-gray-600 border-gray-600 border-x-8">
                         <tr class="sticky top-0 bg-gray-600">
-                            <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
-                                ACTION
-                            </th>
+                            @if ($deptInCharge != $userDeptID)
+                                <th id="thl" scope="col" class="sticky top-0 py-2 text-center">
+                                    ACTION
+                                </th>
+                            @endif
                             <th scope="col" class="sticky top-0 py-2 text-center">
                                 TICKET #
                             </th>
@@ -574,11 +576,13 @@
                     <tbody id="ticketTableBody" style="max-height: calc(100% - 126px);">
                         @foreach ($tickets as $ticket)
                             <tr class="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer {{ (strtotime($ticket->created_at) > strtotime("-1 day")) ? 'text-green-500' : '' }}">
-                                <td class="px-6 py-3 text-center whitespace-nowrap">
-                                    @if (!$ticket->rating && $ticket->status === "DONE")
-                                        <button id="feedbackButton" data-id="{{ $ticket->id }}" class="text-orange-500 font-semibold hover:underline">FEEDBACK</button>
-                                    @endif
-                                </td>
+                                @if ($deptInCharge != $userDeptID)
+                                    <td class="px-6 py-3 text-center whitespace-nowrap">
+                                        @if (!$ticket->rating && $ticket->status === "DONE")
+                                            <button id="feedbackButton" data-id="{{ $ticket->id }}" class="text-orange-500 font-semibold hover:underline">FEEDBACK</button>
+                                        @endif
+                                    </td>
+                                @endif
                                 <th scope="row" class="px-6 py-3 font-medium text-center text-white">
                                     <span 
                                         data-id="{{ $ticket->id }}" 

@@ -56,7 +56,7 @@ class TicketController extends Controller
                 ->get();
         }
 
-        return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge', 'dic_users'));
+        return view('ticketing.dashboard', compact('userDept', 'tickets', 'deptInCharge', 'dic_users', 'userDeptID'));
     }
 
     public function create(){
