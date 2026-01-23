@@ -448,7 +448,7 @@
                                 <form method="POST" action="{{ route('ticket.rate') }}" id="ratingPage1" class="w-full h-full absolute top-0 left-0 transition-all duration-150 ease-out px-1">
                                     @csrf
                                     <input type="hidden" id="rateTicketID" name="id">
-                                    <button class="absolute h-9 w-9" data-modal-toggle="FeedbackModal">
+                                    <button type="button" class="absolute h-9 w-9" data-modal-toggle="FeedbackModal">
                                         <svg class="w-6 hover:bg-text-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
                                             <path d="M400-116 36-480l364-364 34 34-330 330 330 330-34 34Z"/>
                                         </svg>
@@ -1074,9 +1074,8 @@
             }
         });
 
-        $('#ratingSubmitButton').click(function(){
+        $('#ratingSubmitButton').click(function(e){
             const value = $('input[name="rating"]:checked').val();
-            console.log(value);
             if(value){
                 $('#ratingPage1').removeClass('left-0').addClass('-left-full');
                 $('#ratingPage2').removeClass('left-full').addClass('left-0');
