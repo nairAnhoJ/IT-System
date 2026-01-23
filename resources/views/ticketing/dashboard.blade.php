@@ -484,7 +484,7 @@
                                     <div class="h-full pb-10 flex flex-col items-center justify-center">
                                         <img src="{{ asset('/images/thankyou.png') }}" class="w-80" alt="thank you">
 
-                                        <!-- <button id='ratingSubmitButton' data-modal-toggle="FeedbackModal" class="w-full px-14 py-4 font-bold text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-2xl shadow-md">Close</button> -->
+                                        <button id='ratingSubmitButton' data-modal-toggle="FeedbackModal" class="w-full px-14 py-4 font-bold text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-2xl shadow-md">Close</button>
                                     </div>
                                 </div>
                             </div>
