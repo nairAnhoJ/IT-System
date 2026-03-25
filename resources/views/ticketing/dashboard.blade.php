@@ -699,7 +699,7 @@
         var resolution_file_extension = '';
 
         // Reload Page
-            var delayTime = 90000;
+            var delayTime = 900000;
             var timeoutID;
             function refreshPage() {
                 location.reload();
