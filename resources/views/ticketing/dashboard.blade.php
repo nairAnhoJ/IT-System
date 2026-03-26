@@ -117,8 +117,8 @@
                         <div class="p-3">
 
                             {{-- Ticket Info --}}
-                                <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
-                                <div id="ticketDesc" class="mb-2 max-h-[160px] text-sm leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
+                                <p id="ticketSubject" class="mb-2 text-sm font-semibold leading-relaxed text-gray-300"></p>
+                                <div id="ticketDesc" class="mb-2 max-h-[200px] text-sm leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
                             {{-- Ticket Info --}}
 
                             {{-- Attachment Buttons --}}
@@ -156,7 +156,7 @@
                                         <label class="block mt-5 mb-2 text-base font-medium text-white">
                                             Resolution <span class="text-red-500 text-sm">*Required upon completion</span>
                                         </label>
-                                        <textarea style="resize: none;" id="ticketResolutionInput" name="ticketResolution" rows=4 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                        <textarea style="resize: none;" id="ticketResolutionInput" name="ticketResolution" rows=2 cols=50 maxlength=1000 class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"></textarea>
                                         <div class="mt-5">
                                             <label for="attachment" class="block text-sm font-medium text-white">Upload Attachment</label>
                                             <div class="col-span-5">
