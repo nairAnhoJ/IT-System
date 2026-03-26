@@ -118,7 +118,7 @@
 
                             {{-- Ticket Info --}}
                                 <p id="ticketSubject" class="mb-2 text-xl font-semibold leading-relaxed text-gray-300"></p>
-                                <div id="ticketDesc" class="mb-2 max-h-[160px] text-base leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
+                                <div id="ticketDesc" class="mb-2 max-h-[160px] text-sm leading-relaxed text-gray-300 whitespace-pre-line overflow-y-auto"></div>
                             {{-- Ticket Info --}}
 
                             {{-- Attachment Buttons --}}
