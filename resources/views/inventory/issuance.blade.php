@@ -45,7 +45,7 @@
 
         <hr class="mt-2">
 
-        <h1 class="font-medium text-2xl text-center tracking-wider mt-1">ISSUANCE FORM</h1>
+        <h1 class="font-medium text-2xl text-center tracking-wider mt-1">EMPLOYEE RECEIVING FORM & POLICY ACKNOWLEDGMENT</h1>
 
         <div class="px-20 mt-2">
             <div class="grid grid-cols-7 gap-x-2 text-sm">
