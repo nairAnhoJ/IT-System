@@ -173,7 +173,7 @@ class TicketController extends Controller
     }
 
     public function createForIT(){
-        $cats = DB::select('SELECT * FROM ticket_categories ORDER BY ticket_categories.name ASC');
+        $cats = DB::select('SELECT * FROM ticket_categories WHERE ticket_categories.is_deleted = 0 ORDER BY ticket_categories.name ASC');
         $dic = (DB::table('dept_in_charges')->first())->dept_id;
         $users = User::with('site_row', 'department_row')->where('id', '!=', 1)->orderBy('name', 'asc')->get();
         $dic_users = User::with('site_row', 'department_row')->where('id', '!=', 1)->where('dept_id', $dic)->orderBy('name', 'asc')->get();
