@@ -60,7 +60,7 @@ class TicketController extends Controller
     }
 
     public function create(){
-        $cats = DB::select('SELECT * FROM ticket_categories ORDER BY ticket_categories.name ASC');
+        $cats = DB::select('SELECT * FROM ticket_categories WHERE ticket_categories.is_deleted = 0 ORDER BY ticket_categories.name ASC');
         $inChargeID = (DB::table('departments')->where('id', auth()->user()->dept_id)->get())[0]->in_charge;
         $inchargeName = (DB::table('users')->where('id', $inChargeID)->get())[0]->name;
         return view('ticketing.create', compact('cats', 'inchargeName'));
